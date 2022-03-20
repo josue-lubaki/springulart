@@ -1,12 +1,14 @@
 package ca.ghostteam.springulart.model;
 
-import lombok.Data;
+import lombok.*;
 
 @Data
+@AllArgsConstructor
+@ToString
 public class Address {
-    private String street;
-    private String apartement;
-    private String zip;
-    private String city;
-    private String state;
+    private final String street;
+    private final String apartement;
+    private final String zip;
+    private final String city;
+    private final String state;
 }

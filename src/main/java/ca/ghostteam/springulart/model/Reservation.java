@@ -1,10 +1,12 @@
 package ca.ghostteam.springulart.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
+@AllArgsConstructor
 public class Reservation {
     private String id;
     private LocalDateTime reservationDate;

@@ -1,16 +1,20 @@
 package ca.ghostteam.springulart.model;
 
-import lombok.Data;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 
 @Data
+@AllArgsConstructor
+@ToString
 public class Credential{
-        private String id;
-        private String username;
-        private String password;
-        private String role;
-        private LocalDateTime created;
-        private LocalDateTime updated;
+        private final Integer id;
+        private final String username;
+        private final String password;
+        private final Set<? extends GrantedAuthority> grantedAuthority;
+        private final LocalDateTime created;
+        private final LocalDateTime updated;
 }

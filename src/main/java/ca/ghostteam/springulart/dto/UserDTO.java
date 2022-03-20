@@ -3,25 +3,28 @@ package ca.ghostteam.springulart.dto;
 import ca.ghostteam.springulart.model.Credential;
 import ca.ghostteam.springulart.model.User;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
+@Data
 @AllArgsConstructor
 public class UserDTO implements UserDetails {
-    private final Credential credentials;
-    private final User user;
-    private final boolean isAccountNonExpired;
-    private final boolean isAccountNonLocked;
-    private final boolean isCredentialsNonExpired;
-    private final boolean isEnabled;
-
+    private Credential credentials;
+    private User user;
+    private boolean isAccountNonExpired;
+    private boolean isAccountNonLocked;
+    private boolean isCredentialsNonExpired;
+    private boolean isEnabled;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList((GrantedAuthority) credentials::getRole);
+        return credentials.getGrantedAuthority();
     }
 
     @Override

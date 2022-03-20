@@ -1,23 +1,22 @@
 package ca.ghostteam.springulart.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Data
-@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class User {
-
-    private String fname;
-    private String lname;
-    private String email;
-    private String imageURL;
-    private String phone;
-    private LocalDateTime dob;
-    private Address address;
-    private String role;
-    private LocalDateTime created;
-    private LocalDateTime updated ;
-    private boolean deleted = false;
+    private final Integer id;
+    private final String fname;
+    private final String lname;
+    private final String email;
+    private final String imageURL;
+    private final String phone;
+    private final LocalDateTime dob;
+    private final Address address;
+    private final LocalDateTime created;
+    private final LocalDateTime updated ;
+    private final boolean deleted = false;
 }
