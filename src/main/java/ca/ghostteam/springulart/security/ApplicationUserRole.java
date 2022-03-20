@@ -18,7 +18,13 @@ import static ca.ghostteam.springulart.security.ApplicationUserPermission.*;
 @RequiredArgsConstructor
 @Getter
 public enum ApplicationUserRole {
-    CLIENT(Sets.newHashSet()),
+    CLIENT(Sets.newHashSet(
+            RESERVATION_READ,
+            RESERVATION_WRITE,
+            USER_READ,
+            USER_WRITE,
+            HAIRCUT_READ
+    )),
     ADMIN(Sets.newHashSet(
             RESERVATION_READ,
             RESERVATION_WRITE,

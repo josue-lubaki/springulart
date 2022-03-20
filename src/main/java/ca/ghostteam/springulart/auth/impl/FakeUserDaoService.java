@@ -83,7 +83,8 @@ public class FakeUserDaoService implements UserDao {
                                 "Josue",
                                 "Lubaki",
                                 "josuelubaki@gmail.com",
-                                "https://assets-prd.ignimgs.com/2020/08/06/john-wick-button-1596757524663.jpg",                                "+1 873 873 8738",
+                                "https://assets-prd.ignimgs.com/2020/08/06/john-wick-button-1596757524663.jpg",
+                                "+1 873 873 8738",
                                 LocalDateTime.now(),
                                 new Address(
                                         "3100 Boulevard des Forges",
@@ -103,7 +104,7 @@ public class FakeUserDaoService implements UserDao {
                 new UserDTO(
                         new Credential(
                                 3,
-                                "jonathankanyanda@gmail.com",
+                                "jonathankanyinda@gmail.com",
                                 passwordEncoder.encode("password"),
                                 ApplicationUserRole.ADMIN.getGrantedAuthorities(),
                                 LocalDateTime.now(),
@@ -114,7 +115,8 @@ public class FakeUserDaoService implements UserDao {
                                 "Jonathan",
                                 "Kanyinda",
                                 "jonathankanyanda@gmail.com",
-                                "https://static.wikia.nocookie.net/marvelcentral/images/4/4a/Tony-Stark-iron-man-11234572-1485-2061.jpg",                                "+1 873 873 8738",
+                                "https://static.wikia.nocookie.net/marvelcentral/images/4/4a/Tony-Stark-iron-man-11234572-1485-2061.jpg",
+                                "+1 873 873 8738",
                                 LocalDateTime.now(),
                                 new Address(
                                         "1280 Rue de Terrière",

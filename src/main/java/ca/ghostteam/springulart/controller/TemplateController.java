@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.controller.users;
+package ca.ghostteam.springulart.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -99,36 +99,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/api/v1/users", true);
-
-
-
-
-
-
-
-//                .csrf().disable()
-//                //.exceptionHandling().authenticationEntryPoint(jwtEntryPoint)
-//               // .and()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
-//                .addFilterAfter(new JwtTokenVerifier(jwtConfig, secretKey), JwtUsernameAndPasswordAuthenticationFilter.class)
-//                .authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll()
-//                .antMatchers("/api/**").hasAnyRole(
-//                        ApplicationUserRole.CLIENT.name(),
-//                        ApplicationUserRole.BARBER.name()
-//                )
-//                .antMatchers("/management/api/**").hasRole(ApplicationUserRole.ADMIN.name())
-//                .anyRequest()
-//                .authenticated()
-//                .and()
-//                // diriger vers /api/v1/users
-//                .formLogin().loginPage("/login").permitAll()
-//                .and()
-//                .logout().permitAll();
-
-
-
     }
 
     @Override

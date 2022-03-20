@@ -2,6 +2,7 @@ package ca.ghostteam.springulart.security.jwt;
 
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -40,18 +41,19 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+                                    @NonNull HttpServletResponse response,
+                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         // Retrieve Authorization: Bearer yt3sg4hsu4...
-        String authorizationHeader = request.getHeader("Authorization");
+        String authorizationHeader = request.getHeader(jwtConfig.getAuthorizationHeader());
 
-        if(StringUtils.hasText(authorizationHeader) && authorizationHeader.startsWith("Bearer ")){
+        if(StringUtils.hasText(authorizationHeader)
+                && authorizationHeader.startsWith(jwtConfig.getTokenPrefix())){
             try {
                 Claims claims = Jwts.parserBuilder()
                         .setSigningKey(secretKey)
                         .build()
-                        .parseClaimsJws(authorizationHeader.replace("Bearer ", ""))
+                        .parseClaimsJws(authorizationHeader.replace(jwtConfig.getTokenPrefix(), ""))
                         .getBody();
 
                 // Retrieve user information
@@ -75,18 +77,5 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
-    }
-
-    /**
-     * Method that allows to extract information from the token
-     * @param token : token to verify
-     * @return String
-     * */
-    private String extractJwtToken(String token) {
-
-        if(StringUtils.hasText(token) && token.startsWith("Bearer ")){
-            return token.replace("Authorization", "");
-        }
-        return null;
     }
 }
