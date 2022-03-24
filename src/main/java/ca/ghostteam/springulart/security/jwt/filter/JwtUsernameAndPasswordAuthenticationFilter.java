@@ -2,7 +2,6 @@ package ca.ghostteam.springulart.security.jwt.filter;
 
 import ca.ghostteam.springulart.dto.AuthDTO;
 import ca.ghostteam.springulart.bean.JwtConfig;
-import ca.ghostteam.springulart.security.ApplicationUserPermission;
 import ca.ghostteam.springulart.security.ApplicationUserRole;
 import ca.ghostteam.springulart.service.UserService;
 import com.auth0.jwt.JWT;
@@ -26,7 +25,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author Josue Lubaki
@@ -101,34 +99,92 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     private  Map<String, Object> getAllUserPermissions(String userRole){
         Map<String, Object> authorities = new HashMap<>();
 
-        if(userRole.matches(ApplicationUserRole.USER.name())) {
-            // retrieve all permissions of CLIENT
-            authorities.put("authorities", ApplicationUserRole.USER.getGrantedAuthorities()
-                    .stream()
-                    .map(SimpleGrantedAuthority::getAuthority)
-                    .map( a-> {
-                        Map<String, Object> map = new HashMap<>();
-                        map.put("authority", a);
-                        return map;
-                    })
-                    .collect(Collectors.toList()));
+        switch(userRole){
+            case "ROLE_CLIENT" : {
+                // retrieve all permissions of CLIENT
+                authorities.put("authorities", ApplicationUserRole.CLIENT.getGrantedAuthorities()
+                        .stream()
+                        .map(SimpleGrantedAuthority::getAuthority)
+                        .map( a-> {
+                            Map<String, Object> map = new HashMap<>();
+                            map.put("authority", a);
+                            return map;
+                        })
+                        .collect(Collectors.toList()));
+                break;
+            }
+            case "ROLE_BARBER" : {
+                // retrieve all permission of ADMIN
+                authorities.put("authorities", ApplicationUserRole.BARBER.getGrantedAuthorities()
+                        .stream()
+                        .map(SimpleGrantedAuthority::getAuthority)
+                        .map( a-> {
+                            Map<String, Object> map = new HashMap<>();
+                            map.put("authority", a);
+                            return map;
+                        })
+                        .collect(Collectors.toList()));
+                break;
+            }
+            case "ROLE_ADMIN" : {
+                // retrieve all permission of ADMIN
+                authorities.put("authorities", ApplicationUserRole.ADMIN.getGrantedAuthorities()
+                        .stream()
+                        .map(SimpleGrantedAuthority::getAuthority)
+                        .map( a-> {
+                            Map<String, Object> map = new HashMap<>();
+                            map.put("authority", a);
+                            return map;
+                        })
+                        .collect(Collectors.toList()));
+                break;
+            }
+            default: {
+                throw new RuntimeException("Role does not exist");
+            }
+
         }
-        else if(userRole.matches(ApplicationUserRole.ADMIN.name())) {
-            // retrieve all permission of ADMIN
-            authorities.put("authorities", ApplicationUserRole.ADMIN.getGrantedAuthorities()
-                    .stream()
-                    .map(SimpleGrantedAuthority::getAuthority)
-                    .map( a-> {
-                        Map<String, Object> map = new HashMap<>();
-                        map.put("authority", a);
-                        return map;
-                    })
-                    .collect(Collectors.toList()));
-        }
-        else {
-            // throw exception
-            throw new RuntimeException("User role not found");
-        }
+//
+//        if(userRole.matches(ApplicationUserRole.CLIENT.name())) {
+//            // retrieve all permissions of CLIENT
+//            authorities.put("authorities", ApplicationUserRole.CLIENT.getGrantedAuthorities()
+//                    .stream()
+//                    .map(SimpleGrantedAuthority::getAuthority)
+//                    .map( a-> {
+//                        Map<String, Object> map = new HashMap<>();
+//                        map.put("authority", a);
+//                        return map;
+//                    })
+//                    .collect(Collectors.toList()));
+//        }
+//        else if(userRole.matches(ApplicationUserRole.BARBER.name())) {
+//            // retrieve all permission of ADMIN
+//            authorities.put("authorities", ApplicationUserRole.BARBER.getGrantedAuthorities()
+//                    .stream()
+//                    .map(SimpleGrantedAuthority::getAuthority)
+//                    .map( a-> {
+//                        Map<String, Object> map = new HashMap<>();
+//                        map.put("authority", a);
+//                        return map;
+//                    })
+//                    .collect(Collectors.toList()));
+//        }
+//        else if(userRole.matches(ApplicationUserRole.ADMIN.name())) {
+//            // retrieve all permission of ADMIN
+//            authorities.put("authorities", ApplicationUserRole.ADMIN.getGrantedAuthorities()
+//                    .stream()
+//                    .map(SimpleGrantedAuthority::getAuthority)
+//                    .map( a-> {
+//                        Map<String, Object> map = new HashMap<>();
+//                        map.put("authority", a);
+//                        return map;
+//                    })
+//                    .collect(Collectors.toList()));
+//        }
+//        else {
+//            // throw exception
+//            throw new RuntimeException("User role not found");
+//        }
 
         return authorities;
     }

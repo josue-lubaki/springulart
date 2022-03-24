@@ -86,7 +86,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers("/api/**").hasAnyRole(
-                        ApplicationUserRole.USER.name()
+                        ApplicationUserRole.CLIENT.name()
                 )
                 //.antMatchers("management/api/**").hasRole(ApplicationUserRole.ADMIN.name())
                 .anyRequest()

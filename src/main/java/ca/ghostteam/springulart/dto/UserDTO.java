@@ -1,10 +1,9 @@
 package ca.ghostteam.springulart.dto;
 
 import ca.ghostteam.springulart.model.AddressModel;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * @author Josue Lubaki
@@ -12,15 +11,17 @@ import java.util.Date;
  * @since 2022-03-23
  */
 @Data
-@AllArgsConstructor
 public class UserDTO {
     private Integer id;
     private String fname;
     private String lname;
     private String email;
     private String imageURL;
-    private Date dob;
-    private AddressModel address;
     private String phone;
     private String role;
+    private LocalDate dob = LocalDate.now();
+    private AddressModel address;
+    private LocalDate created = LocalDate.now();
+    private LocalDate updated = LocalDate.now();
+    private boolean deleted = false;
 }

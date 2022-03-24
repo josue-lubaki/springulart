@@ -2,7 +2,6 @@ package ca.ghostteam.springulart.dto;
 
 import ca.ghostteam.springulart.model.CredentialModel;
 import ca.ghostteam.springulart.model.UserModel;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,14 +10,9 @@ import java.util.Collection;
 import java.util.Collections;
 
 @Data
-@AllArgsConstructor
 public class UserDetailsDTO implements UserDetails {
     private CredentialModel credentials;
     private UserModel userModel;
-    private boolean isAccountNonExpired;
-    private boolean isAccountNonLocked;
-    private boolean isCredentialsNonExpired;
-    private boolean isEnabled;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -36,20 +30,20 @@ public class UserDetailsDTO implements UserDetails {
     }
 
     @Override
-    public boolean isAccountNonExpired() {return isAccountNonExpired;}
+    public boolean isAccountNonExpired() {return true;}
 
     @Override
     public boolean isAccountNonLocked() {
-        return isAccountNonLocked;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return isCredentialsNonExpired ;
+        return true ;
     }
 
     @Override
     public boolean isEnabled() {
-        return isEnabled;
+        return true;
     }
 }
