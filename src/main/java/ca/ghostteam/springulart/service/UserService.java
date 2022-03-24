@@ -1,6 +1,9 @@
 package ca.ghostteam.springulart.service;
 
+import ca.ghostteam.springulart.dto.UserDTO;
 import org.springframework.security.core.userdetails.UserDetailsService;
+
+import java.util.List;
 
 /**
  * @author Josue Lubaki
@@ -8,5 +11,5 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * @since 2022-03-19
  */
 public interface UserService extends UserDetailsService {
-
+    List<UserDTO> findAllUsers();
 }

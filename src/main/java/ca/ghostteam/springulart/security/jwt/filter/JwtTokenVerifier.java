@@ -8,6 +8,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,13 +48,8 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
-
-        if(request.getRequestURI().matches("/login")){
-            // If the request is for login, then we don't need to check for token
-            filterChain.doFilter(request, response);
-        }
+                                    @NonNull HttpServletResponse response,
+                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         // retrieve Authorization :  Bearer yt3sg4su7...
         // extract token
@@ -101,7 +97,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
     public DecodedJWT decodeJWT(String token, String secret) {
         Algorithm algorithm = Algorithm.HMAC256(secret);
         JWTVerifier verifier = JWT.require(algorithm)
-                .withIssuer("Springulart-backend")
+                .withIssuer(jwtConfig.getApplicationName())
                 .build();
         return verifier.verify(token);
     }
@@ -112,9 +108,9 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
      * @return String || null
      * */
     private String extractJwtToken(HttpServletRequest request) {
-        String authorizationHeader = request.getHeader("Authorization");
-        if(StringUtils.hasText(authorizationHeader) && authorizationHeader.startsWith("Bearer")){
-            return authorizationHeader.replace("Bearer", "").trim();
+        String authorizationHeader = request.getHeader(jwtConfig.getAuthorizationHeader());
+        if(StringUtils.hasText(authorizationHeader) && authorizationHeader.startsWith(jwtConfig.getTokenPrefix())){
+            return authorizationHeader.replace(jwtConfig.getTokenPrefix(), "").trim();
         }
         return null;
     }

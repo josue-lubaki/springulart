@@ -59,7 +59,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtAuthenticationEntryPoint jwtEntryPoint;
     private final UserService userService;
     private final JwtConfig jwtConfig;
-//    private final SecretKey secretKey;
 
     public ApplicationSecurityConfig(UserService userDetailsService,
                                      PasswordEncoder passwordEncoder,
@@ -101,7 +100,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(daoAuthenticationProvider());
     }
 

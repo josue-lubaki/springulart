@@ -1,7 +1,8 @@
-package ca.ghostteam.springulart.service;
+package ca.ghostteam.springulart.repository;
 
 import ca.ghostteam.springulart.dto.UserDetailsDTO;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -11,4 +12,5 @@ import java.util.Optional;
  */
 public interface UserDao {
     Optional<UserDetailsDTO> selectUserByUsername(String username);
+    List<UserDetailsDTO> findAllUsers();
 }

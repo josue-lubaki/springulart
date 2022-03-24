@@ -1,10 +1,10 @@
-package ca.ghostteam.springulart.service.impl;
+package ca.ghostteam.springulart.repository.impl;
 
-import ca.ghostteam.springulart.service.UserDao;
 import ca.ghostteam.springulart.dto.UserDetailsDTO;
 import ca.ghostteam.springulart.model.AddressModel;
 import ca.ghostteam.springulart.model.CredentialModel;
 import ca.ghostteam.springulart.model.UserModel;
+import ca.ghostteam.springulart.repository.UserDao;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
@@ -18,12 +18,12 @@ import java.util.Optional;
  * @version 1.0
  * @since 2022-03-19
  */
-@Repository("fake")
-public class FakeUserDaoService implements UserDao {
+@Repository("fake-repository")
+public class FakeUserDao implements UserDao {
 
     private final PasswordEncoder passwordEncoder;
 
-    public FakeUserDaoService(PasswordEncoder passwordEncoder) {
+    public FakeUserDao(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -32,6 +32,11 @@ public class FakeUserDaoService implements UserDao {
         return getAllUsers().stream()
                 .filter(user -> username.equals(user.getCredentials().getUsername()))
                 .findFirst();
+    }
+
+    @Override
+    public List<UserDetailsDTO> findAllUsers() {
+        return getAllUsers();
     }
 
     private List<UserDetailsDTO> getAllUsers(){
