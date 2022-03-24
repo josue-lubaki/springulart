@@ -1,9 +1,8 @@
 package ca.ghostteam.springulart.dto;
 
+import lombok.*;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
+@Data
 @AllArgsConstructor
 public class HaircutDTO {
     private final Integer id;
@@ -12,6 +11,4 @@ public class HaircutDTO {
     private final String title;
     private final String estimatedTime;// check frontend
     private final String description;
-
-
 }

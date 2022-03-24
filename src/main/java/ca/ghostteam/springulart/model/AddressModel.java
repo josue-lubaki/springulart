@@ -1,9 +1,10 @@
 package ca.ghostteam.springulart.model;
 
-import lombok.Data;
+import lombok.*;
 
 @Data
-public class Address {
+@RequiredArgsConstructor
+public class AddressModel {
     private String street;
     private String apartement;
     private String zip;
