@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.auth;
+package ca.ghostteam.springulart.service;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 

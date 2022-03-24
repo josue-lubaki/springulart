@@ -1,10 +1,10 @@
-package ca.ghostteam.springulart.auth.impl;
+package ca.ghostteam.springulart.service.impl;
 
-import ca.ghostteam.springulart.auth.UserDao;
-import ca.ghostteam.springulart.dto.UserDTO;
-import ca.ghostteam.springulart.model.Address;
-import ca.ghostteam.springulart.model.Credential;
-import ca.ghostteam.springulart.model.User;
+import ca.ghostteam.springulart.service.UserDao;
+import ca.ghostteam.springulart.dto.UserDetailsDTO;
+import ca.ghostteam.springulart.model.AddressModel;
+import ca.ghostteam.springulart.model.CredentialModel;
+import ca.ghostteam.springulart.model.UserModel;
 import ca.ghostteam.springulart.security.ApplicationUserRole;
 import com.google.common.collect.Lists;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,24 +29,24 @@ public class FakeUserDaoService implements UserDao {
     }
 
     @Override
-    public Optional<UserDTO> selectUserByUsername(String username) {
+    public Optional<UserDetailsDTO> selectUserByUsername(String username) {
         return getAllUsers().stream()
                 .filter(user -> username.equals(user.getCredentials().getUsername()))
                 .findFirst();
     }
 
-    private List<UserDTO> getAllUsers(){
+    private List<UserDetailsDTO> getAllUsers(){
         return Lists.newArrayList(
-                new UserDTO(
-                        new Credential(
+                new UserDetailsDTO(
+                        new CredentialModel(
                             1,
                             "ismaelcoulibaly@gmail.com",
                             passwordEncoder.encode("password"),
-                            ApplicationUserRole.BARBER.getGrantedAuthorities(),
+                            ApplicationUserRole.USER.name(),
                             LocalDateTime.now(),
                             LocalDateTime.now()
                         ),
-                        new User(
+                        new UserModel(
                             1,
                             "Ismael",
                             "Coulibaly",
@@ -54,7 +54,7 @@ public class FakeUserDaoService implements UserDao {
                             "https://static.wikia.nocookie.net/marvel-cinematic/images/3/32/Steve_Rogers_2.jpg",
                             "+1 873 873 8738",
                             LocalDateTime.now(),
-                            new Address(
+                            new AddressModel(
                                 "25 Rue de Caillière",
                                 "3",
                                 "G8W 1B5",
@@ -69,16 +69,16 @@ public class FakeUserDaoService implements UserDao {
                         true,
                         true
                 ),
-                new UserDTO(
-                        new Credential(
+                new UserDetailsDTO(
+                        new CredentialModel(
                                 2,
                                 "josuelubaki@gmail.com",
                                 passwordEncoder.encode("password"),
-                                ApplicationUserRole.CLIENT.getGrantedAuthorities(),
+                                ApplicationUserRole.USER.name(),
                                 LocalDateTime.now(),
                                 LocalDateTime.now()
                         ),
-                        new User(
+                        new UserModel(
                                 2,
                                 "Josue",
                                 "Lubaki",
@@ -86,7 +86,7 @@ public class FakeUserDaoService implements UserDao {
                                 "https://assets-prd.ignimgs.com/2020/08/06/john-wick-button-1596757524663.jpg",
                                 "+1 873 873 8738",
                                 LocalDateTime.now(),
-                                new Address(
+                                new AddressModel(
                                         "3100 Boulevard des Forges",
                                         "101",
                                         "G8Z 1V5",
@@ -101,16 +101,16 @@ public class FakeUserDaoService implements UserDao {
                         true,
                         true
                 ),
-                new UserDTO(
-                        new Credential(
+                new UserDetailsDTO(
+                        new CredentialModel(
                                 3,
                                 "jonathankanyinda@gmail.com",
                                 passwordEncoder.encode("password"),
-                                ApplicationUserRole.ADMIN.getGrantedAuthorities(),
+                                ApplicationUserRole.ADMIN.name(),
                                 LocalDateTime.now(),
                                 LocalDateTime.now()
                         ),
-                        new User(
+                        new UserModel(
                                 3,
                                 "Jonathan",
                                 "Kanyinda",
@@ -118,7 +118,7 @@ public class FakeUserDaoService implements UserDao {
                                 "https://static.wikia.nocookie.net/marvelcentral/images/4/4a/Tony-Stark-iron-man-11234572-1485-2061.jpg",
                                 "+1 873 873 8738",
                                 LocalDateTime.now(),
-                                new Address(
+                                new AddressModel(
                                         "1280 Rue de Terrière",
                                         "1B",
                                         "G8Z 3K2",

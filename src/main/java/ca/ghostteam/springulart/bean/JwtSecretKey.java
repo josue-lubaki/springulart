@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.security.jwt;
+package ca.ghostteam.springulart.bean;
 
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +22,13 @@ public class JwtSecretKey {
         this.jwtConfig = jwtConfig;
     }
 
+//    @Bean
+//    public SecretKey secretKey() {
+//        return Keys.hmacShaKeyFor(jwtConfig.getSecretKey().getBytes());
+//    }
+
     @Bean
-    public SecretKey secretKey() {
-        return Keys.hmacShaKeyFor(jwtConfig.getSecretKey().getBytes());
+    public String secretKey() {
+        return jwtConfig.getSecretKey();
     }
 }

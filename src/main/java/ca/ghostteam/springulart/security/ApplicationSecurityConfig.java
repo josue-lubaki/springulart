@@ -1,10 +1,10 @@
 package ca.ghostteam.springulart.security;
 
-import ca.ghostteam.springulart.auth.UserService;
+import ca.ghostteam.springulart.service.UserService;
 import ca.ghostteam.springulart.security.jwt.JwtAuthenticationEntryPoint;
-import ca.ghostteam.springulart.security.jwt.JwtConfig;
-import ca.ghostteam.springulart.security.jwt.JwtTokenVerifier;
-import ca.ghostteam.springulart.security.jwt.JwtUsernameAndPasswordAuthenticationFilter;
+import ca.ghostteam.springulart.bean.JwtConfig;
+import ca.ghostteam.springulart.security.jwt.filter.JwtTokenVerifier;
+import ca.ghostteam.springulart.security.jwt.filter.JwtUsernameAndPasswordAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,8 +16,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import javax.crypto.SecretKey;
 
 /**
  * @author Josue Lubaki
@@ -56,22 +54,24 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
             "/js/*"
     };
 
+    private final UserService userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final JwtAuthenticationEntryPoint jwtEntryPoint;
     private final UserService userService;
     private final JwtConfig jwtConfig;
-    private final SecretKey secretKey;
+//    private final SecretKey secretKey;
 
-    public ApplicationSecurityConfig(PasswordEncoder passwordEncoder,
+    public ApplicationSecurityConfig(UserService userDetailsService,
+                                     PasswordEncoder passwordEncoder,
                                      JwtAuthenticationEntryPoint jwtEntryPoint,
                                      @Qualifier("user-service-fake") UserService userService,
-                                     JwtConfig jwtConfig,
-                                     SecretKey secretKey) {
+                                     JwtConfig jwtConfig
+                                     ) {
+        this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
         this.jwtEntryPoint = jwtEntryPoint;
         this.userService = userService;
         this.jwtConfig = jwtConfig;
-        this.secretKey = secretKey;
     }
 
     @Override
@@ -81,13 +81,12 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(),jwtConfig, secretKey))
-                .addFilterAfter(new JwtTokenVerifier(jwtConfig,secretKey), JwtUsernameAndPasswordAuthenticationFilter.class)
+                .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(),jwtConfig, userService))
+                .addFilterAfter(new JwtTokenVerifier(jwtConfig,userDetailsService), JwtUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers("/api/**").hasAnyRole(
-                        ApplicationUserRole.CLIENT.name(),
-                        ApplicationUserRole.BARBER.name()
+                        ApplicationUserRole.USER.name()
                 )
                 //.antMatchers("management/api/**").hasRole(ApplicationUserRole.ADMIN.name())
                 .anyRequest()

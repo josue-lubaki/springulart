@@ -5,7 +5,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @ToString
-public class Address {
+public class AddressModel {
     private final String street;
     private final String apartement;
     private final String zip;

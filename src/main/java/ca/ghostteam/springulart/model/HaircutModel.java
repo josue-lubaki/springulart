@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Haircut {
+public class HaircutModel {
     private Integer id;
     private String imageURL;
     private Integer price;

@@ -18,7 +18,7 @@ import static ca.ghostteam.springulart.security.ApplicationUserPermission.*;
 @RequiredArgsConstructor
 @Getter
 public enum ApplicationUserRole {
-    CLIENT(Sets.newHashSet(
+    USER(Sets.newHashSet(
             RESERVATION_READ,
             RESERVATION_WRITE,
             USER_READ,
@@ -32,13 +32,7 @@ public enum ApplicationUserRole {
             USER_WRITE,
             HAIRCUT_READ,
             HAIRCUT_WRITE)
-    ),
-    BARBER(Sets.newHashSet(
-            RESERVATION_READ,
-            RESERVATION_WRITE,
-            USER_READ,
-            HAIRCUT_READ
-    ));
+    );
 
     private final Set<ApplicationUserPermission> permissions;
 

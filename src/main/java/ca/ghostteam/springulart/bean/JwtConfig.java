@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.security.jwt;
+package ca.ghostteam.springulart.bean;
 
 import com.google.common.net.HttpHeaders;
 import lombok.Data;

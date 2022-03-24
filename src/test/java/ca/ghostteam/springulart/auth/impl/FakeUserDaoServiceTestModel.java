@@ -6,6 +6,7 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import ca.ghostteam.springulart.service.impl.FakeUserDaoService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ContextConfiguration(classes = {FakeUserDaoService.class})
 @ExtendWith(SpringExtension.class)
-class FakeUserDaoServiceTest {
+class FakeUserDaoServiceTestModel {
     @Autowired
     private FakeUserDaoService fakeUserDaoService;
 

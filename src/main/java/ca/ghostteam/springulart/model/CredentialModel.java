@@ -10,11 +10,11 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @ToString
-public class Credential{
+public class CredentialModel {
         private final Integer id;
         private final String username;
         private final String password;
-        private final Set<? extends GrantedAuthority> grantedAuthority;
+        private final String grantedAuthority;
         private final LocalDateTime created;
         private final LocalDateTime updated;
 }

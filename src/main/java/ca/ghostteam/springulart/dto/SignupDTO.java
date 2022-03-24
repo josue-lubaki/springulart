@@ -1,7 +1,6 @@
 package ca.ghostteam.springulart.dto;
 
 import ca.ghostteam.springulart.model.AddressModel;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Date;
@@ -12,12 +11,11 @@ import java.util.Date;
  * @since 2022-03-23
  */
 @Data
-@AllArgsConstructor
-public class UserDTO {
-    private Integer id;
+public class SignupDTO {
     private String fname;
     private String lname;
-    private String email;
+    private String email; // correspond to username
+    private String password;
     private String imageURL;
     private Date dob;
     private AddressModel address;

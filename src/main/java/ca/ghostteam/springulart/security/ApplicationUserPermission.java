@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
  * @since 2022-03-19
  *
  * Class containing the different permissions offered by the application.
- * Example : RESERVATION_READ (User with this permission can read reservations)
+ * Example : RESERVATION_READ (UserModel with this permission can read reservations)
  */
 @RequiredArgsConstructor
 @Getter

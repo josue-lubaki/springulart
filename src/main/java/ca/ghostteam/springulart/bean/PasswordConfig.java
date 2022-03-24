@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.security;
+package ca.ghostteam.springulart.bean;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

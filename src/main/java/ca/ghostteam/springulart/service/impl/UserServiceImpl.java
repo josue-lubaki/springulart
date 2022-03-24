@@ -1,7 +1,7 @@
-package ca.ghostteam.springulart.auth.impl;
+package ca.ghostteam.springulart.service.impl;
 
-import ca.ghostteam.springulart.auth.UserDao;
-import ca.ghostteam.springulart.auth.UserService;
+import ca.ghostteam.springulart.service.UserDao;
+import ca.ghostteam.springulart.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;

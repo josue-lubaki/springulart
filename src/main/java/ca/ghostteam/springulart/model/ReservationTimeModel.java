@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ReservationTime {
+public class ReservationTimeModel {
     private Integer hours;
     private Integer minutes;
 }
