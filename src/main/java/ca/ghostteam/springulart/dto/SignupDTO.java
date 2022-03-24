@@ -3,7 +3,7 @@ package ca.ghostteam.springulart.dto;
 import ca.ghostteam.springulart.model.AddressModel;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * @author Josue Lubaki
@@ -11,17 +11,14 @@ import java.time.LocalDate;
  * @since 2022-03-23
  */
 @Data
-public class UserDTO {
-    private Integer id;
+public class SignupDTO {
     private String fname;
     private String lname;
-    private String email;
+    private String email; // correspond to username
+    private String password;
     private String imageURL;
+    private Date dob;
+    private AddressModel address;
     private String phone;
     private String role;
-    private LocalDate dob = LocalDate.now();
-    private AddressModel address;
-    private LocalDate created = LocalDate.now();
-    private LocalDate updated = LocalDate.now();
-    private boolean deleted = false;
 }

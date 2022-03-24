@@ -1,9 +1,11 @@
 package ca.ghostteam.springulart.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-public class ReservationTime {
+@AllArgsConstructor
+public class ReservationTimeModel {
     private Integer hours;
     private Integer minutes;
 }

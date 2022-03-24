@@ -1,9 +1,11 @@
 package ca.ghostteam.springulart.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-public class Haircut {
+@AllArgsConstructor
+public class HaircutModel {
     private Integer id;
     private String imageURL;
     private Integer price;

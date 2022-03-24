@@ -1,9 +1,11 @@
 package ca.ghostteam.springulart.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-public class Location {
+@AllArgsConstructor
+public class LocationModel {
     private Double latitude;
     private Double longitude;
 }

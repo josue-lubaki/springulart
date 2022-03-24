@@ -1,17 +1,13 @@
-package ca.ghostteam.springulart.dto;
+package ca.ghostteam.springulart.model;
 
-import ca.ghostteam.springulart.model.AddressModel;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 
-/**
- * @author Josue Lubaki
- * @version 1.0
- * @since 2022-03-23
- */
 @Data
-public class UserDTO {
+@RequiredArgsConstructor
+public class UserModel {
     private Integer id;
     private String fname;
     private String lname;
