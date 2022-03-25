@@ -12,6 +12,7 @@ public class UserModel {
     private String fname;
     private String lname;
     private String email;
+    private String password;
     private String imageURL;
     private String phone;
     private String role;
