@@ -13,6 +13,7 @@ import java.util.Collections;
 public class UserDetailsDTO implements UserDetails {
     private CredentialModel credentials;
     private UserModel userModel;
+    private String token;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

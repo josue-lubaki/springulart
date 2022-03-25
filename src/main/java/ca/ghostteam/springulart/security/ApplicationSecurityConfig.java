@@ -4,10 +4,10 @@ import ca.ghostteam.springulart.service.UserService;
 import ca.ghostteam.springulart.security.jwt.JwtAuthenticationEntryPoint;
 import ca.ghostteam.springulart.bean.JwtConfig;
 import ca.ghostteam.springulart.security.jwt.filter.JwtTokenVerifier;
-import ca.ghostteam.springulart.security.jwt.filter.JwtUsernameAndPasswordAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @author Josue Lubaki
@@ -38,8 +39,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
             // -- allow anonymous resource requests
             "/",
             "index",
-            "/login",
-            "/register",
+            "/auth/login",
+            "/auth/register",
             "/logout",
             "/error",
             "/favicon.ico",
@@ -80,8 +81,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(),jwtConfig, userService))
-                .addFilterAfter(new JwtTokenVerifier(jwtConfig,userDetailsService), JwtUsernameAndPasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtTokenVerifier(jwtConfig,userDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers("/api/**").hasAnyRole(
@@ -93,11 +93,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .exceptionHandling()
-                .authenticationEntryPoint(jwtEntryPoint)
-                .and()
-                .formLogin()
-                .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/api/v1/users", true);
+                .authenticationEntryPoint(jwtEntryPoint);
     }
 
     @Override
@@ -111,5 +107,11 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         provider.setPasswordEncoder(passwordEncoder);
         provider.setUserDetailsService(userService);
         return provider;
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 }
