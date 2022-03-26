@@ -50,6 +50,12 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
+        // if the request is for login or register, skip the verification
+        if(request.getRequestURI().matches("/auth/login")
+                || request.getRequestURI().matches("/auth/register")){
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         // retrieve Authorization :  Bearer yt3sg4su7...
         // extract token

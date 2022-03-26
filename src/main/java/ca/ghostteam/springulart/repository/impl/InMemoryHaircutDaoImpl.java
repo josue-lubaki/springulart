@@ -36,6 +36,7 @@ public class InMemoryHaircutDaoImpl implements HaircutDao {
 
     @Override
     public Optional<HaircutModel> save(HaircutModel haircutModel) {
+        haircutModel.setId(UUID.randomUUID().toString());
         LIST_HAIRCUTS.add(haircutModel);
         return Optional.of(haircutModel);
     }
