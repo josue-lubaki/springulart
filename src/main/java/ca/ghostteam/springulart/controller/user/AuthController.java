@@ -80,7 +80,7 @@ public class AuthController {
     }
 
     @ApiResponses(value = {
-            @ApiResponse(code=200, message = "OK", response = UserDTO.class),
+            @ApiResponse(code=201, message = "Successfully created an account", response = UserDTO.class),
             @ApiResponse(code=400, message = "Bad Request"),
     })
     @PostMapping(value ="/register", produces = {MediaType.APPLICATION_JSON_VALUE})

@@ -1,7 +1,11 @@
 package ca.ghostteam.springulart.controller.haircut;
 
 import ca.ghostteam.springulart.dto.HaircutDTO;
+import ca.ghostteam.springulart.dto.UserDTO;
 import ca.ghostteam.springulart.service.HaircutService;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,18 +27,30 @@ public class HaircutManagementController {
         this.haircutService = haircutService;
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(code=200, message = "OK", response = HaircutDTO.class),
+            @ApiResponse(code=400, message = "Bad Request"),
+    })
     @GetMapping
     public List<HaircutDTO> getHaircuts() {
         return haircutService.findAllHaircuts();
     }
 
-    @GetMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(code=200, message = "OK", response = HaircutDTO.class),
+            @ApiResponse(code=400, message = "Bad Request"),
+    })
+    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public HaircutDTO getHaircut(@PathVariable("id") String id) {
         return haircutService
                 .findHaircutById(id)
                 .orElseThrow(() -> new IllegalStateException(String.format("Haircut with id %s not found", id)));
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(code=201, message = "Created", response = HaircutDTO.class),
+            @ApiResponse(code=400, message = "Bad Request"),
+    })
     @PostMapping
     @PreAuthorize("hasAuthority('haircut:write')")
     public HaircutDTO createHaircut(@RequestBody HaircutDTO haircutDTO) {
@@ -43,6 +59,10 @@ public class HaircutManagementController {
                 .orElseThrow(() -> new IllegalStateException("Haircut not created"));
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(code=200, message = "Deleted hair"),
+            @ApiResponse(code=400, message = "Bad Request"),
+    })
     @DeleteMapping(path = "/{haircutId}")
     @PreAuthorize("hasAuthority('haircut:write')")
     public void deleteHaircut(@PathVariable("haircutId") String haircutId){
@@ -50,6 +70,10 @@ public class HaircutManagementController {
         System.out.println(haircutId);
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(code=200, message = "Updated hair"),
+            @ApiResponse(code=400, message = "Bad Request"),
+    })
     @PutMapping(path = "/{haircutId}")
     @PreAuthorize("hasAuthority('haircut:write')")
     public void updateHaircut(@PathVariable("haircutId") String haircutId, @RequestBody HaircutDTO haircutDTO){
