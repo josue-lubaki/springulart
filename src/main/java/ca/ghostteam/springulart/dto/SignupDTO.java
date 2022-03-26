@@ -1,19 +1,14 @@
 package ca.ghostteam.springulart.dto;
 
 import ca.ghostteam.springulart.model.AddressModel;
-import lombok.*;
-
-import java.time.LocalDate;
+import lombok.Data;
 
 /**
  * @author Josue Lubaki
  * @version 1.0
  * @since 2022-03-23
  */
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class SignupDTO {
     private String fname;
     private String lname;

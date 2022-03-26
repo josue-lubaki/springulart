@@ -13,14 +13,5 @@ class AuthDTOTest {
         assertEquals("iloveyou", actualAuthDTO.getPassword());
         assertEquals("janedoe", actualAuthDTO.getUsername());
     }
-
-    @Test
-    void testConstructor2() {
-        AuthDTO actualAuthDTO = new AuthDTO("janedoe", "iloveyou");
-        actualAuthDTO.setPassword("iloveyou");
-        actualAuthDTO.setUsername("janedoe");
-        assertEquals("iloveyou", actualAuthDTO.getPassword());
-        assertEquals("janedoe", actualAuthDTO.getUsername());
-    }
 }
 
