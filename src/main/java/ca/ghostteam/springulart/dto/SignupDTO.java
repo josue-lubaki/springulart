@@ -3,8 +3,6 @@ package ca.ghostteam.springulart.dto;
 import ca.ghostteam.springulart.model.AddressModel;
 import lombok.Data;
 
-import java.util.Date;
-
 /**
  * @author Josue Lubaki
  * @version 1.0
@@ -17,7 +15,7 @@ public class SignupDTO {
     private String email; // correspond to username
     private String password;
     private String imageURL;
-    private Date dob;
+    private String dob;
     private AddressModel address;
     private String phone;
     private String role;

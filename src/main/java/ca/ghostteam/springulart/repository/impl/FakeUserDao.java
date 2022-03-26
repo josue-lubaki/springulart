@@ -1,8 +1,7 @@
 package ca.ghostteam.springulart.repository.impl;
 
-import ca.ghostteam.springulart.dto.UserDetailsDTO;
+import ca.ghostteam.springulart.dto.SignupDTO;
 import ca.ghostteam.springulart.model.AddressModel;
-import ca.ghostteam.springulart.model.CredentialModel;
 import ca.ghostteam.springulart.model.UserModel;
 import ca.ghostteam.springulart.repository.UserDao;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,10 +20,12 @@ import java.util.Optional;
 @Repository("fake-repository")
 public class FakeUserDao implements UserDao {
 
+    private final List<UserModel> LIST_USERS = new ArrayList<>();
     private final PasswordEncoder passwordEncoder;
 
     public FakeUserDao(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
+        this.initUsers();
     }
 
     @Override
@@ -35,17 +36,53 @@ public class FakeUserDao implements UserDao {
     }
 
     @Override
+    public boolean findUserByEmail(String email) {
+        return getAllUsers().stream()
+                .anyMatch(user -> email.equals(user.getEmail()));
+    }
+
+    @Override
     public List<UserModel> findAllUsers() {
         return getAllUsers();
     }
 
-    private List<UserModel> getAllUsers(){
-        List<UserModel> listUser = new ArrayList<>();
+    @Override
+    public Optional<UserModel> save(SignupDTO signupDTO) {
+        // create userModel
+        UserModel userModel = new UserModel();
+        userModel.setId(LIST_USERS.size() + 1);
+        userModel.setEmail(signupDTO.getEmail());
+        userModel.setFname(signupDTO.getFname());
+        userModel.setLname(signupDTO.getLname());
+        userModel.setImageURL(signupDTO.getImageURL());
+        userModel.setEmail(signupDTO.getEmail());
+        userModel.setPassword(passwordEncoder.encode(signupDTO.getPassword()));
+        userModel.setPhone(signupDTO.getPhone());
+        userModel.setDob(LocalDate.parse(signupDTO.getDob()));
+        userModel.setCreated(LocalDate.now());
+        userModel.setUpdated(LocalDate.now());
+        userModel.setAddress(signupDTO.getAddress());
+        userModel.setRole(signupDTO.getRole());
 
+        getAllUsers().add(userModel);
+
+        return Optional.of(userModel);
+    }
+
+    /**
+     * get all users
+     * @return List<UserModel>
+     * */
+    private List<UserModel> getAllUsers(){
+        return LIST_USERS;
+    }
+
+    // sample data
+    private void initUsers() {
         UserModel user1 = new UserModel();
         AddressModel addressModel1 = new AddressModel();
         // set user information
-        user1.setId(1);
+        user1.setId(LIST_USERS.size() + 1);
         user1.setFname("Ismael");
         user1.setLname("Coulibaly");
         user1.setEmail("ismaelcoulibaly@gmail.com");
@@ -62,12 +99,12 @@ public class FakeUserDao implements UserDao {
         addressModel1.setState("Québec");
         user1.setAddress(addressModel1);
         // add user
-        listUser.add(user1);
+        LIST_USERS.add(user1);
 
         UserModel user2 = new UserModel();
         AddressModel addressModel2 = new AddressModel();
         // set user information
-        user2.setId(2);
+        user2.setId(LIST_USERS.size() + 1);
         user2.setFname("Josue");
         user2.setLname("Lubaki");
         user2.setEmail("josuelubaki@gmail.com");
@@ -84,12 +121,12 @@ public class FakeUserDao implements UserDao {
         addressModel2.setState("Québec");
         user2.setAddress(addressModel2);
         // add user
-        listUser.add(user2);
+        LIST_USERS.add(user2);
 
         UserModel user3 = new UserModel();
         AddressModel addressModel3 = new AddressModel();
         // set user information
-        user3.setId(3);
+        user3.setId(LIST_USERS.size() + 1);
         user3.setFname("Jonathan");
         user3.setLname("Kanyinda");
         user3.setEmail("jonathankanyinda@gmail.com");
@@ -106,8 +143,6 @@ public class FakeUserDao implements UserDao {
         addressModel3.setState("Québec");
         user3.setAddress(addressModel3);
         // add user
-        listUser.add(user3);
-
-        return listUser;
+        LIST_USERS.add(user3);
     }
 }

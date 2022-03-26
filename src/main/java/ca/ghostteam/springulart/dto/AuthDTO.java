@@ -2,10 +2,8 @@ package ca.ghostteam.springulart.dto;
 
 import lombok.*;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
+
+@Data
 public class AuthDTO {
     private String username;
     private String password;

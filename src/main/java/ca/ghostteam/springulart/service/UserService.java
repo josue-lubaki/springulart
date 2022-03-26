@@ -1,5 +1,6 @@
 package ca.ghostteam.springulart.service;
 
+import ca.ghostteam.springulart.dto.SignupDTO;
 import ca.ghostteam.springulart.dto.UserDTO;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -12,4 +13,6 @@ import java.util.List;
  */
 public interface UserService extends UserDetailsService {
     List<UserDTO> findAllUsers();
+    UserDTO saveUser(SignupDTO signupDTO) throws Exception;
+    boolean findUserByEmail(String email);
 }
