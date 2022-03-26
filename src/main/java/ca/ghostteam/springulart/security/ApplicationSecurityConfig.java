@@ -27,32 +27,24 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
-    private static final String[] AUTH_WHITELIST = {
-            // -- swagger ui
-            "/swagger-resources/**",
-            "/swagger-ui.html",
-            "/v2/api-docs",
-            "/webjars/**",
-            // -- other swagger related endpoints
-            "/swagger-resources/configuration/ui",
-            "/swagger-resources/configuration/security",
-            // -- allow anonymous resource requests
+
+    private static final String[] PUBLIC_ENDPOINTS = {
             "/",
             "index",
             "/auth/login",
-            "/auth/register",
-            "/logout",
-            "/error",
-            "/favicon.ico",
-            "/**/*.png",
-            "/**/*.gif",
-            "/**/*.svg",
-            "/**/*.jpg",
-            "/**/*.html",
-            "/**/*.css",
-            "/**/*.js",
-            "/css/*",
-            "/js/*"
+            "/auth/register"
+    };
+
+    private static final String[] CLIENT_BARBER_ENDPOINTS = {
+            "/api/v1/users/**",
+            "/api/v1/haircuts/**",
+            "/api/v1/reservations/**"
+    };
+
+    private static final String[] ADMIN_ENDPOINTS = {
+            "management/api/v1/users/**",
+            "management/api/v1/haircuts/**",
+            "management/api/v1/reservations/**"
     };
 
     private final UserService userDetailsService;
@@ -81,17 +73,17 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(new JwtTokenVerifier(jwtConfig,userDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers(AUTH_WHITELIST).permitAll()
-                .antMatchers("/api/**").hasAnyRole(
+                .antMatchers(PUBLIC_ENDPOINTS).permitAll()
+                .antMatchers(CLIENT_BARBER_ENDPOINTS).hasAnyRole(
                         ApplicationUserRole.CLIENT.name(),
                         ApplicationUserRole.BARBER.name()
                 )
-                .antMatchers("management/api/**").hasRole(ApplicationUserRole.ADMIN.name())
+                .antMatchers(ADMIN_ENDPOINTS).hasRole(ApplicationUserRole.ADMIN.name())
                 .anyRequest()
                 .authenticated()
                 .and()
+                .addFilterBefore(new JwtTokenVerifier(jwtConfig,userDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtEntryPoint);
     }

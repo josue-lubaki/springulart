@@ -12,11 +12,11 @@ import java.util.*;
  * @since 2022-03-26
  */
 @Repository("fake-repository-haircuts")
-public class FakeHaircutDao implements HaircutDao {
+public class InMemoryHaircutDaoImpl implements HaircutDao {
 
     private final List<HaircutModel> LIST_HAIRCUTS = new ArrayList<>();
 
-    public FakeHaircutDao() {
+    public InMemoryHaircutDaoImpl() {
         this.initHaircuts();
     }
 
@@ -36,10 +36,8 @@ public class FakeHaircutDao implements HaircutDao {
 
     @Override
     public Optional<HaircutModel> save(HaircutModel haircutModel) {
-        return LIST_HAIRCUTS
-                .stream()
-                .peek(LIST_HAIRCUTS::add)
-                .findFirst();
+        LIST_HAIRCUTS.add(haircutModel);
+        return Optional.of(haircutModel);
     }
 
     // sample data

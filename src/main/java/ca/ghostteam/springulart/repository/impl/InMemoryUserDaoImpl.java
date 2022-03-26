@@ -1,6 +1,5 @@
 package ca.ghostteam.springulart.repository.impl;
 
-import ca.ghostteam.springulart.dto.SignupDTO;
 import ca.ghostteam.springulart.model.AddressModel;
 import ca.ghostteam.springulart.model.UserModel;
 import ca.ghostteam.springulart.repository.UserDao;
@@ -18,12 +17,12 @@ import java.util.Optional;
  * @since 2022-03-19
  */
 @Repository("fake-repository-users")
-public class FakeUserDao implements UserDao {
+public class InMemoryUserDaoImpl implements UserDao {
 
     private final List<UserModel> LIST_USERS = new ArrayList<>();
     private final PasswordEncoder passwordEncoder;
 
-    public FakeUserDao(PasswordEncoder passwordEncoder) {
+    public InMemoryUserDaoImpl(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
         this.initUsers();
     }
@@ -49,10 +48,8 @@ public class FakeUserDao implements UserDao {
 
     @Override
     public Optional<UserModel> save(UserModel userModel) {
-        return LIST_USERS
-                .stream()
-                .peek(LIST_USERS::add)
-                .findFirst();
+        LIST_USERS.add(userModel);
+        return Optional.of(userModel);
     }
 
     /**
