@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.controller.users;
+package ca.ghostteam.springulart.controller.user;
 
 import ca.ghostteam.springulart.dto.SignupDTO;
 import ca.ghostteam.springulart.dto.UserDTO;
@@ -43,9 +43,10 @@ public class UserController {
         System.out.println(signupDTO);
     }
 
-    @DeleteMapping(path = "{userId}")
+    @PatchMapping(path = "{userId}")
     @PreAuthorize("hasAuthority('client:write')")
     public void deleteUser(@PathVariable("userId") Integer userId){
+        // change isDeleted property to true with PATCH mode
         System.out.println("deleteUser a user");
         System.out.println(userId);
     }

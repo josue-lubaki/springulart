@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.controller.users;
+package ca.ghostteam.springulart.controller.user;
 
 import ca.ghostteam.springulart.dto.SignupDTO;
 import ca.ghostteam.springulart.dto.UserDTO;
@@ -47,13 +47,13 @@ public class UserManagementController {
 
     @DeleteMapping(path = "{userId}")
     public void deleteUser(@PathVariable("userId") Integer userId){
-        System.out.println("deleteUser a user");
+        System.out.println("deleteUser a user with ID " + userId);
         System.out.println(userId);
     }
 
     @PutMapping(path = "{userId}")
     public void updateUser(@PathVariable("userId") Integer userId, @RequestBody UserDTO userDTO){
-        System.out.println("updateUser a user");
+        System.out.println("updateUser a user ID " + userId);
         System.out.printf("%s %s\n", userId, userDTO);
     }
 

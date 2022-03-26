@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.controller.users;
+package ca.ghostteam.springulart.controller.user;
 
 import ca.ghostteam.springulart.bean.JwtConfig;
 import ca.ghostteam.springulart.dto.*;
