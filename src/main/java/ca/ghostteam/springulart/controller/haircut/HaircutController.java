@@ -2,6 +2,8 @@ package ca.ghostteam.springulart.controller.haircut;
 
 import ca.ghostteam.springulart.dto.HaircutDTO;
 import ca.ghostteam.springulart.service.HaircutService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,11 +24,13 @@ public class HaircutController {
         this.haircutService = haircutService;
     }
 
+    @ApiResponse(code = 200, message = "Successfully retrieved all haircuts")
     @GetMapping
     public List<HaircutDTO> getHaircuts() {
         return haircutService.findAllHaircuts();
     }
 
+    @ApiResponse(code = 200, message = "Successfully retrieved haircut")
     @GetMapping("/{id}")
     public HaircutDTO getHaircut(@PathVariable("id") String id) {
         return haircutService
