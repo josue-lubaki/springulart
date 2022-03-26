@@ -4,9 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 public class HaircutModel {
-    private Integer id;
+    private String id;
     private String imageURL;
     private Integer price;
     private String title;

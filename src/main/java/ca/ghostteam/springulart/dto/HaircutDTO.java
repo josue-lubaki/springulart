@@ -3,9 +3,8 @@ package ca.ghostteam.springulart.dto;
 import lombok.*;
 
 @Data
-@AllArgsConstructor
 public class HaircutDTO {
-    private Integer id;
+    private String id;
     private String imageURL;
     private Integer price;
     private String title;

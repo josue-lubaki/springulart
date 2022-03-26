@@ -89,7 +89,9 @@ public class AuthController {
         if (userService.findUserByEmail(signupDTO.getEmail()))
             throw new Exception("User already exists");
 
-        return userService.saveUser(signupDTO);
+        return userService
+                .saveUser(signupDTO)
+                .orElseThrow(() -> new IllegalStateException("User not registered"));
     }
 
     /**
@@ -209,6 +211,6 @@ public class AuthController {
                 .map(SimpleGrantedAuthority::new)
                 .map(SimpleGrantedAuthority::getAuthority)
                 .findFirst()
-                .orElse("ROLE_USER");
+                .orElseThrow(() -> new IllegalStateException(String.format("User %s has no role", username)));
     }
 }

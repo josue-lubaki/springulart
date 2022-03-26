@@ -5,6 +5,7 @@ import ca.ghostteam.springulart.dto.UserDTO;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Josue Lubaki
@@ -13,6 +14,6 @@ import java.util.List;
  */
 public interface UserService extends UserDetailsService {
     List<UserDTO> findAllUsers();
-    UserDTO saveUser(SignupDTO signupDTO) throws Exception;
+    Optional<UserDTO> saveUser(SignupDTO signupDTO) throws Exception;
     boolean findUserByEmail(String email);
 }
