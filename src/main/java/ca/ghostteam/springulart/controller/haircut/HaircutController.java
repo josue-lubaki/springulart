@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.controller;
+package ca.ghostteam.springulart.controller.haircut;
 
 import ca.ghostteam.springulart.dto.HaircutDTO;
 import ca.ghostteam.springulart.service.HaircutService;
@@ -32,26 +32,5 @@ public class HaircutController {
         return haircutService
                 .findHaircutById(id)
                 .orElseThrow(() -> new IllegalStateException(String.format("Haircut with id %s not found", id)));
-    }
-
-    @PostMapping
-    @PreAuthorize("hasAuthority('haircut:write')")
-    public void createHaircut(@RequestBody HaircutDTO haircutDTO) {
-        System.out.println("registerNewHaircut a haircut");
-        System.out.println(haircutDTO);
-    }
-
-    @DeleteMapping(path = "/{haircutId}")
-    @PreAuthorize("hasAuthority('haircut:write')")
-    public void deleteHaircut(@PathVariable("haircutId") String haircutId){
-        System.out.println("deleteHaircut a haircut");
-        System.out.println(haircutId);
-    }
-
-    @PutMapping(path = "/{haircutId}")
-    @PreAuthorize("hasAuthority('haircut:write')")
-    public void updateHaircut(@PathVariable("haircutId") String haircutId, @RequestBody HaircutDTO haircutDTO){
-        System.out.println("updateHaircut a haircut");
-        System.out.printf("%s %s\n", haircutId, haircutDTO);
     }
 }
