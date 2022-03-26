@@ -37,9 +37,10 @@ public class HaircutManagementController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('haircut:write')")
-    public void createHaircut(@RequestBody HaircutDTO haircutDTO) {
-        System.out.println("registerNewHaircut a haircut");
-        System.out.println(haircutDTO);
+    public HaircutDTO createHaircut(@RequestBody HaircutDTO haircutDTO) {
+        return this.haircutService
+                .saveHaircut(haircutDTO)
+                .orElseThrow(() -> new IllegalStateException("Haircut not created"));
     }
 
     @DeleteMapping(path = "/{haircutId}")
