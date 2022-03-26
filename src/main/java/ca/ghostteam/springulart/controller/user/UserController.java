@@ -23,11 +23,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping()
-    public List<UserDTO> getUsers() {
-        return userService.findAllUsers();
-    }
-
     @GetMapping("/{userId}")
     public UserDTO getUser(@PathVariable("userId") Integer userId) {
         return userService.findAllUsers()
@@ -37,17 +32,11 @@ public class UserController {
                 .orElseThrow(() -> new IllegalStateException("User with ID " + userId + " does not exist"));
     }
 
-    @PostMapping()
-    public void createUser(@RequestBody SignupDTO signupDTO){
-        System.out.println("registerNewUser a user");
-        System.out.println(signupDTO);
-    }
-
     @PatchMapping(path = "{userId}")
     @PreAuthorize("hasAuthority('client:write')")
-    public void deleteUser(@PathVariable("userId") Integer userId){
+    public void deleteMyAccount(@PathVariable("userId") Integer userId){
         // change isDeleted property to true with PATCH mode
-        System.out.println("deleteUser a user");
+        System.out.println("deleteMyAccount account of user with ID " + userId);
         System.out.println(userId);
     }
 
