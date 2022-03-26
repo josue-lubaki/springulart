@@ -87,7 +87,7 @@ public class AuthController {
     public UserDTO registerUser(@RequestBody SignupDTO signupDTO) throws Exception {
         // if user already exists
         if (userService.findUserByEmail(signupDTO.getEmail()))
-            throw new Exception("User already exists");
+            throw new IllegalStateException("User already exists");
 
         return userService
                 .saveUser(signupDTO)
