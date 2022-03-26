@@ -8,7 +8,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -55,7 +54,7 @@ public class AuthController {
             @ApiResponse(code=400, message = "Bad Request"),
     })
     @PostMapping(value = "/login",  produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<LoginDTO> authenticateUser(@RequestBody AuthDTO authDTO) {
+    public ResponseEntity<LoginDTO> authenticateUser(@RequestBody AuthDTO authDTO) throws BadCredentialsException {
 
         // attempt authentication when user provides username and password
         UserDetailsDTO userDetailsDTO = (UserDetailsDTO) authenticate(authDTO).getPrincipal();
@@ -80,12 +79,17 @@ public class AuthController {
         return ResponseEntity.ok(loginDTO);
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(code=200, message = "OK", response = UserDTO.class),
+            @ApiResponse(code=400, message = "Bad Request"),
+    })
+    @PostMapping(value ="/register", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public UserDTO registerUser(@RequestBody SignupDTO signupDTO) throws Exception {
+        // if user already exists
+        if (userService.findUserByEmail(signupDTO.getEmail()))
+            throw new Exception("User already exists");
 
-    // TODO 2 : Créer une méthode qui permettra de créer un nouvel utilisateur (register method) [path: /register]
-    @PostMapping("/register")
-    public UserDTO registerUser(SignupDTO signupDTO) {
-
-        return null;
+        return userService.saveUser(signupDTO);
     }
 
     /**
@@ -109,7 +113,7 @@ public class AuthController {
      * @return Authentication
      * @throws BadCredentialsException : if username or password is incorrect
      * */
-    private Authentication authenticate(AuthDTO authDTO) throws BadCredentialsException {
+    private Authentication authenticate(AuthDTO authDTO) {
         return authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authDTO.getUsername().toLowerCase().trim(),

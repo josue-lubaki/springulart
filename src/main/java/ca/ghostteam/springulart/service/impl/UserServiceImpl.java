@@ -1,5 +1,6 @@
 package ca.ghostteam.springulart.service.impl;
 
+import ca.ghostteam.springulart.dto.SignupDTO;
 import ca.ghostteam.springulart.dto.UserDTO;
 import ca.ghostteam.springulart.dto.UserDetailsDTO;
 import ca.ghostteam.springulart.model.CredentialModel;
@@ -46,6 +47,20 @@ public class UserServiceImpl implements UserService {
                 .map(this::converterUserModelToUserDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public UserDTO saveUser(SignupDTO signupDTO) throws Exception {
+        return userDao
+                .save(signupDTO)
+                .map(this::converterUserModelToUserDTO)
+                .orElseThrow(() -> new Exception("Error saving user"));
+    }
+
+    @Override
+    public boolean findUserByEmail(String email) {
+        return userDao.findUserByEmail(email);
+    }
+
 
     /**
      * Method to convert UserDetailsDTO to UserDTO
