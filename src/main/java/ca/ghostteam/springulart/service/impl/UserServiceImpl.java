@@ -11,9 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -25,10 +28,14 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(@Qualifier("fake-repository") UserDao userDao) {
+    public UserServiceImpl(
+            @Qualifier("fake-repository-users") UserDao userDao,
+            PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -49,18 +56,40 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO saveUser(SignupDTO signupDTO) throws Exception {
+    public Optional<UserDTO> saveUser(SignupDTO signupDTO) throws Exception {
         return userDao
-                .save(signupDTO)
-                .map(this::converterUserModelToUserDTO)
-                .orElseThrow(() -> new Exception("Error saving user"));
+                .save(convertSignupDtoToUserModel(signupDTO))
+                .map(this::converterUserModelToUserDTO);
     }
 
     @Override
     public boolean findUserByEmail(String email) {
-        return userDao.findUserByEmail(email);
+        return userDao.existsByEmail(email);
     }
 
+    /**
+     * Method to convert SignupDTO to UserModel
+     * @param signupDTO SignupDTO object to convert
+     * @return UserModel
+     **/
+    private UserModel convertSignupDtoToUserModel(SignupDTO signupDTO) {
+        // create userModel
+        UserModel userModel = new UserModel();
+        userModel.setId(findAllUsers().size() + 1);
+        userModel.setEmail(signupDTO.getEmail());
+        userModel.setFname(signupDTO.getFname());
+        userModel.setLname(signupDTO.getLname());
+        userModel.setImageURL(signupDTO.getImageURL());
+        userModel.setEmail(signupDTO.getEmail());
+        userModel.setPassword(passwordEncoder.encode(signupDTO.getPassword()));
+        userModel.setPhone(signupDTO.getPhone());
+        userModel.setDob(LocalDate.parse(signupDTO.getDob()));
+        userModel.setCreated(LocalDate.now());
+        userModel.setUpdated(LocalDate.now());
+        userModel.setAddress(signupDTO.getAddress());
+        userModel.setRole(signupDTO.getRole());
+        return userModel;
+    }
 
     /**
      * Method to convert UserDetailsDTO to UserDTO

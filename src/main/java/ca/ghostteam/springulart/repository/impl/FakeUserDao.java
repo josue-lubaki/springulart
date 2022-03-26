@@ -17,7 +17,7 @@ import java.util.Optional;
  * @version 1.0
  * @since 2022-03-19
  */
-@Repository("fake-repository")
+@Repository("fake-repository-users")
 public class FakeUserDao implements UserDao {
 
     private final List<UserModel> LIST_USERS = new ArrayList<>();
@@ -36,8 +36,9 @@ public class FakeUserDao implements UserDao {
     }
 
     @Override
-    public boolean findUserByEmail(String email) {
-        return getAllUsers().stream()
+    public boolean existsByEmail(String email) {
+        return getAllUsers()
+                .stream()
                 .anyMatch(user -> email.equals(user.getEmail()));
     }
 
@@ -47,26 +48,11 @@ public class FakeUserDao implements UserDao {
     }
 
     @Override
-    public Optional<UserModel> save(SignupDTO signupDTO) {
-        // create userModel
-        UserModel userModel = new UserModel();
-        userModel.setId(LIST_USERS.size() + 1);
-        userModel.setEmail(signupDTO.getEmail());
-        userModel.setFname(signupDTO.getFname());
-        userModel.setLname(signupDTO.getLname());
-        userModel.setImageURL(signupDTO.getImageURL());
-        userModel.setEmail(signupDTO.getEmail());
-        userModel.setPassword(passwordEncoder.encode(signupDTO.getPassword()));
-        userModel.setPhone(signupDTO.getPhone());
-        userModel.setDob(LocalDate.parse(signupDTO.getDob()));
-        userModel.setCreated(LocalDate.now());
-        userModel.setUpdated(LocalDate.now());
-        userModel.setAddress(signupDTO.getAddress());
-        userModel.setRole(signupDTO.getRole());
-
-        getAllUsers().add(userModel);
-
-        return Optional.of(userModel);
+    public Optional<UserModel> save(UserModel userModel) {
+        return LIST_USERS
+                .stream()
+                .peek(LIST_USERS::add)
+                .findFirst();
     }
 
     /**
