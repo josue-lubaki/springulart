@@ -32,6 +32,7 @@ public class UserManagementController {
         return userService.findAllUsers();
     }
 
+
     @GetMapping("/{userId}")
     public UserDTO getUser(@PathVariable("userId") Integer userId) {
         return userService
@@ -42,26 +43,28 @@ public class UserManagementController {
                 .orElseThrow(() -> new IllegalStateException("User with ID " + userId + " does not exist"));
     }
 
+
     @ApiResponses(value = {
             @ApiResponse(code=200, message = "OK"),
             @ApiResponse(code=400, message = "Bad Request"),
     })
     @PostMapping()
     public UserDTO registerNewUser(@RequestBody SignupDTO signupDTO) throws Exception {
-
+        // check if user already exists
         if(userService.findUserByEmail(signupDTO.getEmail()))
             throw new IllegalStateException("User already exists");
 
         return userService
                 .saveUser(signupDTO)
                 .orElseThrow(() -> new IllegalStateException("User not registered"));
-
     }
+
 
     @DeleteMapping(path = "{userId}")
     public void deleteUser(@PathVariable("userId") Integer userId){
         userService.deleteUserById(userId);
     }
+
 
     @PutMapping(path = "{userId}")
     public UserDTO updateUser(@PathVariable("userId") Integer userId, @RequestBody UserDTO userDTO) throws Exception {

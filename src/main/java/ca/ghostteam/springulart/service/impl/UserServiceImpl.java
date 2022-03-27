@@ -49,11 +49,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<UserDTO> updateUser(Integer id, UserDTO userDTO) {
-        UserModel usermodel = userDao
+        return this.userDao
                 .update(id, convertUserDtoToUserModel(userDTO))
-                .get();
-
-        return Optional.of(converterUserModelToUserDTO(usermodel));
+                .map(this::converterUserModelToUserDTO);
     }
 
     @Override
@@ -82,7 +80,6 @@ public class UserServiceImpl implements UserService {
             userDao.deleteById(id);
 
     }
-
 
     /**
      * Method to convert SignupDTO to UserModel

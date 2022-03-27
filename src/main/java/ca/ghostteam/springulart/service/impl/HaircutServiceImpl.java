@@ -49,6 +49,18 @@ public class HaircutServiceImpl implements HaircutService {
                 .map(this::converterHaircutModelToHaircutDto);
     }
 
+    @Override
+    public Optional<HaircutDTO> updateHaircut(String id, HaircutDTO haircutDToUpdated) {
+        return this.haircutDao
+                .update(id, converterHaircutDtoToHaircutModel(haircutDToUpdated))
+                .map(this::converterHaircutModelToHaircutDto);
+    }
+
+    @Override
+    public void deleteHaircut(String id) {
+        haircutDao.delete(id);
+    }
+
     /**
      * Method to convert a haircutDTO to a haircutModel
      * @param haircutDTO the haircutDTO to convert
