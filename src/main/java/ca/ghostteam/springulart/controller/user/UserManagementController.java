@@ -64,9 +64,10 @@ public class UserManagementController {
     }
 
     @PutMapping(path = "{userId}")
-    public void updateUser(@PathVariable("userId") Integer userId, @RequestBody UserDTO userDTO){
-        System.out.println("updateUser a user ID " + userId);
-        System.out.printf("%s %s\n", userId, userDTO);
+    public UserDTO updateUser(@PathVariable("userId") Integer userId, @RequestBody UserDTO userDTO) throws Exception {
+        return this.userService
+                .updateUser(userId, userDTO)
+                .orElseThrow(() -> new IllegalStateException(String.format("Id %s cannot found", userId)));
     }
 
 }

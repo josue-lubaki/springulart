@@ -48,6 +48,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<UserDTO> updateUser(Integer id, UserDTO userDTO) {
+        UserModel usermodel = userDao
+                .update(id, convertUserDtoToUserModel(userDTO))
+                .get();
+
+        return Optional.of(converterUserModelToUserDTO(usermodel));
+    }
+
+    @Override
     public List<UserDTO> findAllUsers() {
         return userDao
                 .findAllUsers()
@@ -96,6 +105,29 @@ public class UserServiceImpl implements UserService {
         userModel.setUpdated(LocalDate.now());
         userModel.setAddress(signupDTO.getAddress());
         userModel.setRole(signupDTO.getRole());
+        return userModel;
+    }
+
+    /**
+     * Method to convert UserDTO to UserModel
+     * @param userDTO userDTO object to convert
+     * @return UserModel
+     **/
+    private UserModel convertUserDtoToUserModel(UserDTO userDTO) {
+        // create userModel
+        UserModel userModel = new UserModel();
+        userModel.setId(findAllUsers().size() + 1);
+        userModel.setEmail(userDTO.getEmail());
+        userModel.setFname(userDTO.getFname());
+        userModel.setLname(userDTO.getLname());
+        userModel.setImageURL(userDTO.getImageURL());
+        userModel.setEmail(userDTO.getEmail());
+        userModel.setPhone(userDTO.getPhone());
+        userModel.setDob(userDTO.getDob());
+        userModel.setCreated(LocalDate.now());
+        userModel.setUpdated(LocalDate.now());
+        userModel.setAddress(userDTO.getAddress());
+        userModel.setRole(userDTO.getRole());
         return userModel;
     }
 

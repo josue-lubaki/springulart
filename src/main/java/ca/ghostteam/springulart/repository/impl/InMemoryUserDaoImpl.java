@@ -1,8 +1,10 @@
 package ca.ghostteam.springulart.repository.impl;
 
+import ca.ghostteam.springulart.dto.UserDTO;
 import ca.ghostteam.springulart.model.AddressModel;
 import ca.ghostteam.springulart.model.UserModel;
 import ca.ghostteam.springulart.repository.UserDao;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +18,7 @@ import java.util.Optional;
  * @version 1.0
  * @since 2022-03-19
  */
+@Slf4j
 @Repository("fake-repository-users")
 public class InMemoryUserDaoImpl implements UserDao {
 
@@ -25,6 +28,14 @@ public class InMemoryUserDaoImpl implements UserDao {
     public InMemoryUserDaoImpl(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
         this.initUsers();
+    }
+
+    @Override
+    public Optional<UserModel> findUserById(Integer id) {
+        return LIST_USERS
+                .stream()
+                .filter(user -> user.getId().equals(id))
+                .findFirst();
     }
 
     @Override
@@ -39,6 +50,29 @@ public class InMemoryUserDaoImpl implements UserDao {
         return getAllUsers()
                 .stream()
                 .anyMatch(user -> email.equals(user.getEmail()));
+    }
+
+    @Override
+    public Optional<UserModel> update(Integer id, UserModel userModel) {
+       //get old userModel by id
+        UserModel oldUserModel = LIST_USERS
+            .stream()
+            .filter(user -> user.getId().equals(id))
+            .findFirst()
+            .get();
+
+        //get index
+        int index = LIST_USERS.indexOf(oldUserModel);
+
+        // set old password
+        userModel.setPassword(oldUserModel.getPassword());
+
+        // set old ID
+        userModel.setId(oldUserModel.getId());
+
+        //set the old userModel with the new one
+        LIST_USERS.set(index,userModel);
+        return Optional.of(LIST_USERS.get(index));
     }
 
     @Override
