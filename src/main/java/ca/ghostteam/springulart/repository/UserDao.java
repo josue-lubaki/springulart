@@ -15,4 +15,5 @@ public interface UserDao {
     List<UserModel> findAllUsers();
     Optional<UserModel> save(UserModel userModel);
     boolean existsByEmail(String email);
+    void deleteById(Integer id);
 }

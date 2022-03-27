@@ -60,8 +60,7 @@ public class UserManagementController {
 
     @DeleteMapping(path = "{userId}")
     public void deleteUser(@PathVariable("userId") Integer userId){
-        System.out.println("deleteUser a user with ID " + userId);
-        System.out.println(userId);
+        userService.deleteUserById(userId);
     }
 
     @PutMapping(path = "{userId}")

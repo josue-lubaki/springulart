@@ -38,6 +38,7 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userDao
@@ -66,6 +67,13 @@ public class UserServiceImpl implements UserService {
     public boolean findUserByEmail(String email) {
         return userDao.existsByEmail(email);
     }
+
+    @Override
+    public void deleteUserById(Integer id) {
+            userDao.deleteById(id);
+
+    }
+
 
     /**
      * Method to convert SignupDTO to UserModel

@@ -16,4 +16,5 @@ public interface UserService extends UserDetailsService {
     List<UserDTO> findAllUsers();
     Optional<UserDTO> saveUser(SignupDTO signupDTO) throws Exception;
     boolean findUserByEmail(String email);
+    void deleteUserById(Integer id);
 }
