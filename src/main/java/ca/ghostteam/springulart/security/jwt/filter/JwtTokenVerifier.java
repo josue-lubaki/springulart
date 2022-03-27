@@ -113,7 +113,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
      * @param request HttpServletRequest where retrieve token
      * @return String || null
      * */
-    private String extractJwtToken(HttpServletRequest request) {
+    public String extractJwtToken(HttpServletRequest request) {
         String authorizationHeader = request.getHeader(jwtConfig.getAuthorizationHeader());
         if(StringUtils.hasText(authorizationHeader) && authorizationHeader.startsWith(jwtConfig.getTokenPrefix())){
             return authorizationHeader.replace(jwtConfig.getTokenPrefix(), "").trim();

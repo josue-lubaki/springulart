@@ -5,7 +5,6 @@ import ca.ghostteam.springulart.dto.UserDTO;
 import ca.ghostteam.springulart.service.UserService;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,7 +50,7 @@ public class UserManagementController {
     @PostMapping()
     public UserDTO registerNewUser(@RequestBody SignupDTO signupDTO) throws Exception {
         // check if user already exists
-        if(userService.findUserByEmail(signupDTO.getEmail()))
+        if(userService.existsUserByEmail(signupDTO.getEmail()))
             throw new IllegalStateException("User already exists");
 
         return userService

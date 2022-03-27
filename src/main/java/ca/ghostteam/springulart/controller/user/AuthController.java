@@ -86,7 +86,7 @@ public class AuthController {
     @PostMapping(value ="/register", produces = {MediaType.APPLICATION_JSON_VALUE})
     public UserDTO registerUser(@RequestBody SignupDTO signupDTO) throws Exception {
         // if user already exists
-        if (userService.findUserByEmail(signupDTO.getEmail()))
+        if (userService.existsUserByEmail(signupDTO.getEmail()))
             throw new IllegalStateException("User already exists");
 
         return userService

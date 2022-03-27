@@ -71,7 +71,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean findUserByEmail(String email) {
+    public Optional<UserDTO> findUserById(Integer id) {
+        return this.userDao
+                .findUserById(id)
+                .map(this::converterUserModelToUserDTO);
+    }
+
+    @Override
+    public boolean existsUserByEmail(String email) {
         return userDao.existsByEmail(email);
     }
 

@@ -127,7 +127,7 @@ class AuthControllerTest {
         userDTO.setRole("Role");
         userDTO.setUpdated(LocalDate.ofEpochDay(1L));
         Optional<UserDTO> ofResult = Optional.of(userDTO);
-        when(this.userService.findUserByEmail((String) any())).thenReturn(false);
+        when(this.userService.existsUserByEmail((String) any())).thenReturn(false);
         when(this.userService.saveUser((SignupDTO) any())).thenReturn(ofResult);
 
         AddressModel addressModel1 = new AddressModel();
