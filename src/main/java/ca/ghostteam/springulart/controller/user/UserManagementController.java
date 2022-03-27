@@ -47,15 +47,20 @@ public class UserManagementController {
             @ApiResponse(code=400, message = "Bad Request"),
     })
     @PostMapping()
-    public void registerNewUser(@RequestBody SignupDTO signupDTO){
-        System.out.println("registerNewUser a user");
-        System.out.println(signupDTO);
+    public UserDTO registerNewUser(@RequestBody SignupDTO signupDTO) throws Exception {
+
+        if(userService.findUserByEmail(signupDTO.getEmail()))
+            throw new IllegalStateException("User already exists");
+
+        return userService
+                .saveUser(signupDTO)
+                .orElseThrow(() -> new IllegalStateException("User not registered"));
+
     }
 
     @DeleteMapping(path = "{userId}")
     public void deleteUser(@PathVariable("userId") Integer userId){
-        System.out.println("deleteUser a user with ID " + userId);
-        System.out.println(userId);
+        userService.deleteUserById(userId);
     }
 
     @PutMapping(path = "{userId}")

@@ -42,6 +42,19 @@ public class InMemoryUserDaoImpl implements UserDao {
     }
 
     @Override
+    public void deleteById(Integer id) {
+        UserModel userModel=
+                LIST_USERS
+                .stream()
+                .filter(user -> user.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+
+        LIST_USERS.remove(userModel);
+
+    }
+
+    @Override
     public List<UserModel> findAllUsers() {
         return getAllUsers();
     }
