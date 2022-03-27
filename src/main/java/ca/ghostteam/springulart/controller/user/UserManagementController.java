@@ -26,12 +26,13 @@ public class UserManagementController {
         this.userService = userService;
     }
 
+    @ApiResponse(code = 200, message = "Successfully retrieved all users")
     @GetMapping()
     public List<UserDTO> getUsers() {
         return userService.findAllUsers();
     }
 
-
+    @ApiResponse(code = 200, message = "Successfully retrieved a user")
     @GetMapping("/{userId}")
     public UserDTO getUser(@PathVariable("userId") Integer userId) {
         return userService
@@ -58,18 +59,19 @@ public class UserManagementController {
                 .orElseThrow(() -> new IllegalStateException("User not registered"));
     }
 
-
+    @ApiResponse(code = 204, message = "Successfully Deleted a user")
     @DeleteMapping(path = "{userId}")
     public void deleteUser(@PathVariable("userId") Integer userId){
         userService.deleteUserById(userId);
     }
 
 
+    @ApiResponse(code = 200, message = "Successfully updated a user")
     @PutMapping(path = "{userId}")
     public UserDTO updateUser(@PathVariable("userId") Integer userId, @RequestBody UserDTO userDTO) throws Exception {
         return this.userService
                 .updateUser(userId, userDTO)
-                .orElseThrow(() -> new IllegalStateException(String.format("Id %s cannot found", userId)));
+                .orElseThrow(() -> new IllegalStateException(String.format("User with ID %s cannot found", userId)));
     }
 
 }
