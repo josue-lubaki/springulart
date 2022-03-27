@@ -10,7 +10,6 @@ import io.swagger.annotations.ApiResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,21 +56,23 @@ public class UserController {
                 .orElseThrow(() -> new IllegalStateException("User with ID " + userId + " does not exist"));
     }
 
-    @ApiResponse(code = 200, message = "Successfully updated a user")
-    @PatchMapping(path = "{userId}")
+    @ApiResponse(code = 204, message = "Successfully Deleted a user")
+    @DeleteMapping(path = "{userId}")
     @PreAuthorize("hasAuthority('client:write')")
     public void deleteMyAccount(@PathVariable("userId") Integer userId){
-        // change isDeleted property to true with PATCH mode
-        System.out.println("deleteMyAccount account of user with ID " + userId);
-        System.out.println(userId);
+        // check if user has permission to do that
+        if(canIDoThisOperation(userId))
+            throw new IllegalStateException("You are not authorized to delete user with ID " + userId);
+
+        this.userService.deleteUserById(userId);
     }
 
     @ApiResponse(code = 200, message = "Successfully updated a user")
     @PutMapping(path = "{userId}")
     @PreAuthorize("hasAuthority('client:write')")
     public UserDTO updateUser(@PathVariable("userId") Integer userId, @RequestBody UserDTO userDTO) throws Exception {
-
-        if(!canUpdateUser(userId))
+        // check if user has permission to do that
+        if(canIDoThisOperation(userId))
             throw new IllegalStateException("You are not authorized to update user with ID " + userId);
 
         return this.userService
@@ -84,7 +85,7 @@ public class UserController {
      * @param userId userId to modify or delete
      * @return boolean
      * */
-    private boolean canUpdateUser(Integer userId) {
+    private boolean canIDoThisOperation(Integer userId) {
         // get headers informations
         String token = jwtTokenVerifier.extractJwtToken(request);
         DecodedJWT decodeJWTToken = jwtTokenVerifier.decodeJWT(token, jwtConfig.getSecretKey());
@@ -101,7 +102,7 @@ public class UserController {
                 .collect(Collectors.toSet());
 
         // Check if the user has the required authorization for this request and if the ID matches userID
-        return grantedAuthorities.contains(new SimpleGrantedAuthority("client:write")) && idFromToken == userId;
+        return !grantedAuthorities.contains(new SimpleGrantedAuthority("client:write")) || idFromToken != userId;
 
     }
 }
