@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import ca.ghostteam.springulart.service.UserService;
-import org.junit.jupiter.api.Disabled;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -1300,42 +1299,42 @@ class UserServiceImplTest {
     @Test
     void testFindUserByEmail() {
         when(this.userDao.existsByEmail((String) any())).thenReturn(true);
-        assertTrue(this.userServiceImpl.findUserByEmail("jane.doe@example.org"));
+        assertTrue(this.userServiceImpl.existsUserByEmail("jane.doe@example.org"));
         verify(this.userDao).existsByEmail((String) any());
     }
 
     @Test
     void testFindUserByEmail2() {
         when(this.userDao.existsByEmail((String) any())).thenReturn(false);
-        assertFalse(this.userServiceImpl.findUserByEmail("jane.doe@example.org"));
+        assertFalse(this.userServiceImpl.existsUserByEmail("jane.doe@example.org"));
         verify(this.userDao).existsByEmail((String) any());
     }
 
     @Test
     void testFindUserByEmail3() {
         when(this.userDao.existsByEmail((String) any())).thenThrow(new UsernameNotFoundException("Msg"));
-        assertThrows(UsernameNotFoundException.class, () -> this.userServiceImpl.findUserByEmail("jane.doe@example.org"));
+        assertThrows(UsernameNotFoundException.class, () -> this.userServiceImpl.existsUserByEmail("jane.doe@example.org"));
         verify(this.userDao).existsByEmail((String) any());
     }
 
     @Test
     void testFindUserByEmail4() {
         when(this.userDao.existsByEmail((String) any())).thenReturn(true);
-        assertTrue(this.userServiceImpl.findUserByEmail("jane.doe@example.org"));
+        assertTrue(this.userServiceImpl.existsUserByEmail("jane.doe@example.org"));
         verify(this.userDao).existsByEmail((String) any());
     }
 
     @Test
     void testFindUserByEmail5() {
         when(this.userDao.existsByEmail((String) any())).thenReturn(false);
-        assertFalse(this.userServiceImpl.findUserByEmail("jane.doe@example.org"));
+        assertFalse(this.userServiceImpl.existsUserByEmail("jane.doe@example.org"));
         verify(this.userDao).existsByEmail((String) any());
     }
 
     @Test
     void testFindUserByEmail6() {
         when(this.userDao.existsByEmail((String) any())).thenThrow(new UsernameNotFoundException("Msg"));
-        assertThrows(UsernameNotFoundException.class, () -> this.userServiceImpl.findUserByEmail("jane.doe@example.org"));
+        assertThrows(UsernameNotFoundException.class, () -> this.userServiceImpl.existsUserByEmail("jane.doe@example.org"));
         verify(this.userDao).existsByEmail((String) any());
     }
 }
