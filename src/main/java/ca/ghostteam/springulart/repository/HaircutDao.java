@@ -15,4 +15,6 @@ public interface HaircutDao {
     List<HaircutModel> findAll();
     Optional<HaircutModel> findById(String id);
     Optional<HaircutModel> save(HaircutModel haircutModel);
+    void delete(String id);
+    Optional<HaircutModel> update(String id, HaircutModel haircutModel);
 }

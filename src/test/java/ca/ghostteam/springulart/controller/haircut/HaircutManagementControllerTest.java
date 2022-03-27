@@ -55,6 +55,41 @@ class HaircutManagementControllerTest {
     }
 
     @Test
+    void testUpdateHaircut() throws Exception {
+        HaircutDTO haircutDTO = new HaircutDTO();
+        haircutDTO.setDescription("The characteristics of someone or something");
+        haircutDTO.setEstimatedTime("Estimated Time");
+        haircutDTO.setId("42");
+        haircutDTO.setImageURL("https://example.org/example");
+        haircutDTO.setPrice(1);
+        haircutDTO.setTitle("Dr");
+        Optional<HaircutDTO> ofResult = Optional.of(haircutDTO);
+        when(this.haircutService.updateHaircut((String) any(), (HaircutDTO) any())).thenReturn(ofResult);
+
+        HaircutDTO haircutDTO1 = new HaircutDTO();
+        haircutDTO1.setDescription("The characteristics of someone or something");
+        haircutDTO1.setEstimatedTime("Estimated Time");
+        haircutDTO1.setId("42");
+        haircutDTO1.setImageURL("https://example.org/example");
+        haircutDTO1.setPrice(1);
+        haircutDTO1.setTitle("Dr");
+        String content = (new ObjectMapper()).writeValueAsString(haircutDTO1);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .put("/management/api/v1/haircuts/{haircutId}", "42")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content);
+        MockMvcBuilders.standaloneSetup(this.haircutManagementController)
+                .build()
+                .perform(requestBuilder)
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.content()
+                        .string(
+                                "{\"id\":\"42\",\"imageURL\":\"https://example.org/example\",\"price\":1,\"title\":\"Dr\",\"estimatedTime\":\"Estimated"
+                                        + " Time\",\"description\":\"The characteristics of someone or something\"}"));
+    }
+
+    @Test
     void testDeleteHaircut() throws Exception {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                 .delete("/management/api/v1/haircuts/{haircutId}", "42");
@@ -145,26 +180,6 @@ class HaircutManagementControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.content().string("[]"));
-    }
-
-    @Test
-    void testUpdateHaircut() throws Exception {
-        HaircutDTO haircutDTO = new HaircutDTO();
-        haircutDTO.setDescription("The characteristics of someone or something");
-        haircutDTO.setEstimatedTime("Estimated Time");
-        haircutDTO.setId("42");
-        haircutDTO.setImageURL("https://example.org/example");
-        haircutDTO.setPrice(1);
-        haircutDTO.setTitle("Dr");
-        String content = (new ObjectMapper()).writeValueAsString(haircutDTO);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                .put("/management/api/v1/haircuts/{haircutId}", "42")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(content);
-        MockMvcBuilders.standaloneSetup(this.haircutManagementController)
-                .build()
-                .perform(requestBuilder)
-                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }
 

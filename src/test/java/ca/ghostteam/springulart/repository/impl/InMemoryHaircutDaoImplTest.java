@@ -2,6 +2,7 @@ package ca.ghostteam.springulart.repository.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.atLeast;
@@ -10,12 +11,15 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import ca.ghostteam.springulart.model.HaircutModel;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = {InMemoryHaircutDaoImpl.class})
 @ExtendWith(SpringExtension.class)
 class InMemoryHaircutDaoImplTest {
@@ -61,6 +65,31 @@ class InMemoryHaircutDaoImplTest {
         verify(haircutModel).setImageURL((String) any());
         verify(haircutModel).setPrice((Integer) any());
         verify(haircutModel).setTitle((String) any());
+    }
+
+    @Test
+    void testUpdate() {
+        HaircutModel haircutModel = new HaircutModel();
+        haircutModel.setDescription("The characteristics of someone or something");
+        haircutModel.setEstimatedTime("Estimated Time");
+        haircutModel.setId("42");
+        haircutModel.setImageURL("https://example.org/example");
+        haircutModel.setPrice(1);
+        haircutModel.setTitle("Dr");
+        assertThrows(IllegalStateException.class, () -> this.inMemoryHaircutDaoImpl.update("42", haircutModel));
+    }
+
+    @Test
+    void testUpdate2() {
+        HaircutModel haircutModel = new HaircutModel();
+        haircutModel.setDescription("The characteristics of someone or something");
+        haircutModel.setEstimatedTime("Estimated Time");
+        haircutModel.setId("42");
+        haircutModel.setImageURL("https://example.org/example");
+        haircutModel.setPrice(1);
+        haircutModel.setTitle("Dr");
+        assertThrows(IllegalStateException.class,
+                () -> this.inMemoryHaircutDaoImpl.update("7a9c3e6c-a28b-45fa-b489-9656d06943c8", haircutModel));
     }
 }
 

@@ -15,4 +15,6 @@ public interface HaircutService {
     List<HaircutDTO> findAllHaircuts();
     Optional<HaircutDTO> findHaircutById(String id);
     Optional<HaircutDTO> saveHaircut(HaircutDTO haircutDTO);
+    Optional<HaircutDTO> updateHaircut(String id, HaircutDTO haircutDTO);
+    void deleteHaircut(String id);
 }

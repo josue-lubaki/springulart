@@ -1,5 +1,6 @@
 package ca.ghostteam.springulart.repository.impl;
 
+import ca.ghostteam.springulart.dto.HaircutDTO;
 import ca.ghostteam.springulart.model.HaircutModel;
 import ca.ghostteam.springulart.repository.HaircutDao;
 import org.springframework.stereotype.Repository;
@@ -39,6 +40,37 @@ public class InMemoryHaircutDaoImpl implements HaircutDao {
         haircutModel.setId(UUID.randomUUID().toString());
         LIST_HAIRCUTS.add(haircutModel);
         return Optional.of(haircutModel);
+    }
+
+    @Override
+    public void delete(String id) {
+        HaircutModel haircutModel = LIST_HAIRCUTS
+                .stream()
+                .filter(haircut -> haircut.getId().equals(id))
+                .findFirst()
+                .get();
+
+        LIST_HAIRCUTS.remove(haircutModel);
+    }
+
+    @Override
+    public Optional<HaircutModel> update(String id, HaircutModel haircutModelUpdated) {
+        // get old haircut information
+        Optional<HaircutModel> oldHaircutModel = findById(id);
+
+        if (oldHaircutModel.isEmpty())
+            throw new IllegalStateException();
+
+        // get index of haircut on list
+        int index = LIST_HAIRCUTS.indexOf(oldHaircutModel.get());
+
+        // keep the same ID as the old one
+        haircutModelUpdated.setId(oldHaircutModel.get().getId());
+
+        // set information
+        LIST_HAIRCUTS.set(index, haircutModelUpdated);
+
+        return Optional.of(LIST_HAIRCUTS.get(index));
     }
 
     // sample data

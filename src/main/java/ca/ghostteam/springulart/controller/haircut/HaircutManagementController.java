@@ -1,7 +1,6 @@
 package ca.ghostteam.springulart.controller.haircut;
 
 import ca.ghostteam.springulart.dto.HaircutDTO;
-import ca.ghostteam.springulart.dto.UserDTO;
 import ca.ghostteam.springulart.service.HaircutService;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -33,8 +32,9 @@ public class HaircutManagementController {
     })
     @GetMapping
     public List<HaircutDTO> getHaircuts() {
-        return haircutService.findAllHaircuts();
+        return this.haircutService.findAllHaircuts();
     }
+
 
     @ApiResponses(value = {
             @ApiResponse(code=200, message = "OK", response = HaircutDTO.class),
@@ -42,10 +42,11 @@ public class HaircutManagementController {
     })
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public HaircutDTO getHaircut(@PathVariable("id") String id) {
-        return haircutService
+        return this.haircutService
                 .findHaircutById(id)
                 .orElseThrow(() -> new IllegalStateException(String.format("Haircut with id %s not found", id)));
     }
+
 
     @ApiResponses(value = {
             @ApiResponse(code=201, message = "Created", response = HaircutDTO.class),
@@ -59,6 +60,7 @@ public class HaircutManagementController {
                 .orElseThrow(() -> new IllegalStateException("Haircut not created"));
     }
 
+
     @ApiResponses(value = {
             @ApiResponse(code=200, message = "Deleted hair"),
             @ApiResponse(code=400, message = "Bad Request"),
@@ -66,9 +68,9 @@ public class HaircutManagementController {
     @DeleteMapping(path = "/{haircutId}")
     @PreAuthorize("hasAuthority('haircut:write')")
     public void deleteHaircut(@PathVariable("haircutId") String haircutId){
-        System.out.println("deleteHaircut a haircut");
-        System.out.println(haircutId);
+        this.haircutService.deleteHaircut(haircutId);
     }
+
 
     @ApiResponses(value = {
             @ApiResponse(code=200, message = "Updated hair"),
@@ -76,8 +78,10 @@ public class HaircutManagementController {
     })
     @PutMapping(path = "/{haircutId}")
     @PreAuthorize("hasAuthority('haircut:write')")
-    public void updateHaircut(@PathVariable("haircutId") String haircutId, @RequestBody HaircutDTO haircutDTO){
-        System.out.println("updateHaircut a haircut");
-        System.out.printf("%s %s\n", haircutId, haircutDTO);
+    public HaircutDTO updateHaircut(@PathVariable("haircutId") String haircutId,
+                                    @RequestBody HaircutDTO haircutDTO){
+        return this.haircutService
+                .updateHaircut(haircutId, haircutDTO)
+                .orElseThrow(() -> new IllegalStateException(String.format("haircut with ID %s is not updated", haircutId)));
     }
 }
