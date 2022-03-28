@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * @author Josue Lubaki
@@ -44,7 +45,7 @@ public class HaircutManagementController {
     public HaircutDTO getHaircut(@PathVariable("id") String id) {
         return this.haircutService
                 .findHaircutById(id)
-                .orElseThrow(() -> new IllegalStateException(String.format("Haircut with id %s not found", id)));
+                .orElseThrow(() -> new NoSuchElementException(String.format("Haircut with id %s not found", id)));
     }
 
 
