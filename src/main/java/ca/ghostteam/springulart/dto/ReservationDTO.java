@@ -16,9 +16,9 @@ import java.time.LocalDate;
 public class ReservationDTO {
     private String id;
     private LocalDate reservationDate;
-    private ReservationTimeModel reservationTimeModel;
-    private HaircutModel haircutModel;
+    private ReservationTimeModel reservationTime;
+    private HaircutModel haircut;
     private String status;
     private UserDTO client;
-    private LocationModel locationModel; // check frontend
+    private LocationModel location; // check frontend
 }

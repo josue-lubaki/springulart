@@ -68,11 +68,11 @@ public class ReservationServiceImpl implements ReservationService {
         ReservationDTO reservationDTO = new ReservationDTO();
         reservationDTO.setId(reservationModel.getId());
         reservationDTO.setReservationDate(reservationModel.getReservationDate());
-        reservationDTO.setReservationTimeModel(reservationModel.getReservationTimeModel());
-        reservationDTO.setHaircutModel(reservationModel.getHaircutModel());
+        reservationDTO.setReservationTime(reservationModel.getReservationTime());
+        reservationDTO.setHaircut(reservationModel.getHaircut());
         reservationDTO.setStatus(reservationModel.getStatus());
         reservationDTO.setClient(reservationModel.getClient());
-        reservationDTO.setLocationModel(reservationModel.getLocationModel());
+        reservationDTO.setLocation(reservationModel.getLocation());
 
         return reservationDTO;
     }
@@ -85,11 +85,11 @@ public class ReservationServiceImpl implements ReservationService {
     private ReservationModel converterReservationDtoToReservationModel(ReservationDTO reservationDTO) {
         ReservationModel reservationModel = new ReservationModel();
         reservationModel.setReservationDate(reservationDTO.getReservationDate());
-        reservationModel.setReservationTimeModel(reservationDTO.getReservationTimeModel());
-        reservationModel.setHaircutModel(reservationDTO.getHaircutModel());
+        reservationModel.setReservationTime(reservationDTO.getReservationTime());
+        reservationModel.setHaircut(reservationDTO.getHaircut());
         reservationModel.setStatus(reservationDTO.getStatus());
         reservationModel.setClient(reservationDTO.getClient());
-        reservationModel.setLocationModel(reservationDTO.getLocationModel());
+        reservationModel.setLocation(reservationDTO.getLocation());
 
         return reservationModel;
     }

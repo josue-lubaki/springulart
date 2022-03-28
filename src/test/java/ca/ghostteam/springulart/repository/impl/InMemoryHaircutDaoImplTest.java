@@ -19,6 +19,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.NoSuchElementException;
+
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = {InMemoryHaircutDaoImpl.class})
 @ExtendWith(SpringExtension.class)
@@ -76,7 +78,7 @@ class InMemoryHaircutDaoImplTest {
         haircutModel.setImageURL("https://example.org/example");
         haircutModel.setPrice(1);
         haircutModel.setTitle("Dr");
-        assertThrows(IllegalStateException.class, () -> this.inMemoryHaircutDaoImpl.update("42", haircutModel));
+        assertThrows(NoSuchElementException.class, () -> this.inMemoryHaircutDaoImpl.update("42", haircutModel));
     }
 
     @Test
@@ -88,7 +90,7 @@ class InMemoryHaircutDaoImplTest {
         haircutModel.setImageURL("https://example.org/example");
         haircutModel.setPrice(1);
         haircutModel.setTitle("Dr");
-        assertThrows(IllegalStateException.class,
+        assertThrows(NoSuchElementException.class,
                 () -> this.inMemoryHaircutDaoImpl.update("7a9c3e6c-a28b-45fa-b489-9656d06943c8", haircutModel));
     }
 }
