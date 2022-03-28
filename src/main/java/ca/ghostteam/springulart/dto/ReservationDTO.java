@@ -1,14 +1,19 @@
-package ca.ghostteam.springulart.model;
+package ca.ghostteam.springulart.dto;
 
-import ca.ghostteam.springulart.dto.UserDTO;
-import lombok.AllArgsConstructor;
+import ca.ghostteam.springulart.model.HaircutModel;
+import ca.ghostteam.springulart.model.LocationModel;
+import ca.ghostteam.springulart.model.ReservationTimeModel;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
+/**
+ * @author Josue Lubaki
+ * @version 1.0
+ * @since 2022-03-27
+ */
 @Data
-public class ReservationModel {
+public class ReservationDTO {
     private String id;
     private LocalDate reservationDate;
     private ReservationTimeModel reservationTimeModel;

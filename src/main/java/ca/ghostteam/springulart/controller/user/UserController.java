@@ -70,7 +70,8 @@ public class UserController {
     @ApiResponse(code = 200, message = "Successfully updated a user")
     @PutMapping(path = "{userId}")
     @PreAuthorize("hasAuthority('client:write')")
-    public UserDTO updateUser(@PathVariable("userId") Integer userId, @RequestBody UserDTO userDTO) throws Exception {
+    public UserDTO updateUser(@PathVariable("userId") Integer userId,
+                              @RequestBody UserDTO userDTO) throws Exception {
         // check if user has permission to do that
         if(canIDoThisOperation(userId))
             throw new IllegalStateException("You are not authorized to update user with ID " + userId);
