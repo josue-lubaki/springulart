@@ -72,6 +72,7 @@ public class ReservationServiceImpl implements ReservationService {
         reservationDTO.setHaircut(reservationModel.getHaircut());
         reservationDTO.setStatus(reservationModel.getStatus());
         reservationDTO.setClient(reservationModel.getClient());
+        reservationDTO.setBarber(reservationModel.getBarber());
         reservationDTO.setLocation(reservationModel.getLocation());
 
         return reservationDTO;
@@ -89,6 +90,7 @@ public class ReservationServiceImpl implements ReservationService {
         reservationModel.setHaircut(reservationDTO.getHaircut());
         reservationModel.setStatus(reservationDTO.getStatus());
         reservationModel.setClient(reservationDTO.getClient());
+        reservationModel.setBarber(reservationDTO.getBarber());
         reservationModel.setLocation(reservationDTO.getLocation());
 
         return reservationModel;

@@ -13,5 +13,6 @@ public class ReservationModel {
     private HaircutModel haircut;
     private String status;
     private UserDTO client;
+    private UserDTO barber;
     private LocationModel location; // check frontend
 }
