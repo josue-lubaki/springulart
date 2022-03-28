@@ -12,7 +12,7 @@
     <artifactId>Springulart</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Springulart</name>
-    <description>Springulart</description>
+    <description>Application Backend du site web www.angulart.xyz</description>
     <properties>
         <java.version>11</java.version>
     </properties>
@@ -90,6 +90,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <!-- Permet de formatter les messages-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity5</artifactId>
         </dependency>
 
         <!-- JWT -->
