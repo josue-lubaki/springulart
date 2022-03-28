@@ -10,7 +10,7 @@ import static org.mockito.Mockito.when;
 
 import ca.ghostteam.springulart.dto.HaircutDTO;
 import ca.ghostteam.springulart.model.HaircutModel;
-import ca.ghostteam.springulart.repository.HaircutDao;
+import ca.ghostteam.springulart.dao.HaircutDao;
 
 import java.util.ArrayList;
 import java.util.Optional;

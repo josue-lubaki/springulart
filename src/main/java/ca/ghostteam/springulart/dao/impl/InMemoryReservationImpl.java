@@ -1,7 +1,7 @@
-package ca.ghostteam.springulart.repository.impl;
+package ca.ghostteam.springulart.dao.impl;
 
 import ca.ghostteam.springulart.model.ReservationModel;
-import ca.ghostteam.springulart.repository.ReservationDao;
+import ca.ghostteam.springulart.dao.ReservationDao;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;

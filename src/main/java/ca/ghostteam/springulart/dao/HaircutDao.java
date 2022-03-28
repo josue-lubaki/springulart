@@ -1,6 +1,5 @@
-package ca.ghostteam.springulart.repository;
+package ca.ghostteam.springulart.dao;
 
-import ca.ghostteam.springulart.dto.HaircutDTO;
 import ca.ghostteam.springulart.model.HaircutModel;
 
 import java.util.List;

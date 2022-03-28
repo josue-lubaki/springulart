@@ -1,9 +1,8 @@
-package ca.ghostteam.springulart.repository.impl;
+package ca.ghostteam.springulart.dao.impl;
 
-import ca.ghostteam.springulart.dto.UserDTO;
 import ca.ghostteam.springulart.model.AddressModel;
 import ca.ghostteam.springulart.model.UserModel;
-import ca.ghostteam.springulart.repository.UserDao;
+import ca.ghostteam.springulart.dao.UserDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;

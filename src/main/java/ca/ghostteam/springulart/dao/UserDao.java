@@ -1,6 +1,5 @@
-package ca.ghostteam.springulart.repository;
+package ca.ghostteam.springulart.dao;
 
-import ca.ghostteam.springulart.dto.UserDTO;
 import ca.ghostteam.springulart.model.UserModel;
 
 import java.util.List;

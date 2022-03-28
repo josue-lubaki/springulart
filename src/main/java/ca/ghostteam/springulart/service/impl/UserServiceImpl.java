@@ -5,7 +5,7 @@ import ca.ghostteam.springulart.dto.UserDTO;
 import ca.ghostteam.springulart.dto.UserDetailsDTO;
 import ca.ghostteam.springulart.model.CredentialModel;
 import ca.ghostteam.springulart.model.UserModel;
-import ca.ghostteam.springulart.repository.UserDao;
+import ca.ghostteam.springulart.dao.UserDao;
 import ca.ghostteam.springulart.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
