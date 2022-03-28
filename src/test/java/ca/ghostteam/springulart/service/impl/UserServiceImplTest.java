@@ -19,7 +19,7 @@ import ca.ghostteam.springulart.dto.UserDetailsDTO;
 import ca.ghostteam.springulart.model.AddressModel;
 import ca.ghostteam.springulart.model.CredentialModel;
 import ca.ghostteam.springulart.model.UserModel;
-import ca.ghostteam.springulart.repository.UserDao;
+import ca.ghostteam.springulart.dao.UserDao;
 
 import java.time.LocalDate;
 

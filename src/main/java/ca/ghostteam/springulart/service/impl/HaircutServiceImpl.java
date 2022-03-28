@@ -2,7 +2,7 @@ package ca.ghostteam.springulart.service.impl;
 
 import ca.ghostteam.springulart.dto.HaircutDTO;
 import ca.ghostteam.springulart.model.HaircutModel;
-import ca.ghostteam.springulart.repository.HaircutDao;
+import ca.ghostteam.springulart.dao.HaircutDao;
 import ca.ghostteam.springulart.service.HaircutService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
-package ca.ghostteam.springulart.repository.impl;
+package ca.ghostteam.springulart.dao.impl;
 
 import ca.ghostteam.springulart.model.HaircutModel;
-import ca.ghostteam.springulart.repository.HaircutDao;
+import ca.ghostteam.springulart.dao.HaircutDao;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;

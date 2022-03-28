@@ -2,7 +2,7 @@ package ca.ghostteam.springulart.service.impl;
 
 import ca.ghostteam.springulart.dto.ReservationDTO;
 import ca.ghostteam.springulart.model.ReservationModel;
-import ca.ghostteam.springulart.repository.ReservationDao;
+import ca.ghostteam.springulart.dao.ReservationDao;
 import ca.ghostteam.springulart.service.ReservationService;
 import org.springframework.stereotype.Service;
 

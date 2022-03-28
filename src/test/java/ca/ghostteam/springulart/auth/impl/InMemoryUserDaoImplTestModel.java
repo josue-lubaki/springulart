@@ -6,7 +6,7 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ca.ghostteam.springulart.repository.impl.InMemoryUserDaoImpl;
+import ca.ghostteam.springulart.dao.impl.InMemoryUserDaoImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
