@@ -2,18 +2,21 @@ package ca.ghostteam.springulart.controller.reservation;
 
 import ca.ghostteam.springulart.bean.JwtConfig;
 import ca.ghostteam.springulart.dto.ReservationDTO;
+import ca.ghostteam.springulart.dto.UserDTO;
 import ca.ghostteam.springulart.dto.UserDetailsDTO;
 import ca.ghostteam.springulart.security.jwt.filter.JwtTokenVerifier;
 import ca.ghostteam.springulart.service.ReservationService;
 import ca.ghostteam.springulart.service.UserService;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import io.swagger.annotations.ApiResponse;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -44,7 +47,7 @@ public class ReservationController {
         this.jwtTokenVerifier = jwtTokenVerifier;
     }
 
-    @ApiResponse(code = 200, message = "Successfully retrieved all reservations")
+    @ApiResponse(code = 200, message = "Successfully retrieved all reservations of User")
     @GetMapping()
     public List<ReservationDTO> getAllReservations(){
         return this.reservationService.findAll();
@@ -86,6 +89,35 @@ public class ReservationController {
             throw new IllegalStateException("You are not authorized to delete reservation with ID " + id);
 
         this.reservationService.deleteById(id);
+    }
+
+    @ApiResponse(code = 200, message = "Successfully accepted a reservation")
+    @PatchMapping("accept/{id}")
+    @PreAuthorize("hasRole('ROLE_BARBER')")
+    public ReservationDTO acceptReservation(@PathVariable("id") String id, @RequestBody ReservationDTO reservation){
+        // get headers informations
+        String token = jwtTokenVerifier.extractJwtToken(request);
+        DecodedJWT decodeJWTToken = jwtTokenVerifier.decodeJWT(token, jwtConfig.getSecretKey());
+
+        // Decode a token
+        String username = decodeJWTToken.getSubject();
+        UserDetailsDTO userDetails = (UserDetailsDTO) userService.loadUserByUsername(username);
+        int idUserWhoSentRequest = userDetails.getCredentials().getId(); // id User
+
+        if(idUserWhoSentRequest == reservation.getClient().getId())
+            throw new IllegalStateException("you cannot accept your own reservation");
+
+        // update reservation -> set barber
+        Optional<UserDTO> barber = this.userService.findUserById(idUserWhoSentRequest);
+        reservation.setBarber(barber.get());
+
+        // modify status
+        if(reservation.getStatus().matches("Non Traitée"))
+            reservation.setStatus("Acceptée");
+
+        return this.reservationService
+                .update(id, reservation)
+                .orElseThrow(() -> new IllegalStateException(String.format("the reservation with ID %s was not accepted", id)));
     }
 
     /**
