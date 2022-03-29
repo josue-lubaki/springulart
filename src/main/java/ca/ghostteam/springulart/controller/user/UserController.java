@@ -45,10 +45,8 @@ public class UserController {
     @ApiResponse(code = 200, message = "Successfully retrieved a user")
     @GetMapping("/{userId}")
     public UserDTO getUser(@PathVariable("userId") Long userId) {
-        return userService.findAllUsers()
-                .stream()
-                .filter(user -> user.getId().equals(userId))
-                .findFirst()
+        return userService
+                .findUserById(userId)
                 .orElseThrow(() -> new IllegalStateException("User with ID " + userId + " does not exist"));
     }
 

@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "user_model")
 public class UserModel {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String fname;
     private String lname;
@@ -24,6 +24,6 @@ public class UserModel {
     private LocalDate updated = LocalDate.now();
     private boolean deleted = false;
 
-    // clé étrangère
-    private Long id_address;
+    // clé étrangère UUID
+    private String id_address;
 }

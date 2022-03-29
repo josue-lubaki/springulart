@@ -13,7 +13,7 @@ import java.util.Set;
 @Entity
 @Table(name = "credential_model")
 public class CredentialModel {
-        @Id @GeneratedValue(strategy = GenerationType.AUTO)
+        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
         private String username;
         private String password;

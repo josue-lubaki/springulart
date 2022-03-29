@@ -15,5 +15,6 @@ import java.util.Optional;
 @Repository
 public interface CredentialRepository extends CrudRepository<CredentialModel, Long> {
     @Override
+    @NonNull
     CredentialModel save(@NonNull CredentialModel credential);
 }

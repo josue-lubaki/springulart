@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @Data
 public class LoginDTO {
-    private Integer id;
+    private Long id;
     private String email;
     private String token;
     private String role;

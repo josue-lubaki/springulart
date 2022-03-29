@@ -82,9 +82,9 @@ public class UserServiceImpl implements UserService {
 
         // extract AddressModel and save it
         AddressModel addressModel = extractAddressModel(signupDTO);
-        AddressDTO addressSaved =
+        AddressModel addressSaved =
                 addressService
-                .saveAddress(addressModel)
+                .saveAddressModel(addressModel)
                 .orElse(null);
 
         // id id_address into UserModel Object
@@ -176,9 +176,9 @@ public class UserServiceImpl implements UserService {
      * */
     private UserDTO converterUserModelToUserDTO(UserModel userModel) {
         // retrieve Address Information
-        AddressModel addressModel =
+        AddressDTO addressModel =
                 addressService
-                .findAddressModelUserById(userModel.getId_address())
+                .findAddressUserById(userModel.getId_address())
                 .orElse(null);
 
         UserDTO userDTO = new UserDTO();

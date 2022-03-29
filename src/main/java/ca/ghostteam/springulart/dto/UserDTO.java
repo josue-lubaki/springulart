@@ -20,7 +20,7 @@ public class UserDTO {
     private String phone;
     private String role;
     private LocalDate dob = LocalDate.now();
-    private AddressModel address;
+    private AddressDTO address;
     private LocalDate created = LocalDate.now();
     private LocalDate updated = LocalDate.now();
     private boolean deleted = false;

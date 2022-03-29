@@ -16,6 +16,7 @@ import java.util.Optional;
  */
 @Repository
 public interface UserRepository extends CrudRepository<UserModel, Long> {
+    @NonNull
     List<UserModel> findAll();
 
     @Query("select u from UserModel u where u.email = ?1")
@@ -26,5 +27,6 @@ public interface UserRepository extends CrudRepository<UserModel, Long> {
             "END FROM UserModel u WHERE u.email = ?1")
     boolean existsByEmail(String email);
 
+    @NonNull
     Optional<UserModel> findById(@NonNull Long aLong);
 }

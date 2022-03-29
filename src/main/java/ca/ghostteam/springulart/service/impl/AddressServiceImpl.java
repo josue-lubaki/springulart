@@ -23,7 +23,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Optional<AddressDTO> findAddressUserById(Long id) {
+    public Optional<AddressDTO> findAddressUserById(String id) {
         return addressRepository
                 .findById(id)
                 .stream()
@@ -32,7 +32,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Optional<AddressModel> findAddressModelUserById(Long id) {
+    public Optional<AddressModel> findAddressModelUserById(String id) {
         return addressRepository
                 .findById(id)
                 .stream()
@@ -49,9 +49,16 @@ public class AddressServiceImpl implements AddressService {
         );
     }
 
+    @Override
+    public Optional<AddressModel> saveAddressModel(AddressModel addressModel) {
+        return Optional.of(
+                addressRepository
+                .save(addressModel)
+        );
+    }
+
     private AddressModel converterAddressDtoToAddressModel(AddressDTO addressDTO){
         AddressModel address = new AddressModel();
-        address.setId(addressDTO.getId());
         address.setApartement(addressDTO.getApartement());
         address.setStreet(addressDTO.getStreet());
         address.setState(addressDTO.getState());
@@ -63,7 +70,6 @@ public class AddressServiceImpl implements AddressService {
 
     private AddressDTO converterAddressModelToAddressDTO(AddressModel addressModel){
         AddressDTO address = new AddressDTO();
-        address.setId(addressModel.getId());
         address.setApartement(addressModel.getApartement());
         address.setStreet(addressModel.getStreet());
         address.setState(addressModel.getState());
