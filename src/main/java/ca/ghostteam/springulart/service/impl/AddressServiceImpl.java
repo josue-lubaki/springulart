@@ -4,6 +4,7 @@ import ca.ghostteam.springulart.dto.AddressDTO;
 import ca.ghostteam.springulart.model.AddressModel;
 import ca.ghostteam.springulart.repository.AddressRepository;
 import ca.ghostteam.springulart.service.AddressService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,6 +19,7 @@ public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
 
+    @Autowired
     public AddressServiceImpl(AddressRepository addressRepository) {
         this.addressRepository = addressRepository;
     }

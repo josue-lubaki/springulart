@@ -1,18 +1,23 @@
 package ca.ghostteam.springulart.model;
 
-import ca.ghostteam.springulart.dto.UserDTO;
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Data
+@Entity
+@Table(name = "reservation_model")
 public class ReservationModel {
+    @Id @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String id;
-    private LocalDate reservationDate;
-    private ReservationTimeModel reservationTime;
-    private HaircutModel haircut;
+    private LocalDate reservationDate = LocalDate.now();
+    private Long reservationTime;
+    private String haircut;
     private String status;
-    private UserDTO client;
-    private UserDTO barber;
-    private LocationModel location; // check frontend
+    private Long client;
+    private Long barber;
+    private Long location; // check frontend
 }

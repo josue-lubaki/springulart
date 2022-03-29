@@ -1,8 +1,5 @@
 package ca.ghostteam.springulart.dto;
 
-import ca.ghostteam.springulart.model.HaircutModel;
-import ca.ghostteam.springulart.model.LocationModel;
-import ca.ghostteam.springulart.model.ReservationTimeModel;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -16,10 +13,10 @@ import java.time.LocalDate;
 public class ReservationDTO {
     private String id;
     private LocalDate reservationDate;
-    private ReservationTimeModel reservationTime;
-    private HaircutModel haircut;
+    private ReservationTimeDTO reservationTime;
+    private HaircutDTO haircut;
     private String status;
     private UserDTO client;
     private UserDTO barber;
-    private LocationModel location; // check frontend
+    private LocationDTO location; // check frontend
 }

@@ -4,6 +4,7 @@ import ca.ghostteam.springulart.dto.HaircutDTO;
 import ca.ghostteam.springulart.model.HaircutModel;
 import ca.ghostteam.springulart.repository.HaircutRepository;
 import ca.ghostteam.springulart.service.HaircutService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class HaircutServiceImpl implements HaircutService {
 
     private final HaircutRepository haircutRepository;
 
+    @Autowired
     public HaircutServiceImpl(
             HaircutRepository haircutRepository) {
         this.haircutRepository = haircutRepository;

@@ -16,12 +16,10 @@ import java.util.Optional;
  * @since 2022-03-28
  */
 @Repository
-public interface HaircutRepository extends CrudRepository<HaircutModel, Long> {
+public interface HaircutRepository extends CrudRepository<HaircutModel, String> {
     @Override
-    @NonNull
     List<HaircutModel> findAll();
 
-    @Query("SELECT h FROM HaircutModel h WHERE h.id = ?1")
     Optional<HaircutModel> findById(String id);
 
     @Modifying
@@ -29,5 +27,5 @@ public interface HaircutRepository extends CrudRepository<HaircutModel, Long> {
     void deleteById(@NonNull String aLong);
 
     @Override
-    @NonNull <S extends HaircutModel> S save(S entity);
+    @NonNull HaircutModel save(@NonNull HaircutModel entity);
 }

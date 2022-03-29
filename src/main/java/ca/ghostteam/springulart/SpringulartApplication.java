@@ -4,6 +4,7 @@ import ca.ghostteam.springulart.dto.HaircutDTO;
 import ca.ghostteam.springulart.dto.SignupDTO;
 import ca.ghostteam.springulart.model.AddressModel;
 import ca.ghostteam.springulart.service.HaircutService;
+import ca.ghostteam.springulart.service.ReservationService;
 import ca.ghostteam.springulart.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -25,10 +26,12 @@ public class SpringulartApplication {
 
     @Bean
     CommandLineRunner run(UserService userService,
-                          HaircutService haircutService){
+                          HaircutService haircutService,
+                          ReservationService reservationService){
         return args -> {
             initHaircuts(haircutService);
             initUsers(userService);
+            log.info("Nombre Reservations en cours " + reservationService.count());
         };
     }
 

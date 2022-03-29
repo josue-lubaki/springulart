@@ -1,6 +1,9 @@
 package ca.ghostteam.springulart.service.impl;
 
-import ca.ghostteam.springulart.dto.*;
+import ca.ghostteam.springulart.dto.AddressDTO;
+import ca.ghostteam.springulart.dto.SignupDTO;
+import ca.ghostteam.springulart.dto.UserDTO;
+import ca.ghostteam.springulart.dto.UserDetailsDTO;
 import ca.ghostteam.springulart.model.AddressModel;
 import ca.ghostteam.springulart.model.CredentialModel;
 import ca.ghostteam.springulart.model.UserModel;
