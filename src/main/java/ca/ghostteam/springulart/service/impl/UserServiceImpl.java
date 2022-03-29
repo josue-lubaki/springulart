@@ -1,14 +1,14 @@
 package ca.ghostteam.springulart.service.impl;
 
-import ca.ghostteam.springulart.dto.SignupDTO;
-import ca.ghostteam.springulart.dto.UserDTO;
-import ca.ghostteam.springulart.dto.UserDetailsDTO;
+import ca.ghostteam.springulart.dto.*;
+import ca.ghostteam.springulart.model.AddressModel;
 import ca.ghostteam.springulart.model.CredentialModel;
 import ca.ghostteam.springulart.model.UserModel;
-import ca.ghostteam.springulart.dao.UserDao;
+import ca.ghostteam.springulart.repository.UserRepository;
+import ca.ghostteam.springulart.service.AddressService;
+import ca.ghostteam.springulart.service.CredentialService;
 import ca.ghostteam.springulart.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,67 +24,125 @@ import java.util.stream.Collectors;
  * @version 1.0
  * @since 2022-03-19
  */
-@Service("user-service-fake")
+@Service
 public class UserServiceImpl implements UserService {
 
-    private final UserDao userDao;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AddressService addressService;
+    private final CredentialService credentialService;
 
     @Autowired
     public UserServiceImpl(
-            @Qualifier("fake-repository-users") UserDao userDao,
-            PasswordEncoder passwordEncoder) {
-        this.userDao = userDao;
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            AddressService addressService,
+            CredentialService credentialService) {
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.addressService = addressService;
+        this.credentialService = credentialService;
     }
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userDao
-                .selectUserByUsername(username)
+        return userRepository
+                .findUserModelByEmail(username)
                 .map(this::converterUserModelToUserDetailsDTO)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("Username %s not found", username)));
     }
 
     @Override
-    public Optional<UserDTO> updateUser(Integer id, UserDTO userDTO) {
-        return this.userDao
-                .update(id, convertUserDtoToUserModel(userDTO))
-                .map(this::converterUserModelToUserDTO);
+    public Optional<UserDTO> updateUser(Long id, UserDTO userDTO) {
+        UserModel oldUserModel = this.userRepository.findById(id).get();
+        // update information
+        oldUserModel.setEmail(userDTO.getEmail());
+        oldUserModel.setFname(userDTO.getFname());
+        oldUserModel.setLname(userDTO.getLname());
+        oldUserModel.setPhone(userDTO.getPhone());
+        oldUserModel.setImageURL(userDTO.getImageURL());
+
+        return Optional.of(
+                converterUserModelToUserDTO(this.userRepository.save(oldUserModel))
+        );
     }
 
     @Override
     public List<UserDTO> findAllUsers() {
-        return userDao
-                .findAllUsers()
+        return userRepository
+                .findAll()
                 .stream()
                 .map(this::converterUserModelToUserDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<UserDTO> saveUser(SignupDTO signupDTO) throws Exception {
-        return userDao
+    public Optional<UserDTO> saveUser(SignupDTO signupDTO) {
+
+        // extract AddressModel and save it
+        AddressModel addressModel = extractAddressModel(signupDTO);
+        AddressDTO addressSaved =
+                addressService
+                .saveAddress(addressModel)
+                .orElse(null);
+
+        // id id_address into UserModel Object
+        assert addressSaved != null;
+        signupDTO.getAddress().setId(addressSaved.getId());
+
+        // created user
+        UserDTO userDTO = converterUserModelToUserDTO(
+                userRepository
                 .save(convertSignupDtoToUserModel(signupDTO))
-                .map(this::converterUserModelToUserDTO);
+        );
+
+        // extract CredentialModel and save it
+        // set id_user into UserModel Object
+        CredentialModel credentialModel = extractCredentialModel(signupDTO);
+        credentialModel.setId_user(userDTO.getId());
+        credentialService.saveCredential(credentialModel).get();
+
+        return Optional.of(userDTO);
+    }
+
+    private CredentialModel extractCredentialModel(SignupDTO signupDTO) {
+        CredentialModel credentialModel = new CredentialModel();
+        credentialModel.setId_user(null);
+        credentialModel.setUsername(signupDTO.getEmail());
+        credentialModel.setPassword(passwordEncoder.encode(signupDTO.getPassword()));
+        credentialModel.setGrantedAuthority(signupDTO.getRole());
+
+        return credentialModel;
+    }
+
+    private AddressModel extractAddressModel(SignupDTO signupDTO) {
+        AddressModel addressModel = new AddressModel();
+        addressModel.setId(null);
+        addressModel.setApartement(signupDTO.getAddress().getApartement());
+        addressModel.setStreet(signupDTO.getAddress().getStreet());
+        addressModel.setZip(signupDTO.getAddress().getZip());
+        addressModel.setCity(signupDTO.getAddress().getCity());
+        addressModel.setState(signupDTO.getAddress().getState());
+
+        return addressModel;
     }
 
     @Override
-    public Optional<UserDTO> findUserById(Integer id) {
-        return this.userDao
-                .findUserById(id)
+    public Optional<UserDTO> findUserById(Long id) {
+        return this.userRepository
+                .findById(id)
                 .map(this::converterUserModelToUserDTO);
     }
 
     @Override
     public boolean existsUserByEmail(String email) {
-        return userDao.existsByEmail(email);
+        return userRepository.existsByEmail(email);
     }
 
     @Override
-    public void deleteUserById(Integer id) {
-            userDao.deleteById(id);
+    public void deleteUserById(Long id) {
+            userRepository.deleteById(id);
     }
 
     /**
@@ -95,7 +153,7 @@ public class UserServiceImpl implements UserService {
     private UserModel convertSignupDtoToUserModel(SignupDTO signupDTO) {
         // create userModel
         UserModel userModel = new UserModel();
-        userModel.setId(findAllUsers().size() + 1);
+        userModel.setId(signupDTO.getId());
         userModel.setEmail(signupDTO.getEmail());
         userModel.setFname(signupDTO.getFname());
         userModel.setLname(signupDTO.getLname());
@@ -103,58 +161,12 @@ public class UserServiceImpl implements UserService {
         userModel.setEmail(signupDTO.getEmail());
         userModel.setPassword(passwordEncoder.encode(signupDTO.getPassword()));
         userModel.setPhone(signupDTO.getPhone());
-        userModel.setDob(LocalDate.parse(signupDTO.getDob()));
+        userModel.setDob(signupDTO.getDob());
         userModel.setCreated(LocalDate.now());
         userModel.setUpdated(LocalDate.now());
-        userModel.setAddress(signupDTO.getAddress());
+        userModel.setId_address(signupDTO.getAddress().getId());
         userModel.setRole(signupDTO.getRole());
         return userModel;
-    }
-
-    /**
-     * Method to convert UserDTO to UserModel
-     * @param userDTO userDTO object to convert
-     * @return UserModel
-     **/
-    private UserModel convertUserDtoToUserModel(UserDTO userDTO) {
-        // create userModel
-        UserModel userModel = new UserModel();
-        userModel.setId(findAllUsers().size() + 1);
-        userModel.setEmail(userDTO.getEmail());
-        userModel.setFname(userDTO.getFname());
-        userModel.setLname(userDTO.getLname());
-        userModel.setImageURL(userDTO.getImageURL());
-        userModel.setEmail(userDTO.getEmail());
-        userModel.setPhone(userDTO.getPhone());
-        userModel.setDob(userDTO.getDob());
-        userModel.setCreated(LocalDate.now());
-        userModel.setUpdated(LocalDate.now());
-        userModel.setAddress(userDTO.getAddress());
-        userModel.setRole(userDTO.getRole());
-        return userModel;
-    }
-
-    /**
-     * Method to convert UserDetailsDTO to UserDTO
-     * @param userDetailsDTO the UserDetailsDTO to convert
-     * @return UserDTO
-     * */
-    private UserDTO converterUserDetailsDtoToUserDto(UserDetailsDTO userDetailsDTO){
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(userDetailsDTO.getCredentials().getId());
-        userDTO.setFname(userDetailsDTO.getUserModel().getFname());
-        userDTO.setLname(userDetailsDTO.getUserModel().getLname());
-        userDTO.setEmail(userDetailsDTO.getUserModel().getEmail());
-        userDTO.setImageURL(userDetailsDTO.getUserModel().getImageURL());
-        userDTO.setPhone(userDetailsDTO.getUserModel().getPhone());
-        userDTO.setDob(userDetailsDTO.getUserModel().getDob());
-        userDTO.setAddress(userDetailsDTO.getUserModel().getAddress());
-        userDTO.setRole(userDetailsDTO.getCredentials().getGrantedAuthority());
-        userDTO.setCreated(userDetailsDTO.getCredentials().getCreated());
-        userDTO.setUpdated(userDetailsDTO.getCredentials().getUpdated());
-        userDTO.setDeleted(userDetailsDTO.getUserModel().isDeleted());
-
-        return userDTO;
     }
 
     /**
@@ -163,6 +175,12 @@ public class UserServiceImpl implements UserService {
      * @return UserDTO
      * */
     private UserDTO converterUserModelToUserDTO(UserModel userModel) {
+        // retrieve Address Information
+        AddressModel addressModel =
+                addressService
+                .findAddressModelUserById(userModel.getId_address())
+                .orElse(null);
+
         UserDTO userDTO = new UserDTO();
         userDTO.setId(userModel.getId());
         userDTO.setFname(userModel.getFname());
@@ -171,7 +189,7 @@ public class UserServiceImpl implements UserService {
         userDTO.setImageURL(userModel.getImageURL());
         userDTO.setPhone(userModel.getPhone());
         userDTO.setDob(userModel.getDob());
-        userDTO.setAddress(userModel.getAddress());
+        userDTO.setAddress(addressModel);
         userDTO.setRole(userModel.getRole());
         userDTO.setCreated(userModel.getCreated());
         userDTO.setUpdated(userModel.getUpdated());

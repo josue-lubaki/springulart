@@ -15,8 +15,8 @@ import java.util.Optional;
 public interface UserService extends UserDetailsService {
     List<UserDTO> findAllUsers();
     Optional<UserDTO> saveUser(SignupDTO signupDTO) throws Exception;
-    Optional<UserDTO> findUserById(Integer id);
+    Optional<UserDTO> findUserById(Long id);
     boolean existsUserByEmail(String email);
-    void deleteUserById(Integer id);
-    Optional<UserDTO> updateUser(Integer id,UserDTO userDTO) throws Exception;
+    void deleteUserById(Long id);
+    Optional<UserDTO> updateUser(Long id,UserDTO userDTO) throws Exception;
 }

@@ -44,7 +44,7 @@ public class UserController {
 
     @ApiResponse(code = 200, message = "Successfully retrieved a user")
     @GetMapping("/{userId}")
-    public UserDTO getUser(@PathVariable("userId") Integer userId) {
+    public UserDTO getUser(@PathVariable("userId") Long userId) {
         return userService.findAllUsers()
                 .stream()
                 .filter(user -> user.getId().equals(userId))
@@ -55,7 +55,7 @@ public class UserController {
     @ApiResponse(code = 204, message = "Successfully Deleted a user")
     @DeleteMapping(path = "{userId}")
     @PreAuthorize("hasAuthority('client:write')")
-    public void deleteMyAccount(@PathVariable("userId") Integer userId){
+    public void deleteMyAccount(@PathVariable("userId") Long userId){
         // check if user has permission to do that
         if(dontDoThisOperation(userId))
             throw new IllegalStateException("You are not authorized to delete user with ID " + userId);
@@ -66,7 +66,7 @@ public class UserController {
     @ApiResponse(code = 200, message = "Successfully updated a user")
     @PutMapping(path = "{userId}")
     @PreAuthorize("hasAuthority('client:write')")
-    public UserDTO updateUser(@PathVariable("userId") Integer userId, @RequestBody UserDTO userDTO) throws Exception {
+    public UserDTO updateUser(@PathVariable("userId") Long userId, @RequestBody UserDTO userDTO) throws Exception {
         // check if user has permission to do that
         if(dontDoThisOperation(userId))
             throw new IllegalStateException("You are not authorized to update user with ID " + userId);
@@ -74,6 +74,7 @@ public class UserController {
         return this.userService
                 .updateUser(userId, userDTO)
                 .orElseThrow(() -> new IllegalStateException(String.format("user with ID %s cannot found", userId)));
+
     }
 
     /**
@@ -81,7 +82,7 @@ public class UserController {
      * @param userId userId to modify or delete
      * @return boolean
      * */
-    private boolean dontDoThisOperation(Integer userId) {
+    private boolean dontDoThisOperation(Long userId) {
         // get headers informations
         String token = jwtTokenVerifier.extractJwtToken(request);
         DecodedJWT decodeJWTToken = jwtTokenVerifier.decodeJWT(token, jwtConfig.getSecretKey());
@@ -89,7 +90,7 @@ public class UserController {
         // Decode a token
         String username = decodeJWTToken.getSubject();
         UserDetailsDTO userDetails = (UserDetailsDTO) userService.loadUserByUsername(username);
-        int idFromToken = userDetails.getCredentials().getId();
+        long idFromToken = userDetails.getCredentials().getId();
 
         // retrieve claims "authorities" from payload of token
         List<Map> authorities = decodeJWTToken.getClaims().get("authorities").asList(Map.class);
