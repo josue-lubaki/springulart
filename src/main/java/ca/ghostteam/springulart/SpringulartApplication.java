@@ -32,7 +32,7 @@ public class SpringulartApplication {
         return args -> {
             initHaircuts(haircutService);
             initUsers(userService);
-            log.info("Nombre Reservations en cours " + reservationService.count());
+            log.info("Nombre Haircuts dans la DB : " + haircutService.findAllHaircuts().size());
         };
     }
 

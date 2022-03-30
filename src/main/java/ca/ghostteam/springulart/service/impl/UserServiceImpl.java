@@ -69,6 +69,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<UserDTO> findUserByEmail(String email) {
+        return Optional.of(
+                converterUserModelToUserDTO(
+                        this.userRepository.findUserModelByEmail(email).get()
+                )
+        );
+    }
+
+    @Override
     public List<UserDTO> findAllUsers() {
         return userRepository
                 .findAll()

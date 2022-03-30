@@ -24,7 +24,7 @@ public class UserModel {
     private LocalDate updated = LocalDate.now();
     private boolean deleted = false;
 
-    // clé étrangère UUID
+    // clé étrangère
     @ManyToOne
     @JoinColumn(name="address_id", nullable=false)
     private AddressModel address;
@@ -33,4 +33,10 @@ public class UserModel {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "credential_id", referencedColumnName = "id")
     private CredentialModel credential;
+
+    @OneToOne(mappedBy="client", cascade = CascadeType.ALL)
+    private ReservationModel reservationModelClient;
+
+    @OneToOne(mappedBy="barber", cascade = CascadeType.ALL)
+    private ReservationModel reservationModelBarber;
 }

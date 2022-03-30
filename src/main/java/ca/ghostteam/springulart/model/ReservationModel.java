@@ -10,14 +10,34 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "reservation_model")
 public class ReservationModel {
-    @Id @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
-    private String id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private LocalDate reservationDate = LocalDate.now();
-    private Long reservationTime;
-    private String haircut;
     private String status = "Non Traitée";
-    private Long client;
-    private Long barber;
-    private Long location; // check frontend
+
+    // foreign key,
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JoinColumn(name = "reservation_time_id", referencedColumnName = "id")
+    private ReservationTimeModel reservationTime;
+
+    // foreign key
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "haircut_id", referencedColumnName = "id")
+    private HaircutModel haircut;
+
+    // foreign key
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    private UserModel client;
+
+    // foreign key
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "barber_id", referencedColumnName = "id")
+    private UserModel barber;
+
+    // foreign key
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JoinColumn(name = "location_id", referencedColumnName = "id")
+    private LocationModel location; // check frontend
 }

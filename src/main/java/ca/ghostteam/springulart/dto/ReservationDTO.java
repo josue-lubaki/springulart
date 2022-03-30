@@ -11,7 +11,7 @@ import java.time.LocalDate;
  */
 @Data
 public class ReservationDTO {
-    private String id;
+    private Long id;
     private LocalDate reservationDate;
     private ReservationTimeDTO reservationTime;
     private HaircutDTO haircut;

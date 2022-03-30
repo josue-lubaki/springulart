@@ -19,4 +19,5 @@ public interface UserService extends UserDetailsService {
     boolean existsUserByEmail(String email);
     void deleteUserById(Long id);
     Optional<UserDTO> updateUser(Long id,UserDTO userDTO) throws Exception;
+    Optional<UserDTO> findUserByEmail(String email);
 }

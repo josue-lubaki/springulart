@@ -71,6 +71,11 @@ public class HaircutServiceImpl implements HaircutService {
         haircutRepository.deleteById(id);
     }
 
+    @Override
+    public boolean existsHaircutById(String id) {
+        return haircutRepository.existsById(id);
+    }
+
     /**
      * Method to convert a haircutDTO to a haircutModel
      * @param haircutDTO the haircutDTO to convert

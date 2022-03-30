@@ -55,7 +55,7 @@ public class ReservationController {
 
     @ApiResponse(code = 200, message = "Successfully retrieved a reservation by id")
     @GetMapping("/{id}")
-    public ReservationDTO getReservationById(@PathVariable("id") String id){
+    public ReservationDTO getReservationById(@PathVariable("id") Long id){
         return this.reservationService
                 .findById(id)
                 .orElseThrow(() -> new IllegalStateException(String.format("Reservation with ID %s cannot found", id)));
@@ -71,7 +71,7 @@ public class ReservationController {
 
     @ApiResponse(code = 200, message = "Successfully updated a reservation")
     @PutMapping("/{id}")
-    public ReservationDTO updateReservation(@PathVariable("id") String id, @RequestBody ReservationDTO reservation){
+    public ReservationDTO updateReservation(@PathVariable("id") Long id, @RequestBody ReservationDTO reservation){
         // check if user has permission to do that
         if(dontDoThisOperation(id))
             throw new IllegalStateException("You are not authorized to update reservation with ID " + id);
@@ -83,18 +83,18 @@ public class ReservationController {
 
     @ApiResponse(code = 204, message = "Successfully deleted a reservation")
     @DeleteMapping("/{id}")
-    public void deleteReservation(@PathVariable("id") String id){
+    public void deleteReservation(@PathVariable("id") Long id){
         // check if user has permission to do that
         if(dontDoThisOperation(id))
             throw new IllegalStateException("You are not authorized to delete reservation with ID " + id);
 
-        this.reservationService.deleteById(id);
+        this.reservationService.deleteReservationById(id);
     }
 
     @ApiResponse(code = 200, message = "Successfully accepted a reservation")
     @PatchMapping("accept/{id}")
     @PreAuthorize("hasRole('ROLE_BARBER')")
-    public ReservationDTO acceptReservation(@PathVariable("id") String id, @RequestBody ReservationDTO reservation){
+    public ReservationDTO acceptReservation(@PathVariable("id") Long id, @RequestBody ReservationDTO reservation){
         // get headers informations
         String token = jwtTokenVerifier.extractJwtToken(request);
         DecodedJWT decodeJWTToken = jwtTokenVerifier.decodeJWT(token, jwtConfig.getSecretKey());
@@ -125,7 +125,7 @@ public class ReservationController {
      * @param id reservationId to modify or delete
      * @return boolean
      * */
-    private boolean dontDoThisOperation(String  id) {
+    private boolean dontDoThisOperation(Long  id) {
         // get headers informations
         String token = jwtTokenVerifier.extractJwtToken(request);
         DecodedJWT decodeJWTToken = jwtTokenVerifier.decodeJWT(token, jwtConfig.getSecretKey());

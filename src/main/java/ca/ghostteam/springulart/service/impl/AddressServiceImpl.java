@@ -63,6 +63,7 @@ public class AddressServiceImpl implements AddressService {
 
     public AddressModel converterAddressDtoToAddressModel(AddressDTO addressDTO){
         AddressModel address = new AddressModel();
+        address.setId(addressDTO.getId());
         address.setApartement(addressDTO.getApartement());
         address.setStreet(addressDTO.getStreet());
         address.setState(addressDTO.getState());

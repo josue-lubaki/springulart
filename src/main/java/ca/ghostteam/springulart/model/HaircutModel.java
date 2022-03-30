@@ -1,13 +1,9 @@
 package ca.ghostteam.springulart.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -21,4 +17,7 @@ public class HaircutModel {
     private String title;
     private String estimatedTime;// check frontend
     private String description;
+
+    @OneToOne(mappedBy="haircut")
+    private ReservationModel reservationModel;
 }

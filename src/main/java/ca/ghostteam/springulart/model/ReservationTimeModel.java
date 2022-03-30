@@ -12,4 +12,7 @@ public class ReservationTimeModel {
     private Long id;
     private Integer hours;
     private Integer minutes;
+
+    @OneToOne(mappedBy="reservationTime")
+    private ReservationModel reservationModel;
 }
