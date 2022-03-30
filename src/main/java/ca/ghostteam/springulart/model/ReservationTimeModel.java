@@ -3,6 +3,7 @@ package ca.ghostteam.springulart.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @Entity
@@ -13,6 +14,6 @@ public class ReservationTimeModel {
     private Integer hours;
     private Integer minutes;
 
-    @OneToOne(mappedBy="reservationTime")
-    private ReservationModel reservationModel;
+    @OneToMany(mappedBy="reservationTime")
+    private Set<ReservationModel> reservationModel;
 }

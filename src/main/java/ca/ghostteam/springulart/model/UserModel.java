@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 @Entity
@@ -34,9 +35,10 @@ public class UserModel {
     @JoinColumn(name = "credential_id", referencedColumnName = "id")
     private CredentialModel credential;
 
-    @OneToOne(mappedBy="client", cascade = CascadeType.ALL)
-    private ReservationModel reservationModelClient;
+    @OneToMany(mappedBy = "barber", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<ReservationModel> reservationModelBarber;
 
-    @OneToOne(mappedBy="barber", cascade = CascadeType.ALL)
-    private ReservationModel reservationModelBarber;
+    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<ReservationModel> reservationModelClient;
+
 }

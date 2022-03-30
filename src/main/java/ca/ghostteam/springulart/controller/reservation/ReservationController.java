@@ -153,4 +153,16 @@ public class ReservationController {
         return !grantedAuthorities.contains(new SimpleGrantedAuthority("reservation:write")) || !isOwnerReservation;
     }
 
+    private Long getIdUserCurrent(){
+        // get headers informations
+        String token = jwtTokenVerifier.extractJwtToken(request);
+        DecodedJWT decodeJWTToken = jwtTokenVerifier.decodeJWT(token, jwtConfig.getSecretKey());
+
+        // Decode a token
+        String username = decodeJWTToken.getSubject();
+        UserDetailsDTO userDetails = (UserDetailsDTO) userService.loadUserByUsername(username);
+
+        return userDetails.getCredentials().getId();
+    }
+
 }

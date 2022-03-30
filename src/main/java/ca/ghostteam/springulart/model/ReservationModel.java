@@ -12,32 +12,42 @@ import java.time.LocalDate;
 public class ReservationModel {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private LocalDate reservationDate = LocalDate.now();
     private String status = "Non Traitée";
 
     // foreign key,
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @JoinColumn(name = "reservation_time_id", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name="reservation_time_id", nullable=false, referencedColumnName = "id")
     private ReservationTimeModel reservationTime;
 
     // foreign key
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @ManyToOne
     @JoinColumn(name = "haircut_id", referencedColumnName = "id")
     private HaircutModel haircut;
 
     // foreign key
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @ManyToOne
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     private UserModel client;
 
     // foreign key
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @ManyToOne
     @JoinColumn(name = "barber_id", referencedColumnName = "id")
     private UserModel barber;
 
     // foreign key
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private LocationModel location; // check frontend
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ReservationModel that = (ReservationModel) o;
+
+        return id.equals(that.id);
+    }
+
 }

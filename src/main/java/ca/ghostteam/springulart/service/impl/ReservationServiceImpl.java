@@ -10,10 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -21,7 +18,6 @@ import java.util.stream.Collectors;
  * @version 1.0
  * @since 2022-03-27
  */
-@Transactional
 @Service
 public class ReservationServiceImpl implements ReservationService {
 
@@ -43,6 +39,16 @@ public class ReservationServiceImpl implements ReservationService {
         this.reservationTimeService = reservationTimeService;
         this.locationService = locationService;
     }
+
+//    @Override
+//    public List<ReservationDTO> findAll(long idUserWhoSentRequest) {
+//        return reservationRepository
+//                .findAll()
+//                .stream()
+//                .filter(r -> r.getClient().getId() == idUserWhoSentRequest)
+//                .map(this::converterModelToDTO)
+//                .collect(Collectors.toList());
+//    }
 
     @Override
     public List<ReservationDTO> findAll() {
@@ -100,26 +106,24 @@ public class ReservationServiceImpl implements ReservationService {
         reservationModelToSave.setBarber(barber);
         reservationModelToSave.setClient(userModel);
         reservationModelToSave.setHaircut(haircutModel);
-        // set foreign keys
         reservationModelToSave.setReservationTime(reservationTime);
         reservationModelToSave.setLocation(location);
 
-        // set foreign keys values
-        reservationTime.setReservationModel(reservationModelToSave);
-        location.setReservationModel(reservationModelToSave);
-        haircutModel.setReservationModel(reservationModelToSave);
-        userModel.setReservationModelClient(reservationModelToSave);
-
-        if (Objects.nonNull(barber)) {
-            barber.setReservationModelBarber(reservationModelToSave);
-        }
-        else {
-            reservationModelToSave.setBarber(null);
-        }
-
         ReservationModel reservationModelSaved = reservationRepository.save(reservationModelToSave);
 
+        // set foreign keys values
+        reservationTime.setReservationModel(Set.of(reservationModelToSave));
+        location.setReservationModel(reservationModelToSave);
+
+        haircutModel.setReservationModel(Set.of(reservationModelToSave));
+
         // convert Model to DTO
+        userModel.setReservationModelClient(Set.of(reservationModelToSave));
+
+        if (Objects.nonNull(barber)) {
+            barber.setReservationModelBarber(Set.of(reservationModelToSave));
+        }
+
         ReservationDTO reservationDTO = converterModelToDTO(reservationModelSaved);
 
         return Optional.of(reservationDTO);
@@ -280,7 +284,6 @@ public class ReservationServiceImpl implements ReservationService {
         return haircutDTO;
     }
 
-    @Transactional
     @Override
     public Optional<ReservationDTO> update(Long id, ReservationDTO reservation) {
         // get reservation
@@ -304,22 +307,29 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setId(reservationModelToUpdate.getId());
 
         // delete old reservation and save new one
-        deleteReservationById(id);
+        // deleteReservationById(id);
 
         // updated reservation and save it
         ReservationModel reservationModel = converterDtoToModel(reservationModelToUpdate);
-        reservationRepository.insertReservation(
-                reservationModel.getId(),
-                reservationModel.getReservationDate(),
-                reservationModel.getReservationTime().getId(),
-                reservationModel.getStatus(),
-                reservationModel.getClient().getId(),
-                reservationModel.getHaircut().getId(),
-                reservationModel.getLocation().getId()
-        );
+        ReservationModel modelSave = reservationRepository.save(reservationModel);
+//        reservationRepository.update(id, reservationModel);
 
+        // return updated reservation
+         return Optional.of(converterModelToDTO(modelSave));
 
-        return Optional.empty();
+//        reservationRepository.insertReservation(
+//                reservationModel.getId(),
+//                reservationModel.getReservationDate(),
+//                reservationModel.getReservationTime().getId(),
+//                reservationModel.getStatus(),
+//                reservationModel.getClient().getId(),
+//                reservationModel.getHaircut().getId(),
+//                reservationModel.getLocation().getId()
+//
+//        );
+//
+//
+//        return Optional.empty();
 
     }
 
@@ -328,10 +338,9 @@ public class ReservationServiceImpl implements ReservationService {
         return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 
-    @Transactional
     @Override
     public void deleteReservationById(Long id) {
-        reservationRepository.deleteReservationModelById(id);
+        reservationRepository.deleteById(id);
     }
 
     @Override

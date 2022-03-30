@@ -4,6 +4,7 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @Entity
@@ -18,6 +19,6 @@ public class HaircutModel {
     private String estimatedTime;// check frontend
     private String description;
 
-    @OneToOne(mappedBy="haircut")
-    private ReservationModel reservationModel;
+    @OneToMany(mappedBy = "haircut", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<ReservationModel> reservationModel;
 }

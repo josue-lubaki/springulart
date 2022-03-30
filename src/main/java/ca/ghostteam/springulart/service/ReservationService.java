@@ -12,8 +12,8 @@ import java.util.Optional;
  * @version 1.0
  * @since 2022-03-27
  */
-@Transactional
 public interface ReservationService {
+//    List<ReservationDTO> findAll(long idUserCurrent);
     List<ReservationDTO> findAll();
     Optional<ReservationDTO> findById(Long id);
     Optional<ReservationDTO> save(ReservationDTO reservation);

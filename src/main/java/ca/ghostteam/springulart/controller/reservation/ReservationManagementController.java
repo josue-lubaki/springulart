@@ -27,7 +27,6 @@ public class ReservationManagementController {
     @ApiResponse(code = 200, message = "Successfully retrieved all reservations of User")
     @GetMapping()
     public List<ReservationDTO> getAllReservations(){
-
         return this.reservationService.findAll();
     }
 
