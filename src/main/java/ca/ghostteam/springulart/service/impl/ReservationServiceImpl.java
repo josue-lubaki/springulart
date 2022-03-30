@@ -311,11 +311,11 @@ public class ReservationServiceImpl implements ReservationService {
 
         // updated reservation and save it
         ReservationModel reservationModel = converterDtoToModel(reservationModelToUpdate);
-        ReservationModel modelSave = reservationRepository.save(reservationModel);
-//        reservationRepository.update(id, reservationModel);
+//        ReservationModel modelSave = reservationRepository.save(reservationModel);
+        reservationRepository.update(id, reservationModel);
 
         // return updated reservation
-         return Optional.of(converterModelToDTO(modelSave));
+//         return Optional.of(converterModelToDTO(modelSave));
 
 //        reservationRepository.insertReservation(
 //                reservationModel.getId(),
@@ -329,7 +329,7 @@ public class ReservationServiceImpl implements ReservationService {
 //        );
 //
 //
-//        return Optional.empty();
+        return Optional.empty();
 
     }
 
