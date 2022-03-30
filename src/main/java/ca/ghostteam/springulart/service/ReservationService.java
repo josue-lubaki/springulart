@@ -3,6 +3,7 @@ package ca.ghostteam.springulart.service;
 
 import ca.ghostteam.springulart.dto.ReservationDTO;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,9 +13,11 @@ import java.util.Optional;
  * @since 2022-03-27
  */
 public interface ReservationService {
+//    List<ReservationDTO> findAll(long idUserCurrent);
     List<ReservationDTO> findAll();
-    Optional<ReservationDTO> findById(String id);
+    Optional<ReservationDTO> findById(Long id);
     Optional<ReservationDTO> save(ReservationDTO reservation);
-    Optional<ReservationDTO> update(String id, ReservationDTO reservation);
-    void deleteById(String id);
+    Optional<ReservationDTO> update(Long id, ReservationDTO reservation);
+    void deleteReservationById(Long id);
+    long count();
 }

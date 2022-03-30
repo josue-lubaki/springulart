@@ -55,7 +55,7 @@ public class ReservationController {
 
     @ApiResponse(code = 200, message = "Successfully retrieved a reservation by id")
     @GetMapping("/{id}")
-    public ReservationDTO getReservationById(@PathVariable("id") String id){
+    public ReservationDTO getReservationById(@PathVariable("id") Long id){
         return this.reservationService
                 .findById(id)
                 .orElseThrow(() -> new IllegalStateException(String.format("Reservation with ID %s cannot found", id)));
@@ -71,7 +71,7 @@ public class ReservationController {
 
     @ApiResponse(code = 200, message = "Successfully updated a reservation")
     @PutMapping("/{id}")
-    public ReservationDTO updateReservation(@PathVariable("id") String id, @RequestBody ReservationDTO reservation){
+    public ReservationDTO updateReservation(@PathVariable("id") Long id, @RequestBody ReservationDTO reservation){
         // check if user has permission to do that
         if(dontDoThisOperation(id))
             throw new IllegalStateException("You are not authorized to update reservation with ID " + id);
@@ -83,18 +83,18 @@ public class ReservationController {
 
     @ApiResponse(code = 204, message = "Successfully deleted a reservation")
     @DeleteMapping("/{id}")
-    public void deleteReservation(@PathVariable("id") String id){
+    public void deleteReservation(@PathVariable("id") Long id){
         // check if user has permission to do that
         if(dontDoThisOperation(id))
             throw new IllegalStateException("You are not authorized to delete reservation with ID " + id);
 
-        this.reservationService.deleteById(id);
+        this.reservationService.deleteReservationById(id);
     }
 
     @ApiResponse(code = 200, message = "Successfully accepted a reservation")
     @PatchMapping("accept/{id}")
     @PreAuthorize("hasRole('ROLE_BARBER')")
-    public ReservationDTO acceptReservation(@PathVariable("id") String id, @RequestBody ReservationDTO reservation){
+    public ReservationDTO acceptReservation(@PathVariable("id") Long id, @RequestBody ReservationDTO reservation){
         // get headers informations
         String token = jwtTokenVerifier.extractJwtToken(request);
         DecodedJWT decodeJWTToken = jwtTokenVerifier.decodeJWT(token, jwtConfig.getSecretKey());
@@ -102,7 +102,7 @@ public class ReservationController {
         // Decode a token
         String username = decodeJWTToken.getSubject();
         UserDetailsDTO userDetails = (UserDetailsDTO) userService.loadUserByUsername(username);
-        int idUserWhoSentRequest = userDetails.getCredentials().getId(); // id User
+        long idUserWhoSentRequest = userDetails.getCredentials().getId(); // id User
 
         if(idUserWhoSentRequest == reservation.getClient().getId())
             throw new IllegalStateException("you cannot accept your own reservation");
@@ -125,7 +125,7 @@ public class ReservationController {
      * @param id reservationId to modify or delete
      * @return boolean
      * */
-    private boolean dontDoThisOperation(String  id) {
+    private boolean dontDoThisOperation(Long  id) {
         // get headers informations
         String token = jwtTokenVerifier.extractJwtToken(request);
         DecodedJWT decodeJWTToken = jwtTokenVerifier.decodeJWT(token, jwtConfig.getSecretKey());
@@ -133,13 +133,13 @@ public class ReservationController {
         // Decode a token
         String username = decodeJWTToken.getSubject();
         UserDetailsDTO userDetails = (UserDetailsDTO) userService.loadUserByUsername(username);
-        int idUserWhoSentRequest = userDetails.getCredentials().getId(); // id User
+        long idUserWhoSentRequest = userDetails.getCredentials().getId(); // id User
 
         // check if the user has this reservation
         ReservationDTO reservationDTO = this.reservationService.findById(id).get();
 
         // retrieve the owner reservation
-        int idOwnerReservation = reservationDTO.getClient().getId();
+        long idOwnerReservation = reservationDTO.getClient().getId();
 
         boolean isOwnerReservation = idOwnerReservation == idUserWhoSentRequest;
 
@@ -151,6 +151,18 @@ public class ReservationController {
 
         // Check if the user has the required authorization for this request and if user is the owner of reservation
         return !grantedAuthorities.contains(new SimpleGrantedAuthority("reservation:write")) || !isOwnerReservation;
+    }
+
+    private Long getIdUserCurrent(){
+        // get headers informations
+        String token = jwtTokenVerifier.extractJwtToken(request);
+        DecodedJWT decodeJWTToken = jwtTokenVerifier.decodeJWT(token, jwtConfig.getSecretKey());
+
+        // Decode a token
+        String username = decodeJWTToken.getSubject();
+        UserDetailsDTO userDetails = (UserDetailsDTO) userService.loadUserByUsername(username);
+
+        return userDetails.getCredentials().getId();
     }
 
 }

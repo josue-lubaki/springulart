@@ -17,4 +17,5 @@ public interface HaircutService {
     Optional<HaircutDTO> saveHaircut(HaircutDTO haircutDTO);
     Optional<HaircutDTO> updateHaircut(String id, HaircutDTO haircutDTO);
     void deleteHaircut(String id);
+    boolean existsHaircutById(String id);
 }

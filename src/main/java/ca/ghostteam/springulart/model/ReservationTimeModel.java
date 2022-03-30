@@ -1,11 +1,19 @@
 package ca.ghostteam.springulart.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import javax.persistence.*;
+import java.util.Set;
+
 @Data
-@AllArgsConstructor
+@Entity
+@Table(name = "reservation_time_model")
 public class ReservationTimeModel {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private Integer hours;
     private Integer minutes;
+
+    @OneToMany(mappedBy="reservationTime")
+    private Set<ReservationModel> reservationModel;
 }

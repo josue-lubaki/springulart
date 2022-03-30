@@ -8,6 +8,9 @@
 - java-jwt (Auth0)
 - springfox-swagger2
 - lombok
+- spring-boot-starter-data-jpa
+- thymeleaf
+- postgresql
 
 ## Developers
 - Josue Lubaki | [email](josue.lubaki@uqtr.ca) | [LinkedIn](https://www.linkedin.com/in/josue-lubaki/) | [Github](https://github.com/josue-lubaki)

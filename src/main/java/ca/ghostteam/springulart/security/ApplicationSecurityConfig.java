@@ -56,7 +56,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     public ApplicationSecurityConfig(UserService userDetailsService,
                                      PasswordEncoder passwordEncoder,
                                      JwtAuthenticationEntryPoint jwtEntryPoint,
-                                     @Qualifier("user-service-fake") UserService userService,
+                                     UserService userService,
                                      JwtConfig jwtConfig
                                      ) {
         this.userDetailsService = userDetailsService;
