@@ -25,5 +25,12 @@ public class UserModel {
     private boolean deleted = false;
 
     // clé étrangère UUID
-    private String id_address;
+    @ManyToOne
+    @JoinColumn(name="address_id", nullable=false)
+    private AddressModel address;
+
+    // clé étrangère
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "credential_id", referencedColumnName = "id")
+    private CredentialModel credential;
 }

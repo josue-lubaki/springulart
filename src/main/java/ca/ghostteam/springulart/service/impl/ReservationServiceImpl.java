@@ -68,21 +68,28 @@ public class ReservationServiceImpl implements ReservationService {
 
         // create time Reservation and Save it
         ReservationTimeDTO reservationTimeDTO = reservation.getReservationTime();
-        ReservationTimeModel reservationTimeSaved = reservationTimeService.save(reservationTimeDTO).get();
+        ReservationTimeDTO reservationTimeSaved = reservationTimeService.save(reservationTimeDTO).get();
 
         // create Location and save it
         LocationDTO locationModel = reservation.getLocation();
-        LocationModel locationSaved = locationService.save(locationModel).get();
+        LocationDTO locationSaved = locationService.save(locationModel).get();
 
+        // create ReservationModel
+        ReservationModel reservationModelToSave = new ReservationModel();
+        reservationModelToSave.setId(null);
+        reservationModelToSave.setBarber(null);
+        reservationModelToSave.setClient(client.getId());
+        reservationModelToSave.setHaircut(reservation.getHaircut().getId());
         // set foreign keys
-        ReservationModel reservationModelToSave = converterDtoToModel(reservation);
         reservationModelToSave.setReservationTime(reservationTimeSaved.getId());
         reservationModelToSave.setLocation(locationSaved.getId());
 
         ReservationModel reservationModelSaved = reservationRepository.save(reservationModelToSave);
-        reservation.setId(reservationModelSaved.getId());
 
-        return Optional.of(reservation);
+        // convert Model to DTO
+        ReservationDTO reservationDTO = converterModelToDTO(reservationModelSaved);
+
+        return Optional.of(reservationDTO);
     }
 
     @Override

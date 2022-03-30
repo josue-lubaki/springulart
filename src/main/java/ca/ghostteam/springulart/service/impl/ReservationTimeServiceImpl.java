@@ -26,22 +26,22 @@ public class ReservationTimeServiceImpl implements ReservationTimeService {
 
     @Override
     public Optional<ReservationTimeDTO> findById(Long id) {
-        return Optional.of(
-                converterModelToDTO(
-                        reservationTimeRepository
-                        .findById(id)
-                        .stream()
-                        .findFirst()
-                        .get()
-                )
-        );
+        ReservationTimeModel reservationModel = reservationTimeRepository
+                .findById(id)
+                .stream()
+                .findFirst()
+                .get();
+
+        return Optional.of(converterModelToDTO(reservationModel));
     }
 
     @Override
-    public Optional<ReservationTimeModel> save(ReservationTimeDTO reservationDTO) {
-        ReservationTimeModel reservationTimeModelSaved =
+    public Optional<ReservationTimeDTO> save(ReservationTimeDTO reservationDTO) {
+        ReservationTimeModel reservationModelSaved =
                 reservationTimeRepository.save(converterDtoToModel(reservationDTO));
-        return Optional.of(reservationTimeModelSaved);
+
+        ReservationTimeDTO reservationTimeDTOSaved = converterModelToDTO(reservationModelSaved);
+        return Optional.of(reservationTimeDTOSaved);
     }
 
     private ReservationTimeDTO converterModelToDTO(ReservationTimeModel reservationModel){
@@ -55,6 +55,7 @@ public class ReservationTimeServiceImpl implements ReservationTimeService {
 
     private ReservationTimeModel converterDtoToModel(ReservationTimeDTO reservationTimeDTO){
         ReservationTimeModel reservationTimeModel = new ReservationTimeModel();
+        reservationTimeModel.setId(null);
         reservationTimeModel.setHours(reservationTimeDTO.getHours());
         reservationTimeModel.setMinutes(reservationTimeDTO.getMinutes());
 

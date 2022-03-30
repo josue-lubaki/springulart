@@ -12,5 +12,5 @@ import java.util.Optional;
  */
 public interface LocationService {
     Optional<LocationDTO> findById(Long id);
-    Optional<LocationModel> save(LocationDTO Location);
+    Optional<LocationDTO> save(LocationDTO Location);
 }

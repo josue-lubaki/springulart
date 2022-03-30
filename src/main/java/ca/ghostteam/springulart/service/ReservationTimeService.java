@@ -12,5 +12,5 @@ import java.util.Optional;
  */
 public interface ReservationTimeService {
     Optional<ReservationTimeDTO> findById(Long id);
-    Optional<ReservationTimeModel> save(ReservationTimeDTO reservationModel);
+    Optional<ReservationTimeDTO> save(ReservationTimeDTO reservationModel);
 }

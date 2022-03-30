@@ -1,9 +1,6 @@
 package ca.ghostteam.springulart.service.impl;
 
-import ca.ghostteam.springulart.dto.AddressDTO;
-import ca.ghostteam.springulart.dto.SignupDTO;
-import ca.ghostteam.springulart.dto.UserDTO;
-import ca.ghostteam.springulart.dto.UserDetailsDTO;
+import ca.ghostteam.springulart.dto.*;
 import ca.ghostteam.springulart.model.AddressModel;
 import ca.ghostteam.springulart.model.CredentialModel;
 import ca.ghostteam.springulart.model.UserModel;
@@ -85,33 +82,50 @@ public class UserServiceImpl implements UserService {
 
         // extract AddressModel and save it
         AddressModel addressModel = extractAddressModel(signupDTO);
-        AddressModel addressSaved =
-                addressService
-                .saveAddressModel(addressModel)
-                .orElse(null);
+        AddressDTO addressSaved = addressService.saveAddressModel(addressModel).get();
 
         // id id_address into UserModel Object
-        assert addressSaved != null;
-        signupDTO.getAddress().setId(addressSaved.getId());
+        signupDTO.setAddress(addressSaved);
+        signupDTO.getAddress().setId(addressModel.getId());
 
         // created user
-        UserDTO userDTO = converterUserModelToUserDTO(
-                userRepository
-                .save(convertSignupDtoToUserModel(signupDTO))
-        );
+        UserModel user = extractUserModelToSignUp(signupDTO);
+        //user.getAddress().setId(addressModel.getId());
 
         // extract CredentialModel and save it
         // set id_user into UserModel Object
         CredentialModel credentialModel = extractCredentialModel(signupDTO);
-        credentialModel.setId_user(userDTO.getId());
-        credentialService.saveCredential(credentialModel).get();
+        credentialModel.setUser(user);
+        CredentialDTO credentialSaved = credentialService.saveCredential(credentialModel).get();
+        CredentialModel credentiaModelSaved = converterCredentialDtoToCredentialModel(credentialSaved);
+
+        user.setCredential(credentiaModelSaved);
+        UserModel userModelSaved = userRepository.save(user);
+
+        UserDTO userDTO = converterUserModelToUserDTO(userModelSaved);
+        userDTO.getAddress().setId(addressSaved.getId());
 
         return Optional.of(userDTO);
     }
 
+    /**
+     * Method to convert CredentialModel from CredentialDTO
+     * @param credentialDTO credentialDTO to extract
+     * @return CredentialModel
+     */
+    private CredentialModel converterCredentialDtoToCredentialModel(CredentialDTO credentialDTO) {
+        CredentialModel credentialModel = new CredentialModel();
+        credentialModel.setId(credentialDTO.getId());
+        credentialModel.setUsername(credentialDTO.getUsername());
+        credentialModel.setPassword(passwordEncoder.encode(credentialDTO.getPassword()));
+        credentialModel.setGrantedAuthority(credentialDTO.getGrantedAuthority());
+        credentialModel.setId(credentialDTO.getId());
+        return credentialModel;
+    }
+
     private CredentialModel extractCredentialModel(SignupDTO signupDTO) {
         CredentialModel credentialModel = new CredentialModel();
-        credentialModel.setId_user(null);
+        credentialModel.setUser(null);
         credentialModel.setUsername(signupDTO.getEmail());
         credentialModel.setPassword(passwordEncoder.encode(signupDTO.getPassword()));
         credentialModel.setGrantedAuthority(signupDTO.getRole());
@@ -153,7 +167,7 @@ public class UserServiceImpl implements UserService {
      * @param signupDTO SignupDTO object to convert
      * @return UserModel
      **/
-    private UserModel convertSignupDtoToUserModel(SignupDTO signupDTO) {
+    private UserModel extractUserModelToSignUp(SignupDTO signupDTO) {
         // create userModel
         UserModel userModel = new UserModel();
         userModel.setId(signupDTO.getId());
@@ -167,9 +181,25 @@ public class UserServiceImpl implements UserService {
         userModel.setDob(signupDTO.getDob());
         userModel.setCreated(LocalDate.now());
         userModel.setUpdated(LocalDate.now());
-        userModel.setId_address(signupDTO.getAddress().getId());
+        userModel.setAddress(convertAddressDtoTOAddressModel(signupDTO.getAddress()));
         userModel.setRole(signupDTO.getRole());
         return userModel;
+    }
+
+    /**
+     * Method to convert AddressDTO to AddressModel
+     * @param address AddressDTO object to convert
+     * @return AddressModel
+     **/
+    private AddressModel convertAddressDtoTOAddressModel(AddressDTO address) {
+        AddressModel addressModel = new AddressModel();
+        addressModel.setId(address.getId());
+        addressModel.setApartement(address.getApartement());
+        addressModel.setStreet(address.getStreet());
+        addressModel.setZip(address.getZip());
+        addressModel.setCity(address.getCity());
+        addressModel.setState(address.getState());
+        return addressModel;
     }
 
     /**
@@ -178,11 +208,7 @@ public class UserServiceImpl implements UserService {
      * @return UserDTO
      * */
     private UserDTO converterUserModelToUserDTO(UserModel userModel) {
-        // retrieve Address Information
-        AddressDTO addressModel =
-                addressService
-                .findAddressUserById(userModel.getId_address())
-                .orElse(null);
+        AddressDTO addressModel = convertAddressModelToAddressDTO(userModel.getAddress());
 
         UserDTO userDTO = new UserDTO();
         userDTO.setId(userModel.getId());
@@ -199,6 +225,22 @@ public class UserServiceImpl implements UserService {
         userDTO.setDeleted(userModel.isDeleted());
 
         return userDTO;
+    }
+
+    /**
+     * Method to convert AddressModel to AddressDTO
+     * @param address the AddressModel to convert
+     * @return AddressDTO
+     * */
+    private AddressDTO convertAddressModelToAddressDTO(AddressModel address) {
+        AddressDTO addressDTO = new AddressDTO();
+        addressDTO.setId(address.getId());
+        addressDTO.setApartement(address.getApartement());
+        addressDTO.setStreet(address.getStreet());
+        addressDTO.setZip(address.getZip());
+        addressDTO.setCity(address.getCity());
+        addressDTO.setState(address.getState());
+        return addressDTO;
     }
 
     /**

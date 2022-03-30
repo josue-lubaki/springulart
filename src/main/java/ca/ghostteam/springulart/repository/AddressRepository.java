@@ -14,7 +14,7 @@ import java.util.Optional;
  * @since 2022-03-29
  */
 @Repository
-public interface AddressRepository extends CrudRepository<AddressModel, String> {
+public interface AddressRepository extends CrudRepository<AddressModel, Long> {
     @Override
     @NonNull
     AddressModel save(AddressModel addressModel);

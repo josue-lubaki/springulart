@@ -9,6 +9,7 @@ import lombok.Data;
  */
 @Data
 public class AddressDTO {
+    private Long id;
     private String street;
     private String apartement;
     private String zip;

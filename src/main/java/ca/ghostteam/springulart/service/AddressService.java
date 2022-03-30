@@ -11,12 +11,12 @@ import java.util.Optional;
  * @since 2022-03-29
  */
 public interface AddressService {
-    Optional<AddressDTO> findAddressUserById(String id);
+    Optional<AddressDTO> findAddressUserById(Long id);
 
-    Optional<AddressModel> findAddressModelUserById(String id);
+    Optional<AddressModel> findAddressModelUserById(Long id);
 
     Optional<AddressDTO> saveAddress(AddressModel addressModel);
 
-    Optional<AddressModel> saveAddressModel(AddressModel addressModel);
+    Optional<AddressDTO> saveAddressModel(AddressModel addressModel);
 
 }

@@ -22,6 +22,6 @@ public class CredentialModel {
         private LocalDate created = LocalDate.now();
         private LocalDate updated = LocalDate.now();
 
-        // clé étrangère
-        private Long id_user;
+        @OneToOne(mappedBy="credential", cascade = CascadeType.ALL)
+        private UserModel user;
 }

@@ -16,7 +16,7 @@ public class ReservationModel {
     private LocalDate reservationDate = LocalDate.now();
     private Long reservationTime;
     private String haircut;
-    private String status;
+    private String status = "Non Traitée";
     private Long client;
     private Long barber;
     private Long location; // check frontend

@@ -1,5 +1,6 @@
 package ca.ghostteam.springulart;
 
+import ca.ghostteam.springulart.dto.AddressDTO;
 import ca.ghostteam.springulart.dto.HaircutDTO;
 import ca.ghostteam.springulart.dto.SignupDTO;
 import ca.ghostteam.springulart.model.AddressModel;
@@ -38,7 +39,7 @@ public class SpringulartApplication {
     // sample data
     private void initUsers(UserService userService) throws Exception {
         SignupDTO user1 = new SignupDTO();
-        AddressModel addressModel1 = new AddressModel();
+        AddressDTO addressModel1 = new AddressDTO();
         // set user information
         user1.setFname("Ismael");
         user1.setLname("Coulibaly");
@@ -59,7 +60,7 @@ public class SpringulartApplication {
         userService.saveUser(user1);
 
         SignupDTO user2 = new SignupDTO();
-        AddressModel addressModel2 = new AddressModel();
+        AddressDTO addressModel2 = new AddressDTO();
         // set user information
         user2.setFname("Josue");
         user2.setLname("Lubaki");
@@ -80,7 +81,7 @@ public class SpringulartApplication {
         userService.saveUser(user2);
 
         SignupDTO user3 = new SignupDTO();
-        AddressModel addressModel3 = new AddressModel();
+        AddressDTO addressModel3 = new AddressDTO();
         // set user information
         user3.setFname("Jonathan");
         user3.setLname("Kanyinda");

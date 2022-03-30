@@ -16,7 +16,7 @@ import java.util.Optional;
  */
 @Repository
 public interface UserRepository extends CrudRepository<UserModel, Long> {
-    @NonNull
+
     List<UserModel> findAll();
 
     @Query("select u from UserModel u where u.email = ?1")

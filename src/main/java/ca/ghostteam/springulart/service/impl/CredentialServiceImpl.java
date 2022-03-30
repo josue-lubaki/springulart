@@ -48,7 +48,7 @@ public class CredentialServiceImpl implements CredentialService {
         credential.setPassword(credentialModel.getPassword());
         credential.setCreated(credentialModel.getCreated());
         credential.setUpdated(credentialModel.getUpdated());
-        credential.setGrantedAuthority(credential.getGrantedAuthority());
+        credential.setGrantedAuthority(credentialModel.getGrantedAuthority());
         return credential;
     }
 
@@ -59,7 +59,7 @@ public class CredentialServiceImpl implements CredentialService {
         credential.setPassword(credentialDTO.getPassword());
         credential.setCreated(credentialDTO.getCreated());
         credential.setUpdated(credentialDTO.getUpdated());
-        credential.setGrantedAuthority(credential.getGrantedAuthority());
+        credential.setGrantedAuthority(credentialDTO.getGrantedAuthority());
         return credential;
     }
 }

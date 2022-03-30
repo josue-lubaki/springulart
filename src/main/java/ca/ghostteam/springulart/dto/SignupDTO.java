@@ -19,7 +19,7 @@ public class SignupDTO {
     private String password;
     private String imageURL;
     private LocalDate dob;
-    private AddressModel address;
+    private AddressDTO address;
     private String phone;
     private String role;
 }

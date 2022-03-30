@@ -25,7 +25,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Optional<AddressDTO> findAddressUserById(String id) {
+    public Optional<AddressDTO> findAddressUserById(Long id) {
         return addressRepository
                 .findById(id)
                 .stream()
@@ -34,7 +34,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Optional<AddressModel> findAddressModelUserById(String id) {
+    public Optional<AddressModel> findAddressModelUserById(Long id) {
         return addressRepository
                 .findById(id)
                 .stream()
@@ -52,14 +52,16 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Optional<AddressModel> saveAddressModel(AddressModel addressModel) {
+    public Optional<AddressDTO> saveAddressModel(AddressModel addressModel) {
         return Optional.of(
-                addressRepository
-                .save(addressModel)
+                converterAddressModelToAddressDTO(
+                    addressRepository
+                    .save(addressModel)
+                )
         );
     }
 
-    private AddressModel converterAddressDtoToAddressModel(AddressDTO addressDTO){
+    public AddressModel converterAddressDtoToAddressModel(AddressDTO addressDTO){
         AddressModel address = new AddressModel();
         address.setApartement(addressDTO.getApartement());
         address.setStreet(addressDTO.getStreet());
@@ -70,8 +72,9 @@ public class AddressServiceImpl implements AddressService {
         return address;
     }
 
-    private AddressDTO converterAddressModelToAddressDTO(AddressModel addressModel){
+    public AddressDTO converterAddressModelToAddressDTO(AddressModel addressModel){
         AddressDTO address = new AddressDTO();
+        address.setId(addressModel.getId());
         address.setApartement(addressModel.getApartement());
         address.setStreet(addressModel.getStreet());
         address.setState(addressModel.getState());

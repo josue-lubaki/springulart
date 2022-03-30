@@ -35,20 +35,26 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public Optional<LocationModel> save(LocationDTO Location) {
-        return Optional.of(locationRepository.save(converterDtoToModel(Location)));
+    public Optional<LocationDTO> save(LocationDTO Location) {
+        return Optional.of(
+                converterModelToDTO(
+                        locationRepository.save(converterDtoToModel(Location))
+                )
+        );
     }
 
     private LocationDTO converterModelToDTO(LocationModel locationModel){
         LocationDTO locationDTO = new LocationDTO();
+        locationDTO.setId(locationModel.getId());
         locationDTO.setLatitude(locationModel.getLatitude());
-        locationDTO.setLongitude(locationDTO.getLongitude());
+        locationDTO.setLongitude(locationModel.getLongitude());
 
         return locationDTO;
     }
 
     private LocationModel converterDtoToModel(LocationDTO locationDTO){
         LocationModel location = new LocationModel();
+        location.setId(null);
         location.setLatitude(locationDTO.getLatitude());
         location.setLongitude(locationDTO.getLongitude());
 
