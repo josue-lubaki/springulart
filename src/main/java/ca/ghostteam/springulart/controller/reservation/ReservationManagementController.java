@@ -27,13 +27,12 @@ public class ReservationManagementController {
     @ApiResponse(code = 200, message = "Successfully retrieved all reservations of User")
     @GetMapping()
     public List<ReservationDTO> getAllReservations(){
-
         return this.reservationService.findAll();
     }
 
     @ApiResponse(code = 200, message = "Successfully retrieved a reservation by id")
     @GetMapping("/{id}")
-    public ReservationDTO getReservationById(@PathVariable("id") String id){
+    public ReservationDTO getReservationById(@PathVariable("id") Long id){
         return this.reservationService
                 .findById(id)
                 .orElseThrow(() -> new IllegalStateException(String.format("Reservation with ID %s cannot found", id)));
@@ -49,7 +48,7 @@ public class ReservationManagementController {
 
     @ApiResponse(code = 200, message = "Successfully updated a reservation")
     @PutMapping("/{id}")
-    public ReservationDTO updateReservation(@PathVariable("id") String id, @RequestBody ReservationDTO reservation){
+    public ReservationDTO updateReservation(@PathVariable("id") Long id, @RequestBody ReservationDTO reservation){
         return this.reservationService
                 .update(id, reservation)
                 .orElseThrow(() -> new IllegalStateException(String.format("the reservation with ID %s was not updated", id)));
@@ -57,7 +56,7 @@ public class ReservationManagementController {
 
     @ApiResponse(code = 204, message = "Successfully deleted a reservation")
     @DeleteMapping("/{id}")
-    public void deleteReservation(@PathVariable("id") String id){
-        this.reservationService.deleteById(id);
+    public void deleteReservation(@PathVariable("id") Long id){
+        this.reservationService.deleteReservationById(id);
     }
 }
