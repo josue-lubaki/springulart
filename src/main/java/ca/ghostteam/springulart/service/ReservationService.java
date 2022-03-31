@@ -3,7 +3,6 @@ package ca.ghostteam.springulart.service;
 
 import ca.ghostteam.springulart.dto.ReservationDTO;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 

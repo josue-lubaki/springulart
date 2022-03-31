@@ -61,6 +61,11 @@ public class AddressServiceImpl implements AddressService {
         );
     }
 
+    /**
+     * Method to convert AddressDTO to AddressModel
+     * @param addressDTO AddressDTO to convert
+     * @return AddressModel
+     * */
     public AddressModel converterAddressDtoToAddressModel(AddressDTO addressDTO){
         AddressModel address = new AddressModel();
         address.setId(addressDTO.getId());
@@ -73,6 +78,11 @@ public class AddressServiceImpl implements AddressService {
         return address;
     }
 
+    /**
+     * Method to convert AddressModel to AddressDTO
+     * @param addressModel AddressModel to convert
+     * @return AddressDTO
+     * */
     public AddressDTO converterAddressModelToAddressDTO(AddressModel addressModel){
         AddressDTO address = new AddressDTO();
         address.setId(addressModel.getId());

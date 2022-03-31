@@ -1,12 +1,16 @@
 package ca.ghostteam.springulart.model;
 
-import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
 @Table(name = "reservation_model")
 public class ReservationModel {
@@ -16,7 +20,7 @@ public class ReservationModel {
     private String status = "Non Traitée";
 
     // foreign key,
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name="reservation_time_id", nullable=false, referencedColumnName = "id")
     private ReservationTimeModel reservationTime;
 
@@ -43,11 +47,13 @@ public class ReservationModel {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         ReservationModel that = (ReservationModel) o;
-
-        return id.equals(that.id);
+        return id != null && Objects.equals(id, that.id);
     }
 
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

@@ -1,7 +1,6 @@
 package ca.ghostteam.springulart.service;
 
 import ca.ghostteam.springulart.dto.ReservationTimeDTO;
-import ca.ghostteam.springulart.model.ReservationTimeModel;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;

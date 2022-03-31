@@ -1,12 +1,9 @@
 package ca.ghostteam.springulart.repository;
 
 import ca.ghostteam.springulart.model.AddressModel;
-import ca.ghostteam.springulart.model.CredentialModel;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
 
 /**
  * @author Josue Lubaki

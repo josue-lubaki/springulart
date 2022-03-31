@@ -99,10 +99,9 @@ public class UserServiceImpl implements UserService {
 
         // created user
         UserModel user = extractUserModelToSignUp(signupDTO);
-        //user.getAddress().setId(addressModel.getId());
+        user.getAddress().setId(addressModel.getId());
 
-        // extract CredentialModel and save it
-        // set id_user into UserModel Object
+        // extract CredentialModel and save it, and set id_user into UserModel Object
         CredentialModel credentialModel = extractCredentialModel(signupDTO);
         credentialModel.setUser(user);
         CredentialDTO credentialSaved = credentialService.saveCredential(credentialModel).get();
@@ -115,6 +114,23 @@ public class UserServiceImpl implements UserService {
         userDTO.getAddress().setId(addressSaved.getId());
 
         return Optional.of(userDTO);
+    }
+
+    @Override
+    public Optional<UserDTO> findUserById(Long id) {
+        return this.userRepository
+                .findById(id)
+                .map(this::converterUserModelToUserDTO);
+    }
+
+    @Override
+    public boolean existsUserByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public void deleteUserById(Long id) {
+        userRepository.deleteById(id);
     }
 
     /**
@@ -132,6 +148,11 @@ public class UserServiceImpl implements UserService {
         return credentialModel;
     }
 
+    /**
+     * Method to extract CredentialModel from SignupDTO
+     * @param signupDTO SignupDTO to extract
+     * @return CredentialModel
+     * */
     private CredentialModel extractCredentialModel(SignupDTO signupDTO) {
         CredentialModel credentialModel = new CredentialModel();
         credentialModel.setUser(null);
@@ -142,6 +163,11 @@ public class UserServiceImpl implements UserService {
         return credentialModel;
     }
 
+    /**
+     * Method to extract AddressModel from SignupDTO
+     * @param signupDTO SignupDTO to extract address
+     * @return AddressModel
+     * */
     private AddressModel extractAddressModel(SignupDTO signupDTO) {
         AddressModel addressModel = new AddressModel();
         addressModel.setId(null);
@@ -152,23 +178,6 @@ public class UserServiceImpl implements UserService {
         addressModel.setState(signupDTO.getAddress().getState());
 
         return addressModel;
-    }
-
-    @Override
-    public Optional<UserDTO> findUserById(Long id) {
-        return this.userRepository
-                .findById(id)
-                .map(this::converterUserModelToUserDTO);
-    }
-
-    @Override
-    public boolean existsUserByEmail(String email) {
-        return userRepository.existsByEmail(email);
-    }
-
-    @Override
-    public void deleteUserById(Long id) {
-            userRepository.deleteById(id);
     }
 
     /**

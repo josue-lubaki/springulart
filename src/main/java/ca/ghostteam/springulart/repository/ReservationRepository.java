@@ -8,8 +8,6 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
-import java.math.BigInteger;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,8 +25,6 @@ public interface ReservationRepository extends CrudRepository<ReservationModel, 
     @Override
     Optional<ReservationModel> findById(Long s);
 
-    void deleteReservationModelById(@NonNull Long reservationId);
-
     @Override
     @Modifying
     void deleteById(@NonNull Long id);
@@ -45,18 +41,6 @@ public interface ReservationRepository extends CrudRepository<ReservationModel, 
 
     @Override
     long count();
-
-    // insert query
-    @Query(value = "INSERT INTO reservation_model (id, reservation_date, reservation_time_id, status, client_id , haircut_id, location_id) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)", nativeQuery = true)
-    @Modifying(flushAutomatically = true)
-    void insertReservation(BigInteger reservationId,
-                           LocalDate reservationDate,
-                           Long reservationTime,
-                           String reservationStatus,
-                           Long reservationClientId,
-                           String reservationHaircutId,
-                           Long reservationLocationId);
-
 
     @Modifying(flushAutomatically = true)
     @Query(value = "UPDATE ReservationModel AS r SET r = ?2 WHERE r.id = ?1")

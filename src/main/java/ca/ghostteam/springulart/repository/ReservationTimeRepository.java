@@ -3,7 +3,6 @@ package ca.ghostteam.springulart.repository;
 import ca.ghostteam.springulart.model.ReservationTimeModel;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
@@ -27,14 +26,11 @@ public interface ReservationTimeRepository extends CrudRepository<ReservationTim
     @NonNull
     ReservationTimeModel save(@NonNull ReservationTimeModel reservationTimeModel);
 
-    // delete reservationTimeModel by id
     @Override
     void deleteById(@NonNull Long aLong);
 
-    // update reservationTimeModel by id and keep same id
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query("UPDATE ReservationTimeModel r SET r.hours = :hours, r.minutes = :minutes WHERE r.id = :id")
     void updateReservationTimeById(@Param("id") Long id, @Param("hours") Integer hours, @Param("minutes") Integer minutes);
-
 }

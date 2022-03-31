@@ -1,7 +1,6 @@
 package ca.ghostteam.springulart.service;
 
 import ca.ghostteam.springulart.dto.LocationDTO;
-import ca.ghostteam.springulart.model.LocationModel;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
