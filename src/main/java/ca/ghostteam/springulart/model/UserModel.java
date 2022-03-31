@@ -1,12 +1,17 @@
 package ca.ghostteam.springulart.model;
 
-import lombok.Data;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
 @Table(name = "user_model")
 public class UserModel {
@@ -36,9 +41,23 @@ public class UserModel {
     private CredentialModel credential;
 
     @OneToMany(mappedBy = "barber", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ToString.Exclude
     private Set<ReservationModel> reservationModelBarber;
 
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ToString.Exclude
     private Set<ReservationModel> reservationModelClient;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        UserModel userModel = (UserModel) o;
+        return id != null && Objects.equals(id, userModel.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

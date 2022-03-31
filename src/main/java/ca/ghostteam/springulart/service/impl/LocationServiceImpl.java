@@ -56,6 +56,11 @@ public class LocationServiceImpl implements LocationService {
         return Optional.of(converterModelToDTO(locationModel));
     }
 
+    /**
+     * Method to convert LocationModel to LocationDTO
+     * @param locationModel LocationModel to convert
+     * @return LocationDTO
+     **/
     private LocationDTO converterModelToDTO(LocationModel locationModel){
         LocationDTO locationDTO = new LocationDTO();
         locationDTO.setId(locationModel.getId());
@@ -65,6 +70,11 @@ public class LocationServiceImpl implements LocationService {
         return locationDTO;
     }
 
+    /**
+     * Method to convert LocationDTO to LocationModel
+     * @param locationDTO LocationDTO to convert
+     * @return LocationModel
+     * */
     private LocationModel converterDtoToModel(LocationDTO locationDTO){
         LocationModel location = new LocationModel();
         location.setId(null);

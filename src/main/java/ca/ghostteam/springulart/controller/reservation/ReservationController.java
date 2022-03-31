@@ -4,7 +4,6 @@ import ca.ghostteam.springulart.bean.JwtConfig;
 import ca.ghostteam.springulart.dto.ReservationDTO;
 import ca.ghostteam.springulart.dto.UserDTO;
 import ca.ghostteam.springulart.dto.UserDetailsDTO;
-import ca.ghostteam.springulart.security.ApplicationUserRole;
 import ca.ghostteam.springulart.security.jwt.filter.JwtTokenVerifier;
 import ca.ghostteam.springulart.service.ReservationService;
 import ca.ghostteam.springulart.service.UserService;

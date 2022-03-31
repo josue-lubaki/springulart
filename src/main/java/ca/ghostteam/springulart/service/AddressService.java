@@ -18,5 +18,4 @@ public interface AddressService {
     Optional<AddressDTO> saveAddress(AddressModel addressModel);
 
     Optional<AddressDTO> saveAddressModel(AddressModel addressModel);
-
 }

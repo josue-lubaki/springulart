@@ -41,6 +41,11 @@ public class CredentialServiceImpl implements CredentialService {
         ));
     }
 
+    /**
+     * Method to convert a CredentialModel to a CredentialDTO
+     * @param credentialModel CredentialModel to convert
+     * @return CredentialDTO
+     * */
     private CredentialDTO converterCrendentialModelToCredentialDTO(CredentialModel credentialModel){
         CredentialDTO credential = new CredentialDTO();
         credential.setId(credentialModel.getId());
@@ -52,6 +57,11 @@ public class CredentialServiceImpl implements CredentialService {
         return credential;
     }
 
+    /**
+     * Method to convert a CredentialDTO to a CredentialModel
+     * @param credentialDTO CredentialDTO to convert
+     * @return CredentialModel
+     * */
     private CredentialModel converterCrendentialDtoToCredentialModel(CredentialDTO credentialDTO){
         CredentialModel credential = new CredentialModel();
         credential.setId(credentialDTO.getId());

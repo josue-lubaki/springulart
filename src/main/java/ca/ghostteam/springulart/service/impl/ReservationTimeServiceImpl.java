@@ -57,6 +57,11 @@ public class ReservationTimeServiceImpl implements ReservationTimeService {
 
     }
 
+    /**
+     * Method to convert a ReservationTimeModel to a ReservationTimeDTO
+     * @param reservationModel ReservationTimeModel to be converted to ReservationTimeDTO
+     * @return ReservationTimeDTO
+     * */
     private ReservationTimeDTO converterModelToDTO(ReservationTimeModel reservationModel){
         ReservationTimeDTO reservationDTO = new ReservationTimeDTO();
         reservationDTO.setId(reservationModel.getId());
@@ -66,6 +71,11 @@ public class ReservationTimeServiceImpl implements ReservationTimeService {
         return reservationDTO;
     }
 
+    /**
+     * Method to convert a ReservationTimeDTO to a ReservationTimeModel
+     * @param reservationTimeDTO ReservationTimeDTO to be converted to ReservationTimeModel
+     * @return ReservationTimeModel
+     * */
     private ReservationTimeModel converterDtoToModel(ReservationTimeDTO reservationTimeDTO){
         ReservationTimeModel reservationTimeModel = new ReservationTimeModel();
         reservationTimeModel.setId(null);

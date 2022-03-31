@@ -4,7 +4,6 @@ import ca.ghostteam.springulart.dto.SignupDTO;
 import ca.ghostteam.springulart.dto.UserDTO;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import javax.net.ssl.SSLSession;
 import java.util.List;
 import java.util.Optional;
 

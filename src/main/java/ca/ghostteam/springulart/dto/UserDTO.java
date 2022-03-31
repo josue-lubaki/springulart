@@ -1,6 +1,5 @@
 package ca.ghostteam.springulart.dto;
 
-import ca.ghostteam.springulart.model.AddressModel;
 import lombok.Data;
 
 import java.time.LocalDate;

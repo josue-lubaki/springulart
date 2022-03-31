@@ -8,9 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -69,8 +70,7 @@ public class ReservationServiceImpl implements ReservationService {
         if(!existClient || !existHaircutDTO)
             throw new IllegalStateException("haircut not found");
 
-        // convert userDTO to userModel
-        // and haircutDTO to haircutModel
+        // convert userDTO to userModel and haircutDTO to haircutModel
         UserModel userModel = converterEntityDtoTOEntityModel(client);
         HaircutModel haircutModel = converterHaircutDtoToHaircutModel(haircut);
 
@@ -99,21 +99,17 @@ public class ReservationServiceImpl implements ReservationService {
         reservationModelToSave.setReservationTime(reservationTime);
         reservationModelToSave.setLocation(location);
 
-        ReservationModel reservationModelSaved = reservationRepository.save(reservationModelToSave);
-
         // set foreign keys values
         reservationTime.setReservationModel(Set.of(reservationModelToSave));
         location.setReservationModel(reservationModelToSave);
-
         haircutModel.setReservationModel(Set.of(reservationModelToSave));
-
-        // convert Model to DTO
         userModel.setReservationModelClient(Set.of(reservationModelToSave));
 
         if (Objects.nonNull(barber)) {
             barber.setReservationModelBarber(Set.of(reservationModelToSave));
         }
 
+        ReservationModel reservationModelSaved = reservationRepository.save(reservationModelToSave);
         ReservationDTO reservationDTO = converterModelToDTO(reservationModelSaved);
 
         return Optional.of(reservationDTO);
@@ -125,22 +121,23 @@ public class ReservationServiceImpl implements ReservationService {
         // get reservation
         ReservationDTO reservationModelToUpdate =
                 converterModelToDTO(
-                        reservationRepository
-                                .findById(id)
-                                .orElseThrow(() ->
-                                        new IllegalStateException(String.format("Reservation with ID %s cannot found", id)))
-                );
+                reservationRepository
+                .findById(id)
+                .orElseThrow(
+                    () -> new IllegalStateException(String.format("Reservation with ID %s cannot found", id))
+                )
+        );
 
         // Modify reservationTime and Location of reservation
         ReservationTimeDTO reservationTimeDTO = reservation.getReservationTime();
         reservationTimeDTO.setId(reservationModelToUpdate.getReservationTime().getId());
-        ReservationTimeDTO reservationTimeSaved = reservationTimeService.update(id, reservationTimeDTO).get();
+        reservationTimeService.update(id, reservationTimeDTO).get();
 
         LocationDTO locationDTO = reservation.getLocation();
         locationDTO.setId(reservationModelToUpdate.getLocation().getId());
-        LocationDTO locationSaved = locationService.update(id, locationDTO).get();
+        locationService.update(id, locationDTO).get();
 
-        // retireve again reservation with new values
+        // retrieve again reservation with new values
         reservationModelToUpdate = converterModelToDTO(
                 reservationRepository
                 .findById(id)
@@ -148,43 +145,20 @@ public class ReservationServiceImpl implements ReservationService {
                 )
         );
 
-        // return reservation
+        // return reservation with new values
         return Optional.of(reservationModelToUpdate);
-
-        //  and updated information
-//        reservationModelToUpdate.setReservationTime(reservation.getReservationTime());
-//        reservationModelToUpdate.setReservationDate(reservation.getReservationDate());
-//        reservationModelToUpdate.setClient(reservation.getClient());
-//        reservationModelToUpdate.setStatus(reservation.getStatus());
-//        reservationModelToUpdate.setHaircut(reservation.getHaircut());
-//        reservationModelToUpdate.setBarber(reservation.getBarber());
-//        reservationModelToUpdate.setLocation(reservation.getLocation());
-//
-//        reservation.setId(reservationModelToUpdate.getId());
-//
-//        // updated reservation and save it
-//        ReservationModel reservationModel = converterDtoToModel(reservationModelToUpdate);
-//        reservationRepository.update(id, reservationModel);
-
-        // return updated reservation
-//         return Optional.of(converterModelToDTO(modelSave));
-
-//        reservationRepository.insertReservation(
-//                reservationModel.getId(),
-//                reservationModel.getReservationDate(),
-//                reservationModel.getReservationTime().getId(),
-//                reservationModel.getStatus(),
-//                reservationModel.getClient().getId(),
-//                reservationModel.getHaircut().getId(),
-//                reservationModel.getLocation().getId()
-//
-//        );
-//
-//
-//        return Optional.empty();
-
     }
 
+
+    @Override
+    public void deleteReservationById(Long id) {
+        reservationRepository.deleteById(id);
+    }
+
+    @Override
+    public long count() {
+        return reservationRepository.findAll().size();
+    }
 
     /**
      * Method to convert a LocationDTO to a LocationModel
@@ -339,22 +313,6 @@ public class ReservationServiceImpl implements ReservationService {
         haircutDTO.setImageURL(haircutModel.getImageURL());
         haircutDTO.setEstimatedTime(haircutModel.getEstimatedTime());
         return haircutDTO;
-    }
-
-
-    // convert LocalDate to Date
-    private Date convertLocalDateToDate(LocalDate localDate) {
-        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-    }
-
-    @Override
-    public void deleteReservationById(Long id) {
-        reservationRepository.deleteById(id);
-    }
-
-    @Override
-    public long count() {
-        return reservationRepository.findAll().size();
     }
 
     /**
