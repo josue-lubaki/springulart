@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
@@ -31,7 +32,7 @@ public class SwaggerConfig {
     private static final String CONTACT_URL = "https://josue-lubaki.ca";
     private static final String CONTACT_EMAIL = "josue.lubaki@uqtr.ca | ismael.coulibaly@uqtr.ca | jonathan.kanyinda@uqtr.ca";
     public static final String AUTHORIZATION_HEADER = "Authorization";
-    public static final String DEFAULT_INCLUDE_PATTERN =  "/*";
+    public static final String DEFAULT_INCLUDE_PATTERN =  "(/.*)";
 
     /**
      * Information about the API
@@ -60,6 +61,7 @@ public class SwaggerConfig {
                 .securitySchemes(List.of(apiKey()))
                 .useDefaultResponseMessages(false)
                 .select()
+                .apis(RequestHandlerSelectors.basePackage("ca.ghostteam.springulart"))
                 .paths(PathSelectors.regex(DEFAULT_INCLUDE_PATTERN))
                 .build();
     }

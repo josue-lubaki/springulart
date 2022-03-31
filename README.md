@@ -11,6 +11,7 @@
 - spring-boot-starter-data-jpa
 - thymeleaf
 - postgresql
+- Liquibase (Migration)
 
 ## Developers
 - Josue Lubaki | [email](josue.lubaki@uqtr.ca) | [LinkedIn](https://www.linkedin.com/in/josue-lubaki/) | [Github](https://github.com/josue-lubaki)
