@@ -6,8 +6,8 @@ import ca.ghostteam.springulart.repository.ReservationRepository;
 import ca.ghostteam.springulart.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -39,16 +39,6 @@ public class ReservationServiceImpl implements ReservationService {
         this.reservationTimeService = reservationTimeService;
         this.locationService = locationService;
     }
-
-//    @Override
-//    public List<ReservationDTO> findAll(long idUserWhoSentRequest) {
-//        return reservationRepository
-//                .findAll()
-//                .stream()
-//                .filter(r -> r.getClient().getId() == idUserWhoSentRequest)
-//                .map(this::converterModelToDTO)
-//                .collect(Collectors.toList());
-//    }
 
     @Override
     public List<ReservationDTO> findAll() {
@@ -128,6 +118,73 @@ public class ReservationServiceImpl implements ReservationService {
 
         return Optional.of(reservationDTO);
     }
+
+    @Transactional
+    @Override
+    public Optional<ReservationDTO> update(Long id, ReservationDTO reservation) {
+        // get reservation
+        ReservationDTO reservationModelToUpdate =
+                converterModelToDTO(
+                        reservationRepository
+                                .findById(id)
+                                .orElseThrow(() ->
+                                        new IllegalStateException(String.format("Reservation with ID %s cannot found", id)))
+                );
+
+        // Modify reservationTime and Location of reservation
+        ReservationTimeDTO reservationTimeDTO = reservation.getReservationTime();
+        reservationTimeDTO.setId(reservationModelToUpdate.getReservationTime().getId());
+        ReservationTimeDTO reservationTimeSaved = reservationTimeService.update(id, reservationTimeDTO).get();
+
+        LocationDTO locationDTO = reservation.getLocation();
+        locationDTO.setId(reservationModelToUpdate.getLocation().getId());
+        LocationDTO locationSaved = locationService.update(id, locationDTO).get();
+
+        // retireve again reservation with new values
+        reservationModelToUpdate = converterModelToDTO(
+                reservationRepository
+                .findById(id)
+                .orElseThrow(() -> new IllegalStateException(String.format("Reservation with ID %s cannot found", id))
+                )
+        );
+
+        // return reservation
+        return Optional.of(reservationModelToUpdate);
+
+        //  and updated information
+//        reservationModelToUpdate.setReservationTime(reservation.getReservationTime());
+//        reservationModelToUpdate.setReservationDate(reservation.getReservationDate());
+//        reservationModelToUpdate.setClient(reservation.getClient());
+//        reservationModelToUpdate.setStatus(reservation.getStatus());
+//        reservationModelToUpdate.setHaircut(reservation.getHaircut());
+//        reservationModelToUpdate.setBarber(reservation.getBarber());
+//        reservationModelToUpdate.setLocation(reservation.getLocation());
+//
+//        reservation.setId(reservationModelToUpdate.getId());
+//
+//        // updated reservation and save it
+//        ReservationModel reservationModel = converterDtoToModel(reservationModelToUpdate);
+//        reservationRepository.update(id, reservationModel);
+
+        // return updated reservation
+//         return Optional.of(converterModelToDTO(modelSave));
+
+//        reservationRepository.insertReservation(
+//                reservationModel.getId(),
+//                reservationModel.getReservationDate(),
+//                reservationModel.getReservationTime().getId(),
+//                reservationModel.getStatus(),
+//                reservationModel.getClient().getId(),
+//                reservationModel.getHaircut().getId(),
+//                reservationModel.getLocation().getId()
+//
+//        );
+//
+//
+//        return Optional.empty();
+
+    }
+
 
     /**
      * Method to convert a LocationDTO to a LocationModel
@@ -284,54 +341,6 @@ public class ReservationServiceImpl implements ReservationService {
         return haircutDTO;
     }
 
-    @Override
-    public Optional<ReservationDTO> update(Long id, ReservationDTO reservation) {
-        // get reservation
-        ReservationDTO reservationModelToUpdate =
-                converterModelToDTO(
-                    reservationRepository
-                    .findById(id)
-                    .orElseThrow(() ->
-                            new IllegalStateException(String.format("Reservation with ID %s cannot found", id)))
-                );
-
-        //  and updated information
-        reservationModelToUpdate.setReservationTime(reservation.getReservationTime());
-        reservationModelToUpdate.setReservationDate(reservation.getReservationDate());
-        reservationModelToUpdate.setClient(reservation.getClient());
-        reservationModelToUpdate.setStatus(reservation.getStatus());
-        reservationModelToUpdate.setHaircut(reservation.getHaircut());
-        reservationModelToUpdate.setBarber(reservation.getBarber());
-        reservationModelToUpdate.setLocation(reservation.getLocation());
-
-        reservation.setId(reservationModelToUpdate.getId());
-
-        // delete old reservation and save new one
-        // deleteReservationById(id);
-
-        // updated reservation and save it
-        ReservationModel reservationModel = converterDtoToModel(reservationModelToUpdate);
-//        ReservationModel modelSave = reservationRepository.save(reservationModel);
-        reservationRepository.update(id, reservationModel);
-
-        // return updated reservation
-//         return Optional.of(converterModelToDTO(modelSave));
-
-//        reservationRepository.insertReservation(
-//                reservationModel.getId(),
-//                reservationModel.getReservationDate(),
-//                reservationModel.getReservationTime().getId(),
-//                reservationModel.getStatus(),
-//                reservationModel.getClient().getId(),
-//                reservationModel.getHaircut().getId(),
-//                reservationModel.getLocation().getId()
-//
-//        );
-//
-//
-        return Optional.empty();
-
-    }
 
     // convert LocalDate to Date
     private Date convertLocalDateToDate(LocalDate localDate) {

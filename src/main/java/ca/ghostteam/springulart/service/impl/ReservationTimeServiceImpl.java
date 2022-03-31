@@ -44,6 +44,19 @@ public class ReservationTimeServiceImpl implements ReservationTimeService {
         return Optional.of(reservationTimeDTOSaved);
     }
 
+    @Override
+    public Optional<ReservationTimeDTO> update(Long id, ReservationTimeDTO reservationModel) {
+        reservationTimeRepository.updateReservationTimeById(id, reservationModel.getHours(), reservationModel.getMinutes());
+        // get the updated reservation time
+        ReservationTimeModel reservationTimeModel = reservationTimeRepository.findById(id).get();
+        return Optional.of(converterModelToDTO(reservationTimeModel));
+    }
+
+    @Override
+    public void delete(Long id) {
+
+    }
+
     private ReservationTimeDTO converterModelToDTO(ReservationTimeModel reservationModel){
         ReservationTimeDTO reservationDTO = new ReservationTimeDTO();
         reservationDTO.setId(reservationModel.getId());
