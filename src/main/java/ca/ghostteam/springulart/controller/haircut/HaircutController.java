@@ -2,6 +2,7 @@ package ca.ghostteam.springulart.controller.haircut;
 
 import ca.ghostteam.springulart.dto.HaircutDTO;
 import ca.ghostteam.springulart.service.HaircutService;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,12 +28,14 @@ public class HaircutController {
     }
 
     @ApiResponse(code = 200, message = "Successfully retrieved all haircuts")
+    @ApiOperation(value = "Get all haircuts")
     @GetMapping
     public List<HaircutDTO> getHaircuts() {
         return haircutService.findAllHaircuts();
     }
 
     @ApiResponse(code = 200, message = "Successfully retrieved haircut")
+    @ApiOperation(value = "Get haircut by id")
     @GetMapping("/{id}")
     public HaircutDTO getHaircut(@PathVariable("id") String id) {
         return haircutService

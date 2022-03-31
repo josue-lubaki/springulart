@@ -27,8 +27,7 @@ public class SpringulartApplication {
 
     @Bean
     CommandLineRunner run(UserService userService,
-                          HaircutService haircutService,
-                          ReservationService reservationService){
+                          HaircutService haircutService){
         return args -> {
             initHaircuts(haircutService);
             initUsers(userService);

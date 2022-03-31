@@ -1,11 +1,12 @@
 package ca.ghostteam.springulart.controller.user;
 
-import ca.ghostteam.springulart.bean.JwtConfig;
+import ca.ghostteam.springulart.config.bean.JwtConfig;
 import ca.ghostteam.springulart.dto.*;
 import ca.ghostteam.springulart.security.ApplicationUserRole;
 import ca.ghostteam.springulart.service.UserService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.MediaType;
@@ -53,6 +54,7 @@ public class AuthController {
             @ApiResponse(code=200, message = "OK", response = LoginDTO.class),
             @ApiResponse(code=400, message = "Bad Request"),
     })
+    @ApiOperation(value = "Login", notes = "Login to the application")
     @PostMapping(value = "/login",  produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<LoginDTO> authenticateUser(@RequestBody AuthDTO authDTO) throws BadCredentialsException {
 
@@ -83,6 +85,7 @@ public class AuthController {
             @ApiResponse(code=201, message = "Successfully created an account", response = UserDTO.class),
             @ApiResponse(code=400, message = "Bad Request"),
     })
+    @ApiOperation(value = "Register", notes = "Register to the application")
     @PostMapping(value ="/register", produces = {MediaType.APPLICATION_JSON_VALUE})
     public UserDTO registerUser(@RequestBody SignupDTO signupDTO) throws Exception {
         // if user already exists

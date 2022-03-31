@@ -1,6 +1,6 @@
 package ca.ghostteam.springulart.security.jwt.filter;
 
-import ca.ghostteam.springulart.bean.JwtConfig;
+import ca.ghostteam.springulart.config.bean.JwtConfig;
 import ca.ghostteam.springulart.service.UserService;
 import ca.ghostteam.springulart.dto.UserDetailsDTO;
 import com.auth0.jwt.JWT;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.crypto.SecretKey;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

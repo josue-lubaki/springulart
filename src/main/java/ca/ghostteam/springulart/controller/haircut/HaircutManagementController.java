@@ -2,6 +2,7 @@ package ca.ghostteam.springulart.controller.haircut;
 
 import ca.ghostteam.springulart.dto.HaircutDTO;
 import ca.ghostteam.springulart.service.HaircutService;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.MediaType;
@@ -31,6 +32,7 @@ public class HaircutManagementController {
             @ApiResponse(code=200, message = "OK", response = HaircutDTO.class),
             @ApiResponse(code=400, message = "Bad Request"),
     })
+    @ApiOperation(value = "Get all haircuts")
     @GetMapping
     public List<HaircutDTO> getHaircuts() {
         return this.haircutService.findAllHaircuts();
@@ -41,6 +43,7 @@ public class HaircutManagementController {
             @ApiResponse(code=200, message = "OK", response = HaircutDTO.class),
             @ApiResponse(code=400, message = "Bad Request"),
     })
+    @ApiOperation(value = "Get haircut by ID")
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public HaircutDTO getHaircut(@PathVariable("id") String id) {
         return this.haircutService
@@ -53,6 +56,7 @@ public class HaircutManagementController {
             @ApiResponse(code=201, message = "Created", response = HaircutDTO.class),
             @ApiResponse(code=400, message = "Bad Request"),
     })
+    @ApiOperation(value = "Create haircut")
     @PostMapping
     @PreAuthorize("hasAuthority('haircut:write')")
     public HaircutDTO createHaircut(@RequestBody HaircutDTO haircutDTO) {
@@ -66,6 +70,7 @@ public class HaircutManagementController {
             @ApiResponse(code=200, message = "Deleted hair"),
             @ApiResponse(code=400, message = "Bad Request"),
     })
+    @ApiOperation(value = "Delete haircut")
     @DeleteMapping(path = "/{haircutId}")
     @PreAuthorize("hasAuthority('haircut:write')")
     public void deleteHaircut(@PathVariable("haircutId") String haircutId){
@@ -77,6 +82,7 @@ public class HaircutManagementController {
             @ApiResponse(code=200, message = "Updated hair"),
             @ApiResponse(code=400, message = "Bad Request"),
     })
+    @ApiOperation(value = "Update haircut")
     @PutMapping(path = "/{haircutId}")
     @PreAuthorize("hasAuthority('haircut:write')")
     public HaircutDTO updateHaircut(@PathVariable("haircutId") String haircutId,

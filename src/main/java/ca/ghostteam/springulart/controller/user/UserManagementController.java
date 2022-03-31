@@ -3,6 +3,7 @@ package ca.ghostteam.springulart.controller.user;
 import ca.ghostteam.springulart.dto.SignupDTO;
 import ca.ghostteam.springulart.dto.UserDTO;
 import ca.ghostteam.springulart.service.UserService;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,12 +28,14 @@ public class UserManagementController {
     }
 
     @ApiResponse(code = 200, message = "Successfully retrieved all users")
+    @ApiOperation(value = "Get all users")
     @GetMapping()
     public List<UserDTO> getUsers() {
         return userService.findAllUsers();
     }
 
     @ApiResponse(code = 200, message = "Successfully retrieved a user")
+    @ApiOperation(value = "Get a user by ID")
     @GetMapping("/{userId}")
     public UserDTO getUser(@PathVariable("userId") Long userId) {
         return userService
@@ -48,6 +51,7 @@ public class UserManagementController {
             @ApiResponse(code=200, message = "OK"),
             @ApiResponse(code=400, message = "Bad Request"),
     })
+    @ApiOperation(value = "Create a new user")
     @PostMapping()
     public UserDTO registerNewUser(@RequestBody SignupDTO signupDTO) throws Exception {
         // check if user already exists
@@ -60,6 +64,7 @@ public class UserManagementController {
     }
 
     @ApiResponse(code = 204, message = "Successfully Deleted a user")
+    @ApiOperation(value = "Delete a user by ID")
     @DeleteMapping(path = "{userId}")
     public void deleteUser(@PathVariable("userId") Long userId){
         userService.deleteUserById(userId);
@@ -67,6 +72,7 @@ public class UserManagementController {
 
 
     @ApiResponse(code = 200, message = "Successfully updated a user")
+    @ApiOperation(value = "Update a user by ID")
     @PutMapping(path = "{userId}")
     public UserDTO updateUser(@PathVariable("userId") Long userId, @RequestBody UserDTO userDTO) throws Exception {
         return this.userService

@@ -1,10 +1,10 @@
-package ca.ghostteam.springulart.security;
+package ca.ghostteam.springulart.config;
 
+import ca.ghostteam.springulart.security.ApplicationUserRole;
 import ca.ghostteam.springulart.service.UserService;
 import ca.ghostteam.springulart.security.jwt.JwtAuthenticationEntryPoint;
-import ca.ghostteam.springulart.bean.JwtConfig;
+import ca.ghostteam.springulart.config.bean.JwtConfig;
 import ca.ghostteam.springulart.security.jwt.filter.JwtTokenVerifier;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +17,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 /**
  * @author Josue Lubaki
@@ -30,9 +33,15 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] PUBLIC_ENDPOINTS = {
             "/",
-            "index",
+            "/index",
             "/auth/login",
-            "/auth/register"
+            "/auth/register",
+
+            // swagger
+            "/v2/api-docs",
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/webjars/**"
     };
 
     private static final String[] CLIENT_BARBER_ENDPOINTS = {
@@ -86,6 +95,13 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(new JwtTokenVerifier(jwtConfig,userDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtEntryPoint);
+    }
+
+    @Bean
+    public BasicAuthenticationEntryPoint swaggerAuthenticationEntryPoint() {
+        BasicAuthenticationEntryPoint entryPoint = new BasicAuthenticationEntryPoint();
+        entryPoint.setRealmName("Swagger Realm");
+        return entryPoint;
     }
 
     @Override
