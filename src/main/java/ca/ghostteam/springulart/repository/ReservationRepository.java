@@ -48,7 +48,7 @@ public interface ReservationRepository extends CrudRepository<ReservationModel, 
 
     // insert query
     @Query(value = "INSERT INTO reservation_model (id, reservation_date, reservation_time_id, status, client_id , haircut_id, location_id) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)", nativeQuery = true)
-    @Modifying
+    @Modifying(flushAutomatically = true)
     void insertReservation(BigInteger reservationId,
                            LocalDate reservationDate,
                            Long reservationTime,
@@ -58,12 +58,12 @@ public interface ReservationRepository extends CrudRepository<ReservationModel, 
                            Long reservationLocationId);
 
 
-    @Modifying
+    @Modifying(flushAutomatically = true)
     @Query(value = "UPDATE ReservationModel AS r SET r = ?2 WHERE r.id = ?1")
     void update(Long id, @NonNull ReservationModel entity);
 
     // flush query
-    @Modifying
+    @Modifying(flushAutomatically = true)
     @Query(value = "SELECT * FROM reservation_model", nativeQuery = true)
     List<ReservationModel> flush();
 }

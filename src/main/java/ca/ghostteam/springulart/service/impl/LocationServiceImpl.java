@@ -43,6 +43,19 @@ public class LocationServiceImpl implements LocationService {
         );
     }
 
+    @Override
+    public Optional<LocationDTO> update(Long id, LocationDTO Location) {
+        locationRepository.updateLocationById(id, Location.getLatitude(), Location.getLongitude());
+        LocationModel locationModel =
+                locationRepository
+                        .findById(id)
+                        .stream()
+                        .findFirst()
+                        .get();
+
+        return Optional.of(converterModelToDTO(locationModel));
+    }
+
     private LocationDTO converterModelToDTO(LocationModel locationModel){
         LocationDTO locationDTO = new LocationDTO();
         locationDTO.setId(locationModel.getId());

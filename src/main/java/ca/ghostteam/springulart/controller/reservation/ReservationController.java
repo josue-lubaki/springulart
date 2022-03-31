@@ -4,6 +4,7 @@ import ca.ghostteam.springulart.bean.JwtConfig;
 import ca.ghostteam.springulart.dto.ReservationDTO;
 import ca.ghostteam.springulart.dto.UserDTO;
 import ca.ghostteam.springulart.dto.UserDetailsDTO;
+import ca.ghostteam.springulart.security.ApplicationUserRole;
 import ca.ghostteam.springulart.security.jwt.filter.JwtTokenVerifier;
 import ca.ghostteam.springulart.service.ReservationService;
 import ca.ghostteam.springulart.service.UserService;
@@ -96,12 +97,7 @@ public class ReservationController {
     @PreAuthorize("hasRole('ROLE_BARBER')")
     public ReservationDTO acceptReservation(@PathVariable("id") Long id, @RequestBody ReservationDTO reservation){
         // get headers informations
-        String token = jwtTokenVerifier.extractJwtToken(request);
-        DecodedJWT decodeJWTToken = jwtTokenVerifier.decodeJWT(token, jwtConfig.getSecretKey());
-
-        // Decode a token
-        String username = decodeJWTToken.getSubject();
-        UserDetailsDTO userDetails = (UserDetailsDTO) userService.loadUserByUsername(username);
+        UserDetailsDTO userDetails = getUserDetailsDTOForUserSentRequest();
         long idUserWhoSentRequest = userDetails.getCredentials().getId(); // id User
 
         if(idUserWhoSentRequest == reservation.getClient().getId())
@@ -153,16 +149,37 @@ public class ReservationController {
         return !grantedAuthorities.contains(new SimpleGrantedAuthority("reservation:write")) || !isOwnerReservation;
     }
 
+    /**
+     * Method that returns ID of the user who sent the request
+     * @return Long
+     **/
     private Long getIdUserCurrent(){
+        UserDetailsDTO userDetails = getUserDetailsDTOForUserSentRequest();
+        return userDetails.getCredentials().getId();
+    }
+
+    /**
+     * Method to extract the Role of user sent request
+     * @return String
+     * */
+    private String getRoleUserSentRequest() {
+        UserDetailsDTO userDetails = getUserDetailsDTOForUserSentRequest();
+        return userDetails.getCredentials().getGrantedAuthority();
+    }
+
+    /**
+     * Method to extract the UserDetailsDTO of user sent request
+     * @return UserDetailsDTO
+     * @throws IllegalStateException if the user is not found
+     * */
+    private UserDetailsDTO getUserDetailsDTOForUserSentRequest() {
         // get headers informations
         String token = jwtTokenVerifier.extractJwtToken(request);
         DecodedJWT decodeJWTToken = jwtTokenVerifier.decodeJWT(token, jwtConfig.getSecretKey());
 
         // Decode a token
         String username = decodeJWTToken.getSubject();
-        UserDetailsDTO userDetails = (UserDetailsDTO) userService.loadUserByUsername(username);
-
-        return userDetails.getCredentials().getId();
+        return (UserDetailsDTO) userService.loadUserByUsername(username);
     }
 
 }
