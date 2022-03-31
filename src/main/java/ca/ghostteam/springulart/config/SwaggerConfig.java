@@ -1,0 +1,98 @@
+package ca.ghostteam.springulart.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.ResponseEntity;
+import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.service.*;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.List;
+
+/**
+ * @author Josue Lubaki
+ * @version 1.0
+ * @since 2022-03-31
+ */
+@Configuration
+@EnableSwagger2
+public class SwaggerConfig {
+    private static final String API_VERSION = "2.0";
+    private static final String TITLE = "Springular REST API";
+    private static final String DESCRIPTION = "Springular REST API";
+    private static final String TERMS_OF_SERVICE_URL = "http://springular.com/terms-of-service";
+    private static final String LICENSE = "Apache License Version 2.0";
+    private static final String LICENSE_URL = "";
+    private static final String CONTACT_NAME = "Josue Lubaki | Ismael Coulibaly | Jonathan Kanyinda";
+    private static final String CONTACT_URL = "https://josue-lubaki.ca";
+    private static final String CONTACT_EMAIL = "josue.lubaki@uqtr.ca | ismael.coulibaly@uqtr.ca | jonathan.kanyinda@uqtr.ca";
+    public static final String AUTHORIZATION_HEADER = "Authorization";
+    public static final String DEFAULT_INCLUDE_PATTERN =  "/*";
+
+    /**
+     * Information about the API
+     * @return ApiInfo
+     * */
+    private ApiInfo metaData (){
+        return new ApiInfoBuilder()
+                .title(TITLE)
+                .description(DESCRIPTION)
+                .termsOfServiceUrl(TERMS_OF_SERVICE_URL)
+                .license(LICENSE)
+                .licenseUrl(LICENSE_URL)
+                .contact(new Contact(CONTACT_NAME, CONTACT_URL, CONTACT_EMAIL))
+                .version(API_VERSION)
+                .build();
+    }
+
+    @Bean
+    public Docket api(){
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(metaData())
+                .pathMapping("/")
+                .forCodeGeneration(true)
+                .genericModelSubstitutes(ResponseEntity.class)
+                .securityContexts(List.of(securityContexts()))
+                .securitySchemes(List.of(apiKey()))
+                .useDefaultResponseMessages(false)
+                .select()
+                .paths(PathSelectors.regex(DEFAULT_INCLUDE_PATTERN))
+                .build();
+    }
+
+    /**
+     * Security scheme for API
+     * @return ApiKey
+     **/
+    private ApiKey apiKey() {
+        return new ApiKey("JWT", AUTHORIZATION_HEADER, "header");
+    }
+
+    /**
+     * Security context for API
+     * @return SecurityContext
+     **/
+    private SecurityContext securityContexts() {
+        return SecurityContext.builder()
+                .securityReferences(defaultAuth())
+                .forPaths(PathSelectors.regex(DEFAULT_INCLUDE_PATTERN))
+                .build();
+    }
+
+    /**
+     * Security reference for API
+     * @return List<SecurityReference>
+     **/
+    List<SecurityReference> defaultAuth(){
+        AuthorizationScope authorizationScope
+                = new AuthorizationScope("global", "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        return List.of(new SecurityReference("JWT", authorizationScopes));
+    }
+
+}

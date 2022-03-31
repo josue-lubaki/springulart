@@ -1,6 +1,6 @@
 package ca.ghostteam.springulart.controller.reservation;
 
-import ca.ghostteam.springulart.bean.JwtConfig;
+import ca.ghostteam.springulart.config.bean.JwtConfig;
 import ca.ghostteam.springulart.dto.ReservationDTO;
 import ca.ghostteam.springulart.dto.UserDTO;
 import ca.ghostteam.springulart.dto.UserDetailsDTO;
@@ -8,6 +8,7 @@ import ca.ghostteam.springulart.security.jwt.filter.JwtTokenVerifier;
 import ca.ghostteam.springulart.service.ReservationService;
 import ca.ghostteam.springulart.service.UserService;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -48,12 +49,14 @@ public class ReservationController {
     }
 
     @ApiResponse(code = 200, message = "Successfully retrieved all reservations of User")
+    @ApiOperation(value = "Get all reservations")
     @GetMapping()
     public List<ReservationDTO> getAllReservations(){
         return this.reservationService.findAll();
     }
 
     @ApiResponse(code = 200, message = "Successfully retrieved a reservation by id")
+    @ApiOperation(value = "Get reservation by id")
     @GetMapping("/{id}")
     public ReservationDTO getReservationById(@PathVariable("id") Long id){
         return this.reservationService
@@ -62,6 +65,7 @@ public class ReservationController {
     }
 
     @ApiResponse(code = 201, message = "Successfully save a reservation")
+    @ApiOperation(value = "Save a reservation")
     @PostMapping()
     public ReservationDTO createReservation(@RequestBody ReservationDTO reservation){
         return this.reservationService
@@ -70,6 +74,7 @@ public class ReservationController {
     }
 
     @ApiResponse(code = 200, message = "Successfully updated a reservation")
+    @ApiOperation(value = "Update a reservation")
     @PutMapping("/{id}")
     public ReservationDTO updateReservation(@PathVariable("id") Long id, @RequestBody ReservationDTO reservation){
         // check if user has permission to do that
@@ -82,6 +87,7 @@ public class ReservationController {
     }
 
     @ApiResponse(code = 204, message = "Successfully deleted a reservation")
+    @ApiOperation(value = "Delete a reservation")
     @DeleteMapping("/{id}")
     public void deleteReservation(@PathVariable("id") Long id){
         // check if user has permission to do that
@@ -92,6 +98,7 @@ public class ReservationController {
     }
 
     @ApiResponse(code = 200, message = "Successfully accepted a reservation")
+    @ApiOperation(value = "Accept a reservation")
     @PatchMapping("accept/{id}")
     @PreAuthorize("hasRole('ROLE_BARBER')")
     public ReservationDTO acceptReservation(@PathVariable("id") Long id, @RequestBody ReservationDTO reservation){

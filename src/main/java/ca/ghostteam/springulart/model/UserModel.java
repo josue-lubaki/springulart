@@ -8,10 +8,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
 
-@Getter
-@Setter
-@ToString
-@RequiredArgsConstructor
+@Data
 @Entity
 @Table(name = "user_model")
 public class UserModel {

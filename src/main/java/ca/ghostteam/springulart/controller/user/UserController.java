@@ -1,11 +1,12 @@
 package ca.ghostteam.springulart.controller.user;
 
-import ca.ghostteam.springulart.bean.JwtConfig;
+import ca.ghostteam.springulart.config.bean.JwtConfig;
 import ca.ghostteam.springulart.dto.UserDTO;
 import ca.ghostteam.springulart.dto.UserDetailsDTO;
 import ca.ghostteam.springulart.security.jwt.filter.JwtTokenVerifier;
 import ca.ghostteam.springulart.service.UserService;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -43,6 +44,7 @@ public class UserController {
     }
 
     @ApiResponse(code = 200, message = "Successfully retrieved a user")
+    @ApiOperation(value = "Get a user by ID")
     @GetMapping("/{userId}")
     public UserDTO getUser(@PathVariable("userId") Long userId) {
         return userService
@@ -51,6 +53,7 @@ public class UserController {
     }
 
     @ApiResponse(code = 204, message = "Successfully Deleted a user")
+    @ApiOperation(value = "Delete a user by ID")
     @DeleteMapping(path = "{userId}")
     @PreAuthorize("hasAuthority('client:write')")
     public void deleteMyAccount(@PathVariable("userId") Long userId){
@@ -62,6 +65,7 @@ public class UserController {
     }
 
     @ApiResponse(code = 200, message = "Successfully updated a user")
+    @ApiOperation(value = "Update a user by ID")
     @PutMapping(path = "{userId}")
     @PreAuthorize("hasAuthority('client:write')")
     public UserDTO updateUser(@PathVariable("userId") Long userId, @RequestBody UserDTO userDTO) throws Exception {
