@@ -1,5 +1,6 @@
 package ca.ghostteam.springulart.config;
 
+import ca.ghostteam.springulart.model.HaircutModel;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,9 @@ import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * @author Josue Lubaki
@@ -57,6 +60,8 @@ public class SwaggerConfig {
                 .pathMapping("/")
                 .forCodeGeneration(true)
                 .genericModelSubstitutes(ResponseEntity.class)
+                .produces(Collections.singleton("application/json"))
+                .consumes(Collections.singleton("application/json"))
                 .securityContexts(List.of(securityContexts()))
                 .securitySchemes(List.of(apiKey()))
                 .useDefaultResponseMessages(false)
@@ -79,9 +84,12 @@ public class SwaggerConfig {
      * @return SecurityContext
      **/
     private SecurityContext securityContexts() {
+        // regex matches with any path except "/auth" and "/api/v1/haircuts"
+        Pattern pattern = Pattern.compile("^(?!(/auth|/api/v1/haircuts)).*$");
+
         return SecurityContext.builder()
                 .securityReferences(defaultAuth())
-                .forPaths(PathSelectors.regex(DEFAULT_INCLUDE_PATTERN))
+                .forPaths(PathSelectors.regex(pattern.pattern()))
                 .build();
     }
 
