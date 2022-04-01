@@ -1,25 +1,24 @@
 package ca.ghostteam.springulart.config;
 
-import ca.ghostteam.springulart.security.ApplicationUserRole;
-import ca.ghostteam.springulart.service.UserService;
-import ca.ghostteam.springulart.security.jwt.JwtAuthenticationEntryPoint;
 import ca.ghostteam.springulart.config.bean.JwtConfig;
+import ca.ghostteam.springulart.security.ApplicationUserRole;
+import ca.ghostteam.springulart.security.jwt.JwtAuthenticationEntryPoint;
 import ca.ghostteam.springulart.security.jwt.filter.JwtTokenVerifier;
+import ca.ghostteam.springulart.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 /**
  * @author Josue Lubaki
@@ -35,14 +34,21 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
             "/",
             "/index",
             "/auth/login",
-            "/auth/register",
-
-            // swagger
-            "/v2/api-docs",
-            "/swagger-resources/**",
-            "/swagger-ui.html",
-            "/webjars/**"
+            "/auth/register"
     };
+
+    private static final String[] PUBLIC_ENDPOINTS_GET_METHOD = {
+            "/api/v1/haircuts",
+            "/api/v1/haircuts/**"
+    };
+
+    private static final String[] SWAGGER_ENDPOINTS = {
+            "/v2/api-docs",
+            "/configuration/ui",
+            "/swagger-resources/**",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**"};
 
     private static final String[] CLIENT_BARBER_ENDPOINTS = {
             "/api/v1/users/**",
@@ -51,9 +57,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     };
 
     private static final String[] ADMIN_ENDPOINTS = {
-            "management/api/v1/users/**",
-            "management/api/v1/haircuts/**",
-            "management/api/v1/reservations/**"
+            "/management/api/v1/users/**",
+            "/management/api/v1/haircuts/**",
+            "/management/api/v1/reservations/**"
     };
 
     private final UserService userDetailsService;
@@ -84,6 +90,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(PUBLIC_ENDPOINTS).permitAll()
+                // permitAll /api/v1/haircuts/** en mode GET
+                .antMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS_GET_METHOD).permitAll()
                 .antMatchers(CLIENT_BARBER_ENDPOINTS).hasAnyRole(
                         ApplicationUserRole.CLIENT.name(),
                         ApplicationUserRole.BARBER.name()
@@ -97,11 +105,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(jwtEntryPoint);
     }
 
-    @Bean
-    public BasicAuthenticationEntryPoint swaggerAuthenticationEntryPoint() {
-        BasicAuthenticationEntryPoint entryPoint = new BasicAuthenticationEntryPoint();
-        entryPoint.setRealmName("Swagger Realm");
-        return entryPoint;
+    @Override
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers(SWAGGER_ENDPOINTS);
     }
 
     @Override
