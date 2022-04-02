@@ -1,13 +1,12 @@
-package ca.ghostteam.springulart.service.impl;
+package ca.ghostteam.springulart.service.user;
 
 import ca.ghostteam.springulart.dto.*;
 import ca.ghostteam.springulart.model.AddressModel;
 import ca.ghostteam.springulart.model.CredentialModel;
 import ca.ghostteam.springulart.model.UserModel;
 import ca.ghostteam.springulart.repository.UserRepository;
-import ca.ghostteam.springulart.service.AddressService;
-import ca.ghostteam.springulart.service.CredentialService;
-import ca.ghostteam.springulart.service.UserService;
+import ca.ghostteam.springulart.service.address.AddressService;
+import ca.ghostteam.springulart.service.credential.CredentialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

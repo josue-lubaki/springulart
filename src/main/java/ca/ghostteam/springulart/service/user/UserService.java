@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.service;
+package ca.ghostteam.springulart.service.user;
 
 import ca.ghostteam.springulart.dto.SignupDTO;
 import ca.ghostteam.springulart.dto.UserDTO;

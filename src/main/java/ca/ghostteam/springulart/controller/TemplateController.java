@@ -19,4 +19,9 @@ public class TemplateController {
     public String getLogin(){
         return "login";
     }
+
+    @GetMapping("reset-password")
+    public String getResetPasswordPage(){
+        return "emails/reset-password";
+    }
 }

@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.service;
+package ca.ghostteam.springulart.service.credential;
 
 import ca.ghostteam.springulart.dto.CredentialDTO;
 import ca.ghostteam.springulart.model.CredentialModel;

@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.service;
+package ca.ghostteam.springulart.service.location;
 
 import ca.ghostteam.springulart.dto.LocationDTO;
 import org.springframework.transaction.annotation.Transactional;

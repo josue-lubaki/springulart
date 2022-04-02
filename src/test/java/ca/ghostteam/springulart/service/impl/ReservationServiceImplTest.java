@@ -31,10 +31,16 @@ import ca.ghostteam.springulart.repository.LocationRepository;
 import ca.ghostteam.springulart.repository.ReservationRepository;
 import ca.ghostteam.springulart.repository.ReservationTimeRepository;
 import ca.ghostteam.springulart.repository.UserRepository;
-import ca.ghostteam.springulart.service.HaircutService;
-import ca.ghostteam.springulart.service.LocationService;
-import ca.ghostteam.springulart.service.ReservationTimeService;
-import ca.ghostteam.springulart.service.UserService;
+import ca.ghostteam.springulart.service.address.AddressServiceImpl;
+import ca.ghostteam.springulart.service.credential.CredentialServiceImpl;
+import ca.ghostteam.springulart.service.haircut.HaircutService;
+import ca.ghostteam.springulart.service.location.LocationService;
+import ca.ghostteam.springulart.service.reservationtime.ReservationTimeService;
+import ca.ghostteam.springulart.service.haircut.HaircutServiceImpl;
+import ca.ghostteam.springulart.service.location.LocationServiceImpl;
+import ca.ghostteam.springulart.service.reservation.ReservationServiceImpl;
+import ca.ghostteam.springulart.service.reservationtime.ReservationTimeServiceImpl;
+import ca.ghostteam.springulart.service.user.UserService;
 
 import java.time.LocalDate;
 
@@ -42,6 +48,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
 
+import ca.ghostteam.springulart.service.user.UserServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

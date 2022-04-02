@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.service;
+package ca.ghostteam.springulart.service.address;
 
 import ca.ghostteam.springulart.dto.AddressDTO;
 import ca.ghostteam.springulart.model.AddressModel;

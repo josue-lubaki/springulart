@@ -1,9 +1,9 @@
-package ca.ghostteam.springulart.service.impl;
+package ca.ghostteam.springulart.service.location;
 
 import ca.ghostteam.springulart.dto.LocationDTO;
 import ca.ghostteam.springulart.model.LocationModel;
 import ca.ghostteam.springulart.repository.LocationRepository;
-import ca.ghostteam.springulart.service.LocationService;
+import ca.ghostteam.springulart.service.location.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

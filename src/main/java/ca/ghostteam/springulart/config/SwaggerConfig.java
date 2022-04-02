@@ -1,6 +1,5 @@
 package ca.ghostteam.springulart.config;
 
-import ca.ghostteam.springulart.model.HaircutModel;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
@@ -28,14 +27,13 @@ public class SwaggerConfig {
     private static final String API_VERSION = "2.0";
     private static final String TITLE = "Springular REST API";
     private static final String DESCRIPTION = "Springular REST API";
-    private static final String TERMS_OF_SERVICE_URL = "http://springular.com/terms-of-service";
     private static final String LICENSE = "Apache License Version 2.0";
-    private static final String LICENSE_URL = "";
     private static final String CONTACT_NAME = "Josue Lubaki | Ismael Coulibaly | Jonathan Kanyinda";
     private static final String CONTACT_URL = "https://josue-lubaki.ca";
-    private static final String CONTACT_EMAIL = "josue.lubaki@uqtr.ca | ismael.coulibaly@uqtr.ca | jonathan.kanyinda@uqtr.ca";
+    private static final String CONTACT_EMAIL = "josue.lubaki@uqtr.ca; ismael.coulibaly@uqtr.ca; jonathan.kanyinda@uqtr.ca";
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String DEFAULT_INCLUDE_PATTERN =  "(/.*)";
+    public static final String DATA_TYPE = "application/json";
 
     /**
      * Information about the API
@@ -45,9 +43,7 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title(TITLE)
                 .description(DESCRIPTION)
-                .termsOfServiceUrl(TERMS_OF_SERVICE_URL)
                 .license(LICENSE)
-                .licenseUrl(LICENSE_URL)
                 .contact(new Contact(CONTACT_NAME, CONTACT_URL, CONTACT_EMAIL))
                 .version(API_VERSION)
                 .build();
@@ -55,13 +51,13 @@ public class SwaggerConfig {
 
     @Bean
     public Docket api(){
-        return new Docket(DocumentationType.SWAGGER_2)
+        return new Docket(DocumentationType.OAS_30)
                 .apiInfo(metaData())
                 .pathMapping("/")
                 .forCodeGeneration(true)
                 .genericModelSubstitutes(ResponseEntity.class)
-                .produces(Collections.singleton("application/json"))
-                .consumes(Collections.singleton("application/json"))
+                .produces(Collections.singleton(DATA_TYPE))
+                .consumes(Collections.singleton(DATA_TYPE))
                 .securityContexts(List.of(securityContexts()))
                 .securitySchemes(List.of(apiKey()))
                 .useDefaultResponseMessages(false)
