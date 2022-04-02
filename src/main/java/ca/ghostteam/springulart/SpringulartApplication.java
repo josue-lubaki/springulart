@@ -4,13 +4,17 @@ import ca.ghostteam.springulart.dto.AddressDTO;
 import ca.ghostteam.springulart.dto.HaircutDTO;
 import ca.ghostteam.springulart.dto.SignupDTO;
 import ca.ghostteam.springulart.service.haircut.HaircutService;
+import ca.ghostteam.springulart.service.mail.MailService;
 import ca.ghostteam.springulart.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.event.EventListener;
 
 import java.time.LocalDate;
 
@@ -18,6 +22,8 @@ import java.time.LocalDate;
 @ConfigurationPropertiesScan
 @Slf4j
 public class SpringulartApplication {
+    @Autowired
+    private MailService mailService;
 
     public static void main(String[] args) {
         SpringApplication.run(SpringulartApplication.class, args);
@@ -31,6 +37,11 @@ public class SpringulartApplication {
             initUsers(userService);
             log.info("Nombre Haircuts dans la DB : " + haircutService.findAllHaircuts().size());
         };
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void appReady(){
+        mailService.resetPassword("josuelubaki30@gmail.com",  "Test-password");
     }
 
     // sample data

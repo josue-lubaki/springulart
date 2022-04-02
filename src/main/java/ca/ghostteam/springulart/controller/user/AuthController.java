@@ -118,7 +118,6 @@ public class AuthController {
         return loginDTO;
     }
 
-    @Async
     @ApiResponse(code = 200, message = "Successfully reset password")
     @ApiOperation(value = "Reset password")
     @PostMapping(value = "/reset-password", produces = MediaType.APPLICATION_JSON_VALUE)
