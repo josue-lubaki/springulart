@@ -12,12 +12,12 @@ import static org.mockito.Mockito.when;
 
 import ca.ghostteam.springulart.dto.AddressDTO;
 import ca.ghostteam.springulart.model.AddressModel;
-import ca.ghostteam.springulart.model.UserModel;
 import ca.ghostteam.springulart.repository.AddressRepository;
 
 import java.util.HashSet;
 import java.util.Optional;
 
+import ca.ghostteam.springulart.service.address.AddressServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

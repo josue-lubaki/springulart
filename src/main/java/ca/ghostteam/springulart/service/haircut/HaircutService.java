@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.service;
+package ca.ghostteam.springulart.service.haircut;
 
 
 import ca.ghostteam.springulart.dto.HaircutDTO;

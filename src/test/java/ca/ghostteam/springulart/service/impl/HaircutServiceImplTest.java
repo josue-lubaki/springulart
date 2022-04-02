@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
 
-import org.junit.jupiter.api.Disabled;
+import ca.ghostteam.springulart.service.haircut.HaircutServiceImpl;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

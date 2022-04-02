@@ -1,9 +1,9 @@
-package ca.ghostteam.springulart.service.impl;
+package ca.ghostteam.springulart.service.reservationtime;
 
 import ca.ghostteam.springulart.dto.ReservationTimeDTO;
 import ca.ghostteam.springulart.model.ReservationTimeModel;
 import ca.ghostteam.springulart.repository.ReservationTimeRepository;
-import ca.ghostteam.springulart.service.ReservationTimeService;
+import ca.ghostteam.springulart.service.reservationtime.ReservationTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

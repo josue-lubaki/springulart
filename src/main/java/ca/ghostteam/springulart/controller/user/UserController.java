@@ -4,7 +4,7 @@ import ca.ghostteam.springulart.config.bean.JwtConfig;
 import ca.ghostteam.springulart.dto.UserDTO;
 import ca.ghostteam.springulart.dto.UserDetailsDTO;
 import ca.ghostteam.springulart.security.jwt.filter.JwtTokenVerifier;
-import ca.ghostteam.springulart.service.UserService;
+import ca.ghostteam.springulart.service.user.UserService;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

@@ -22,11 +22,10 @@ import ca.ghostteam.springulart.dto.UserDTO;
 import ca.ghostteam.springulart.dto.UserDetailsDTO;
 import ca.ghostteam.springulart.model.AddressModel;
 import ca.ghostteam.springulart.model.CredentialModel;
-import ca.ghostteam.springulart.model.ReservationModel;
 import ca.ghostteam.springulart.model.UserModel;
 import ca.ghostteam.springulart.repository.UserRepository;
-import ca.ghostteam.springulart.service.AddressService;
-import ca.ghostteam.springulart.service.CredentialService;
+import ca.ghostteam.springulart.service.address.AddressService;
+import ca.ghostteam.springulart.service.credential.CredentialService;
 
 import java.time.LocalDate;
 
@@ -34,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
 
+import ca.ghostteam.springulart.service.user.UserServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

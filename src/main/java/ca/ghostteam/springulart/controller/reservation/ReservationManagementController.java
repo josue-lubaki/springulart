@@ -1,7 +1,7 @@
 package ca.ghostteam.springulart.controller.reservation;
 
 import ca.ghostteam.springulart.dto.ReservationDTO;
-import ca.ghostteam.springulart.service.ReservationService;
+import ca.ghostteam.springulart.service.reservation.ReservationService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -1,9 +1,9 @@
-package ca.ghostteam.springulart.service.impl;
+package ca.ghostteam.springulart.service.haircut;
 
 import ca.ghostteam.springulart.dto.HaircutDTO;
 import ca.ghostteam.springulart.model.HaircutModel;
 import ca.ghostteam.springulart.repository.HaircutRepository;
-import ca.ghostteam.springulart.service.HaircutService;
+import ca.ghostteam.springulart.service.haircut.HaircutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

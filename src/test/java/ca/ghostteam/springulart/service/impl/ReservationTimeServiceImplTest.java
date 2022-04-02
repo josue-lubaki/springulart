@@ -15,7 +15,7 @@ import ca.ghostteam.springulart.repository.ReservationTimeRepository;
 import java.util.HashSet;
 import java.util.Optional;
 
-import org.junit.jupiter.api.Disabled;
+import ca.ghostteam.springulart.service.reservationtime.ReservationTimeServiceImpl;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

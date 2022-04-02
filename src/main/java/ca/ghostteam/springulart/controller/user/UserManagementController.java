@@ -2,7 +2,7 @@ package ca.ghostteam.springulart.controller.user;
 
 import ca.ghostteam.springulart.dto.SignupDTO;
 import ca.ghostteam.springulart.dto.UserDTO;
-import ca.ghostteam.springulart.service.UserService;
+import ca.ghostteam.springulart.service.user.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;

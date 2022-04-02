@@ -1,7 +1,7 @@
 package ca.ghostteam.springulart.controller.haircut;
 
 import ca.ghostteam.springulart.dto.HaircutDTO;
-import ca.ghostteam.springulart.service.HaircutService;
+import ca.ghostteam.springulart.service.haircut.HaircutService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;

@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.service;
+package ca.ghostteam.springulart.service.reservationtime;
 
 import ca.ghostteam.springulart.dto.ReservationTimeDTO;
 import org.springframework.transaction.annotation.Transactional;

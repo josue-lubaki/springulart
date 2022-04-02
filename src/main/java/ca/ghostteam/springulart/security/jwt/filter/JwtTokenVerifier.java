@@ -1,7 +1,7 @@
 package ca.ghostteam.springulart.security.jwt.filter;
 
 import ca.ghostteam.springulart.config.bean.JwtConfig;
-import ca.ghostteam.springulart.service.UserService;
+import ca.ghostteam.springulart.service.user.UserService;
 import ca.ghostteam.springulart.dto.UserDetailsDTO;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

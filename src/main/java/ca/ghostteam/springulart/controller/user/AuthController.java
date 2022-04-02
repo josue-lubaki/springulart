@@ -3,7 +3,8 @@ package ca.ghostteam.springulart.controller.user;
 import ca.ghostteam.springulart.config.bean.JwtConfig;
 import ca.ghostteam.springulart.dto.*;
 import ca.ghostteam.springulart.security.ApplicationUserRole;
-import ca.ghostteam.springulart.service.UserService;
+import ca.ghostteam.springulart.service.mail.MailService;
+import ca.ghostteam.springulart.service.user.UserService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import io.swagger.annotations.ApiOperation;
@@ -11,6 +12,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,6 +28,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /**
@@ -40,14 +43,17 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtConfig jwtConfig;
     private final UserService userService;
+    private final MailService mailService;
 
     public AuthController(
             AuthenticationManager authenticationManager,
             JwtConfig jwtConfig,
-            UserService userService) {
+            UserService userService,
+            MailService mailService) {
         this.authenticationManager = authenticationManager;
         this.jwtConfig = jwtConfig;
         this.userService = userService;
+        this.mailService = mailService;
     }
 
     @ApiResponses(value = {
@@ -110,6 +116,19 @@ public class AuthController {
         loginDTO.setRole(userDetailsDTO.getUserModel().getRole());
 
         return loginDTO;
+    }
+
+    @Async
+    @ApiResponse(code = 200, message = "Successfully reset password")
+    @ApiOperation(value = "Reset password")
+    @PostMapping(value = "/reset-password", produces = MediaType.APPLICATION_JSON_VALUE)
+    public CompletableFuture<ResponseEntity<String>> resetPassword(@RequestBody AuthDTO resetPasswordDTO) {
+        if (userService.existsUserByEmail(resetPasswordDTO.getUsername())) {
+            mailService.resetPassword(resetPasswordDTO.getUsername(), "My-Password");
+            return CompletableFuture.completedFuture(ResponseEntity.ok("Reset password email sent"));
+        } else {
+            return CompletableFuture.completedFuture(ResponseEntity.badRequest().body("Email not found"));
+        }
     }
 
     /**

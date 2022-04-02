@@ -1,9 +1,9 @@
-package ca.ghostteam.springulart.service.impl;
+package ca.ghostteam.springulart.service.address;
 
 import ca.ghostteam.springulart.dto.AddressDTO;
 import ca.ghostteam.springulart.model.AddressModel;
 import ca.ghostteam.springulart.repository.AddressRepository;
-import ca.ghostteam.springulart.service.AddressService;
+import ca.ghostteam.springulart.service.address.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

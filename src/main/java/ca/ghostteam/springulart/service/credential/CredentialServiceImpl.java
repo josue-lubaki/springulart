@@ -1,9 +1,9 @@
-package ca.ghostteam.springulart.service.impl;
+package ca.ghostteam.springulart.service.credential;
 
 import ca.ghostteam.springulart.dto.CredentialDTO;
 import ca.ghostteam.springulart.model.CredentialModel;
 import ca.ghostteam.springulart.repository.CredentialRepository;
-import ca.ghostteam.springulart.service.CredentialService;
+import ca.ghostteam.springulart.service.credential.CredentialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

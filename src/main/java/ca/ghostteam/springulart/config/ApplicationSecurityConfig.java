@@ -4,7 +4,7 @@ import ca.ghostteam.springulart.config.bean.JwtConfig;
 import ca.ghostteam.springulart.security.ApplicationUserRole;
 import ca.ghostteam.springulart.security.jwt.JwtAuthenticationEntryPoint;
 import ca.ghostteam.springulart.security.jwt.filter.JwtTokenVerifier;
-import ca.ghostteam.springulart.service.UserService;
+import ca.ghostteam.springulart.service.user.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -34,7 +34,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
             "/",
             "/index",
             "/auth/login",
-            "/auth/register"
+            "/auth/register",
+            "/auth/reset-password"
     };
 
     private static final String[] PUBLIC_ENDPOINTS_GET_METHOD = {
@@ -44,11 +45,15 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] SWAGGER_ENDPOINTS = {
             "/v2/api-docs",
+            "/v3/api-docs",
             "/configuration/ui",
             "/swagger-resources/**",
             "/configuration/security",
-            "/swagger-ui.html",
-            "/webjars/**"};
+//            "/swagger-ui.html",
+            "/swagger-ui/**",
+            "/webjars/**",
+            "/actuator/health"
+    };
 
     private static final String[] CLIENT_BARBER_ENDPOINTS = {
             "/api/v1/users/**",
