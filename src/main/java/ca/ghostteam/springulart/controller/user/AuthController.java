@@ -2,6 +2,7 @@ package ca.ghostteam.springulart.controller.user;
 
 import ca.ghostteam.springulart.config.bean.JwtConfig;
 import ca.ghostteam.springulart.dto.*;
+import ca.ghostteam.springulart.model.UserModel;
 import ca.ghostteam.springulart.security.ApplicationUserRole;
 import ca.ghostteam.springulart.service.File.AWSS3Service;
 import ca.ghostteam.springulart.service.mail.MailService;
@@ -13,8 +14,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /**
@@ -168,11 +166,14 @@ public class AuthController {
         if(!userService.existsUserByEmail(email))
             return ResponseEntity.badRequest().body(response);
 
+        // get user by email
+        UserDTO userDTO = userService.findUserByEmail(email).get();
+
         // generate a new password
         String temporaryPassword = UUID.randomUUID().toString();
 
         // send mail to user with temporary password
-        mailService.resetPassword(email, temporaryPassword);
+        mailService.resetPassword(userDTO, temporaryPassword);
 
         // update password of UserModel
         userService.updatePassword(email, temporaryPassword);

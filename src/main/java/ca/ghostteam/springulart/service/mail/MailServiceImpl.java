@@ -27,24 +27,21 @@ public class MailServiceImpl implements MailService {
 
     private final JavaMailSender javaMailSender;
     private final SpringTemplateEngine templateEngine;
-    private final UserService userService;
 
     @Value("${spring.mail.username}")
     private String senderEmail;
 
     public MailServiceImpl(JavaMailSender javaMailSender,
-                           SpringTemplateEngine templateEngine,
-                           UserService userService) {
+                           SpringTemplateEngine templateEngine) {
         this.javaMailSender = javaMailSender;
         this.templateEngine = templateEngine;
-        this.userService = userService;
     }
 
     @Async
     @Override
-    public void resetPassword(String email, String temporaryPassword) {
+    public void resetPassword(UserDTO user, String temporaryPassword) {
         // get the full name of the user
-        String fullname = getFullNameUserByEmail(email);
+        String fullname = user.getFullName();
 
         // create the context for the template
         Context context = getContext();
@@ -55,18 +52,20 @@ public class MailServiceImpl implements MailService {
         String content = templateEngine.process("emails/reset-password", context);
 
         // send message
-        sendPlainTextMessage(email, "Réinitialisation de mot de passe", content);
+        sendPlainTextMessage(user.getEmail(), "Réinitialisation de mot de passe", content);
     }
 
-    /**
-     * Method to get the full name of the user by email
-     * @param email email of the user to get the full name
-     *              if the user does not exist, return the email
-     * @return the full name of the user
-     * */
-    private String getFullNameUserByEmail(String email) {
-        Optional<UserDTO> userByEmail = userService.findUserByEmail(email);
-        return userByEmail.map(UserDTO::getFullName).orElse(email);
+    @Override
+    public void welcomeMessage(String email, String fullname) {
+        // create the context for the template
+        Context context = getContext();
+        context.setVariable("fullname", String.format("%s", fullname));
+
+        // set content of message
+        String content = templateEngine.process("emails/welcome", context);
+
+        // send message
+        sendPlainTextMessage(email, "Bienvenue sur angulart", content);
     }
 
     private void sendPlainTextMessage(String to, String subject, String content) {

@@ -8,6 +8,7 @@ import ca.ghostteam.springulart.repository.UserRepository;
 import ca.ghostteam.springulart.service.File.FileService;
 import ca.ghostteam.springulart.service.address.AddressService;
 import ca.ghostteam.springulart.service.credential.CredentialService;
+import ca.ghostteam.springulart.service.mail.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,20 +34,23 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final AddressService addressService;
     private final CredentialService credentialService;
-
-    @Autowired(required = false)
-    private FileService fileService;
+    private final MailService mailService;
+    private final FileService fileService;
 
     @Autowired
     public UserServiceImpl(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
             AddressService addressService,
-            CredentialService credentialService) {
+            CredentialService credentialService,
+            MailService mailService,
+            FileService fileService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.addressService = addressService;
         this.credentialService = credentialService;
+        this.mailService = mailService;
+        this.fileService = fileService;
     }
 
 
@@ -119,6 +123,9 @@ public class UserServiceImpl implements UserService {
 
         UserDTO userDTO = converterUserModelToUserDTO(userModelSaved);
         userDTO.getAddress().setId(addressSaved.getId());
+
+        // send email
+        mailService.welcomeMessage(userDTO.getEmail(), userDTO.getFullName());
 
         return Optional.of(userDTO);
     }

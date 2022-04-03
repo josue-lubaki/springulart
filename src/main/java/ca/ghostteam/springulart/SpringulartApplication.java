@@ -22,12 +22,6 @@ import java.time.LocalDate;
 @Slf4j
 public class SpringulartApplication {
 
-    private final MailService mailService;
-
-    public SpringulartApplication(MailService mailService) {
-        this.mailService = mailService;
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(SpringulartApplication.class, args);
     }
@@ -37,15 +31,10 @@ public class SpringulartApplication {
                           HaircutService haircutService){
         return args -> {
             initHaircuts(haircutService);
-            initUsers(userService);
+            //initUsers(userService);
             log.info("Nombre Haircuts dans la DB : " + haircutService.findAllHaircuts().size());
         };
     }
-
-//    @EventListener(ApplicationReadyEvent.class)
-//    public void appReady(){
-//        mailService.resetPassword("josuelubaki30@gmail.com",  "Test-password");
-//    }
 
     // sample data
     private void initUsers(UserService userService) throws Exception {

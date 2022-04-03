@@ -1,5 +1,6 @@
 package ca.ghostteam.springulart.service.mail;
 
+import ca.ghostteam.springulart.dto.UserDTO;
 import org.springframework.scheduling.annotation.Async;
 
 /**
@@ -10,5 +11,8 @@ import org.springframework.scheduling.annotation.Async;
 public interface MailService {
 
     @Async
-    void resetPassword(String email, String temporaryPassword);
+    void resetPassword(UserDTO user, String temporaryPassword);
+
+    @Async
+    void welcomeMessage(String email, String fullname);
 }
