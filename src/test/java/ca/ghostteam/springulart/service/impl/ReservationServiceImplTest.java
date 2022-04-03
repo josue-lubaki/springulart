@@ -36,6 +36,7 @@ import ca.ghostteam.springulart.service.address.AddressServiceImpl;
 import ca.ghostteam.springulart.service.credential.CredentialServiceImpl;
 import ca.ghostteam.springulart.service.haircut.HaircutService;
 import ca.ghostteam.springulart.service.location.LocationService;
+import ca.ghostteam.springulart.service.mail.MailService;
 import ca.ghostteam.springulart.service.reservationtime.ReservationTimeService;
 import ca.ghostteam.springulart.service.haircut.HaircutServiceImpl;
 import ca.ghostteam.springulart.service.location.LocationServiceImpl;
@@ -81,6 +82,9 @@ class ReservationServiceImplTest {
 
     @MockBean
     private FileService fileService;
+
+    @MockBean
+    private MailService mailService;
 
     @Test
     void testFindAll() {
@@ -2065,7 +2069,7 @@ class ReservationServiceImplTest {
         Argon2PasswordEncoder passwordEncoder = new Argon2PasswordEncoder();
         AddressServiceImpl addressService = new AddressServiceImpl(mock(AddressRepository.class));
         UserServiceImpl userService = new UserServiceImpl(userRepository, passwordEncoder, addressService,
-                new CredentialServiceImpl(mock(CredentialRepository.class)));
+                new CredentialServiceImpl(mock(CredentialRepository.class)), mailService, fileService);
 
         HaircutServiceImpl haircutService = new HaircutServiceImpl(mock(HaircutRepository.class));
         ReservationTimeServiceImpl reservationTimeService = new ReservationTimeServiceImpl(

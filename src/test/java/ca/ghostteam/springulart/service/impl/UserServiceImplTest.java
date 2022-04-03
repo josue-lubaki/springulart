@@ -19,6 +19,7 @@ import ca.ghostteam.springulart.model.AddressModel;
 import ca.ghostteam.springulart.model.CredentialModel;
 import ca.ghostteam.springulart.model.UserModel;
 import ca.ghostteam.springulart.repository.UserRepository;
+import ca.ghostteam.springulart.service.File.FileService;
 import ca.ghostteam.springulart.service.address.AddressService;
 import ca.ghostteam.springulart.service.credential.CredentialService;
 
@@ -29,6 +30,7 @@ import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import ca.ghostteam.springulart.service.mail.MailService;
 import ca.ghostteam.springulart.service.user.UserServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,6 +58,12 @@ class UserServiceImplTest {
 
     @Autowired
     private UserServiceImpl userServiceImpl;
+
+    @MockBean
+    private MailService mailService;
+
+    @MockBean
+    private FileService fileService;
 
     @Test
     void testLoadUserByUsername() throws UsernameNotFoundException {
