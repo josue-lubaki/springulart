@@ -4,6 +4,8 @@
 
 ## dependencies
 - spring-boot-starter-security
+- spring-boot-starter-mail 
+- S3 Amazon (Storage)
 - guava (google)
 - java-jwt (Auth0)
 - springfox-swagger2
@@ -12,6 +14,7 @@
 - thymeleaf
 - postgresql
 - Liquibase (Migration)
+
 
 ## Developers
 - Josue Lubaki | [email](josue.lubaki@uqtr.ca) | [LinkedIn](https://www.linkedin.com/in/josue-lubaki/) | [Github](https://github.com/josue-lubaki)

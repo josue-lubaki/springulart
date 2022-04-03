@@ -1,11 +1,13 @@
 package ca.ghostteam.springulart.repository;
 
 import ca.ghostteam.springulart.model.UserModel;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,4 +31,9 @@ public interface UserRepository extends CrudRepository<UserModel, Long> {
 
     @NonNull
     Optional<UserModel> findById(@NonNull Long aLong);
+
+    @Transactional
+    @Modifying
+    @Query( "UPDATE UserModel u SET u.password = ?2 WHERE u.email = ?1")
+    void updatePassword(String email, String password);
 }
