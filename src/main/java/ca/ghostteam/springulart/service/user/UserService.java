@@ -2,6 +2,7 @@ package ca.ghostteam.springulart.service.user;
 
 import ca.ghostteam.springulart.dto.SignupDTO;
 import ca.ghostteam.springulart.dto.UserDTO;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
@@ -20,4 +21,7 @@ public interface UserService extends UserDetailsService {
     void deleteUserById(Long id);
     Optional<UserDTO> updateUser(Long id,UserDTO userDTO) throws Exception;
     Optional<UserDTO> findUserByEmail(String email);
+
+    @Async
+    void updatePassword(String email, String password);
 }

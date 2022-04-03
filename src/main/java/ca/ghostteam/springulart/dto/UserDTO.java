@@ -23,4 +23,8 @@ public class UserDTO {
     private LocalDate created = LocalDate.now();
     private LocalDate updated = LocalDate.now();
     private boolean deleted = false;
+
+    public String getFullName() {
+        return fname + " " + lname;
+    }
 }

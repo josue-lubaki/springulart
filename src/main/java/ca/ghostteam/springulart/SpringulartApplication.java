@@ -42,10 +42,10 @@ public class SpringulartApplication {
         };
     }
 
-    @EventListener(ApplicationReadyEvent.class)
-    public void appReady(){
-        mailService.resetPassword("josuelubaki30@gmail.com",  "Test-password");
-    }
+//    @EventListener(ApplicationReadyEvent.class)
+//    public void appReady(){
+//        mailService.resetPassword("josuelubaki30@gmail.com",  "Test-password");
+//    }
 
     // sample data
     private void initUsers(UserService userService) throws Exception {
@@ -74,7 +74,7 @@ public class SpringulartApplication {
         // set user information
         user2.setFname("Josue");
         user2.setLname("Lubaki");
-        user2.setEmail("josuelubaki@gmail.com");
+        user2.setEmail("josuelubaki30@gmail.com");
         user2.setPassword("Josue2022");
         user2.setRole("ROLE_CLIENT");
         user2.setDob(LocalDate.of(1964, 9, 2));

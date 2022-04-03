@@ -13,6 +13,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,9 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -159,13 +159,26 @@ public class AuthController {
     @ApiResponse(code = 200, message = "Successfully reset password")
     @ApiOperation(value = "Reset password")
     @PostMapping(value = "/reset-password", produces = MediaType.APPLICATION_JSON_VALUE)
-    public CompletableFuture<ResponseEntity<String>> resetPassword(@RequestBody AuthDTO resetPasswordDTO) {
-        if (userService.existsUserByEmail(resetPasswordDTO.getUsername())) {
-            mailService.resetPassword(resetPasswordDTO.getUsername(), "My-Password");
-            return CompletableFuture.completedFuture(ResponseEntity.ok("Reset password email sent"));
-        } else {
-            return CompletableFuture.completedFuture(ResponseEntity.badRequest().body("Email not found"));
-        }
+    public ResponseEntity<HashMap<String, String>> resetPassword(@RequestBody AuthDTO resetPasswordDTO) {
+        String email = resetPasswordDTO.getUsername();
+        HashMap<String, String> response = new HashMap<>();
+        response.put("message", "User not found");
+        response.put("status", "failure");
+
+        if(!userService.existsUserByEmail(email))
+            return ResponseEntity.badRequest().body(response);
+
+        // generate a new password
+        String temporaryPassword = UUID.randomUUID().toString();
+
+        // send mail to user with temporary password
+        mailService.resetPassword(email, temporaryPassword);
+
+        // update password of UserModel
+        userService.updatePassword(email, temporaryPassword);
+        response.put("message", "your temporary password has been sent to " + email);
+        response.put("status", "success");
+        return ResponseEntity.ok( response );
     }
 
     /**

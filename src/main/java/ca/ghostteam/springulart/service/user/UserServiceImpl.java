@@ -8,6 +8,7 @@ import ca.ghostteam.springulart.repository.UserRepository;
 import ca.ghostteam.springulart.service.address.AddressService;
 import ca.ghostteam.springulart.service.credential.CredentialService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -76,6 +77,12 @@ public class UserServiceImpl implements UserService {
         );
     }
 
+    @Async
+    @Override
+    public void updatePassword(String email, String password) {
+        this.userRepository.updatePassword(email, passwordEncoder.encode(password));
+    }
+
     @Override
     public List<UserDTO> findAllUsers() {
         return userRepository
@@ -93,8 +100,6 @@ public class UserServiceImpl implements UserService {
         AddressModel addressModel = extractAddressModel(signupDTO);
 
         AddressDTO addressSaved = addressService.saveAddressModel(addressModel).get();
-//        signupDTO.setAddress(addressSaved);
-//        signupDTO.getAddress().setId(addressModel.getId());
 
         // id id_address into UserModel Object
         user.getAddress().setId(addressModel.getId());
