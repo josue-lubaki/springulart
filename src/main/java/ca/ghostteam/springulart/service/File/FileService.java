@@ -1,5 +1,6 @@
 package ca.ghostteam.springulart.service.File;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -9,4 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface FileService {
     String uploadImage(MultipartFile file);
+
+    @Transactional
+    void deleteImage(String fileName);
 }

@@ -28,8 +28,7 @@ public class AWSS3Service implements FileService {
     @Value("${cloud.aws.s3.bucket.name}")
     private String bucketName;
 
-    public AWSS3Service(
-           @Qualifier("amazonS3Client") AmazonS3Client awsS3Client) {
+    public AWSS3Service(@Qualifier("amazonS3Client") AmazonS3Client awsS3Client) {
         this.awsS3Client = awsS3Client;
     }
 
@@ -76,6 +75,20 @@ public class AWSS3Service implements FileService {
 
         // return url to file
         return awsS3Client.getResourceUrl(bucketName, fileName);
+    }
+
+    @Override
+    public void deleteImage(String imageURL) {
+        // check if file name hasText
+        if (!StringUtils.hasText(imageURL)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "File name is empty");
+        }
+
+        // extract file name from url
+        String fileName = imageURL.substring(imageURL.lastIndexOf("/") + 1);
+
+        // delete file from S3
+        awsS3Client.deleteObject(bucketName, fileName);
     }
 
     /**

@@ -26,6 +26,7 @@ import java.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import ca.ghostteam.springulart.service.user.UserServiceImpl;
@@ -3086,15 +3087,14 @@ class UserServiceImplTest {
     @Test
     void testDeleteUserById() {
         doNothing().when(this.userRepository).deleteById(any());
-        this.userServiceImpl.deleteUserById(123L);
-        verify(this.userRepository).deleteById(any());
+        assertThrows(NoSuchElementException.class, () -> this.userServiceImpl.deleteUserById(any()));
     }
 
     @Test
     void testDeleteUserById2() {
-        doThrow(new UsernameNotFoundException("Msg")).when(this.userRepository).deleteById(any());
-        assertThrows(UsernameNotFoundException.class, () -> this.userServiceImpl.deleteUserById(123L));
-        verify(this.userRepository).deleteById(any());
+        doNothing().when(this.userRepository).deleteById(any());
+        when(this.userRepository.findById(any())).thenReturn(Optional.empty());
+        assertThrows(NoSuchElementException.class, () -> this.userServiceImpl.deleteUserById(any()));
     }
 }
 

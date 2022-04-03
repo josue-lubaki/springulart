@@ -31,6 +31,7 @@ import ca.ghostteam.springulart.repository.LocationRepository;
 import ca.ghostteam.springulart.repository.ReservationRepository;
 import ca.ghostteam.springulart.repository.ReservationTimeRepository;
 import ca.ghostteam.springulart.repository.UserRepository;
+import ca.ghostteam.springulart.service.File.FileService;
 import ca.ghostteam.springulart.service.address.AddressServiceImpl;
 import ca.ghostteam.springulart.service.credential.CredentialServiceImpl;
 import ca.ghostteam.springulart.service.haircut.HaircutService;
@@ -77,6 +78,9 @@ class ReservationServiceImplTest {
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private FileService fileService;
 
     @Test
     void testFindAll() {
