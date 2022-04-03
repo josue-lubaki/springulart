@@ -1,18 +1,15 @@
 package ca.ghostteam.springulart.service.mail;
 
-import ca.ghostteam.springulart.model.UserModel;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import java.util.Locale;
 
 /**
@@ -29,12 +26,12 @@ public class MailServiceImpl implements MailService {
     @Value("${spring.mail.username}")
     private String senderEmail;
 
-    public MailServiceImpl(JavaMailSender javaMailSender,
+    public MailServiceImpl(
+           @Qualifier("myMailSender") JavaMailSender javaMailSender,
                            SpringTemplateEngine templateEngine) {
         this.javaMailSender = javaMailSender;
         this.templateEngine = templateEngine;
     }
-
 
     @Async
     @Override
@@ -53,17 +50,26 @@ public class MailServiceImpl implements MailService {
     private void sendPlainTextMessage(String to, String subject, String content) {
         try{
             log.info("SenderEmail {} would send message to {}", senderEmail, to);
-            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-            messageHelper.setFrom(senderEmail);
-            messageHelper.setTo(to);
-            messageHelper.setSubject(subject);
-            messageHelper.setText(content, true);
+            // create SimpleMailSender with HTML content
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom(senderEmail);
+            message.setTo(to);
+            message.setSubject(subject);
+            message.setText(content);
+            javaMailSender.send(message);
 
-            // sending mimeMessage
-            javaMailSender.send(mimeMessage);
+//            MimeMessage message = mailSender.createMimeMessage();
+//            MimeMessage mimeMessage = mailSender.createMimeMessage();
+//            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+//            messageHelper.setFrom(senderEmail);
+//            messageHelper.setTo(to);
+//            messageHelper.setSubject(subject);
+//            messageHelper.setText(content, true);
+//
+//            // sending mimeMessage
+//            mailSender.send(mimeMessage);
             log.info("Mail sent to {}", to);
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             log.warn("Email could not be sent to user '{}' : '{}'", to, e.getMessage());
         }
     }

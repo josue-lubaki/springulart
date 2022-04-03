@@ -20,7 +20,6 @@ import org.springframework.context.annotation.Configuration;
 @Data
 @Slf4j
 public class S3Config {
-    private final JwtConfig jwtConfig;
 
     @Value("${cloud.aws.credentials.accessKey}")
     private String awsAccessKey;
