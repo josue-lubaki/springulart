@@ -6,7 +6,6 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +17,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @Data
-@Slf4j
 public class S3Config {
 
     @Value("${cloud.aws.credentials.accessKey}")
@@ -35,6 +33,7 @@ public class S3Config {
         return new BasicAWSCredentials(awsAccessKey, awsSecretKey);
     }
 
+    @SuppressWarnings("deprecation")
     @Bean(name="amazonS3Client")
     public AmazonS3Client amazonS3Client(AWSCredentials awsCredentials) {
         AmazonS3Client amazonS3Client = new AmazonS3Client(awsCredentials);
