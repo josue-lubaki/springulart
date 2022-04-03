@@ -5,6 +5,7 @@ import ca.ghostteam.springulart.model.AddressModel;
 import ca.ghostteam.springulart.model.CredentialModel;
 import ca.ghostteam.springulart.model.UserModel;
 import ca.ghostteam.springulart.repository.UserRepository;
+import ca.ghostteam.springulart.service.File.FileService;
 import ca.ghostteam.springulart.service.address.AddressService;
 import ca.ghostteam.springulart.service.credential.CredentialService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -31,6 +33,9 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final AddressService addressService;
     private final CredentialService credentialService;
+
+    @Autowired(required = false)
+    private FileService fileService;
 
     @Autowired
     public UserServiceImpl(
@@ -130,9 +135,13 @@ public class UserServiceImpl implements UserService {
         return userRepository.existsByEmail(email);
     }
 
+    @Transactional
     @Override
     public void deleteUserById(Long id) {
-        userRepository.deleteById(id);
+        // delete imageURL of user to Amazon S3
+        String imageURL = this.userRepository.findById(id).get().getImageURL();
+        this.userRepository.deleteById(id);
+        this.fileService.deleteImage(imageURL);
     }
 
     /**

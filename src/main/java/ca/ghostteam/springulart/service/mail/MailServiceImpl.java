@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Locale;
 import java.util.Optional;
@@ -80,7 +81,7 @@ public class MailServiceImpl implements MailService {
             // sending mimeMessage
             javaMailSender.send(mimeMessage);
             log.info("Mail sent to {}", to);
-        } catch (Exception e) {
+        } catch (MessagingException e) {
             log.warn("Email could not be sent to user '{}' : '{}'", to, e.getMessage());
         }
     }
