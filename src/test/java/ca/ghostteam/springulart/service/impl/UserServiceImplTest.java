@@ -1,11 +1,6 @@
 package ca.ghostteam.springulart.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.atLeast;
@@ -2160,24 +2155,23 @@ class UserServiceImplTest {
         when(this.addressService.saveAddressModel(any())).thenReturn(ofResult1);
 
         AddressDTO addressDTO1 = new AddressDTO();
-        addressDTO1.setApartement("Apartement");
-        addressDTO1.setCity("Oxford");
-        addressDTO1.setId(123L);
-        addressDTO1.setState("MD");
-        addressDTO1.setStreet("Street");
-        addressDTO1.setZip("21654");
 
         SignupDTO signupDTO = new SignupDTO();
-        signupDTO.setAddress(addressDTO1);
         signupDTO.setDob(LocalDate.ofEpochDay(1L));
         signupDTO.setEmail("jane.doe@example.org");
         signupDTO.setFname("Fname");
-        signupDTO.setId(123L);
+//        signupDTO.setId(123L);
         signupDTO.setImageURL("https://example.org/example");
         signupDTO.setLname("Lname");
         signupDTO.setPassword("iloveyou");
         signupDTO.setPhone("4105551212");
         signupDTO.setRole("Role");
+        signupDTO.setApartment("Apartement");
+        signupDTO.setCity("Oxford");
+//        signupDTO.setId(123L);
+        signupDTO.setState("MD");
+        signupDTO.setStreet("Street");
+        signupDTO.setZip("21654");
         Optional<UserDTO> actualSaveUserResult = this.userServiceImpl.saveUser(signupDTO);
         assertTrue(actualSaveUserResult.isPresent());
         UserDTO getResult = actualSaveUserResult.get();
@@ -2195,7 +2189,7 @@ class UserServiceImplTest {
         assertEquals(123L, getResult.getId().longValue());
         assertEquals("https://example.org/example", getResult.getImageURL());
         assertEquals("Street", address.getStreet());
-        assertNull(address.getId());
+        assertNotNull(address.getId());
         assertEquals("Apartement", address.getApartement());
         assertEquals("MD", address.getState());
         assertEquals("21654", address.getZip());
@@ -2204,9 +2198,11 @@ class UserServiceImplTest {
         verify(this.passwordEncoder, atLeast(1)).encode(any());
         verify(this.credentialService).saveCredential(any());
         verify(this.addressService).saveAddressModel(any());
-        AddressDTO address1 = signupDTO.getAddress();
-        assertEquals(address, address1);
-        assertNull(address1.getId());
+        String apartment = signupDTO.getApartment();
+        String zip = signupDTO.getZip();
+        assertEquals(address.getApartement(), apartment);
+        assertNotNull(apartment);
+        assertNotNull(zip);
     }
 
     @Test
@@ -2237,24 +2233,21 @@ class UserServiceImplTest {
                 .thenReturn(ofResult1);
 
         AddressDTO addressDTO1 = new AddressDTO();
-        addressDTO1.setApartement("Apartement");
-        addressDTO1.setCity("Oxford");
-        addressDTO1.setId(123L);
-        addressDTO1.setState("MD");
-        addressDTO1.setStreet("Street");
-        addressDTO1.setZip("21654");
 
         SignupDTO signupDTO = new SignupDTO();
-        signupDTO.setAddress(addressDTO1);
         signupDTO.setDob(LocalDate.ofEpochDay(1L));
         signupDTO.setEmail("jane.doe@example.org");
         signupDTO.setFname("Fname");
-        signupDTO.setId(123L);
         signupDTO.setImageURL("https://example.org/example");
         signupDTO.setLname("Lname");
         signupDTO.setPassword("iloveyou");
         signupDTO.setPhone("4105551212");
         signupDTO.setRole("Role");
+        signupDTO.setApartment("Apartement");
+        signupDTO.setCity("Oxford");
+        signupDTO.setState("MD");
+        signupDTO.setStreet("Street");
+        signupDTO.setZip("21654");
         assertThrows(UsernameNotFoundException.class, () -> this.userServiceImpl.saveUser(signupDTO));
         verify(this.userRepository).save(any());
         verify(this.passwordEncoder, atLeast(1)).encode(any());
@@ -2412,25 +2405,20 @@ class UserServiceImplTest {
         Optional<AddressDTO> ofResult1 = Optional.of(addressDTO);
         when(this.addressService.saveAddressModel(any())).thenReturn(ofResult1);
 
-        AddressDTO addressDTO1 = new AddressDTO();
-        addressDTO1.setApartement("Apartement");
-        addressDTO1.setCity("Oxford");
-        addressDTO1.setId(123L);
-        addressDTO1.setState("MD");
-        addressDTO1.setStreet("Street");
-        addressDTO1.setZip("21654");
-
         SignupDTO signupDTO = new SignupDTO();
-        signupDTO.setAddress(addressDTO1);
         signupDTO.setDob(LocalDate.ofEpochDay(1L));
         signupDTO.setEmail("jane.doe@example.org");
         signupDTO.setFname("Fname");
-        signupDTO.setId(123L);
         signupDTO.setImageURL("https://example.org/example");
         signupDTO.setLname("Lname");
         signupDTO.setPassword("iloveyou");
         signupDTO.setPhone("4105551212");
         signupDTO.setRole("Role");
+        signupDTO.setApartment("Apartement");
+        signupDTO.setCity("Oxford");
+        signupDTO.setState("MD");
+        signupDTO.setStreet("Street");
+        signupDTO.setZip("21654");
         Optional<UserDTO> actualSaveUserResult = this.userServiceImpl.saveUser(signupDTO);
         assertTrue(actualSaveUserResult.isPresent());
         UserDTO getResult = actualSaveUserResult.get();
@@ -2448,7 +2436,7 @@ class UserServiceImplTest {
         assertEquals(123L, getResult.getId().longValue());
         assertEquals("https://example.org/example", getResult.getImageURL());
         assertEquals("Street", address.getStreet());
-        assertNull(address.getId());
+        assertNotNull(address.getId());
         assertEquals("Apartement", address.getApartement());
         assertEquals("MD", address.getState());
         assertEquals("21654", address.getZip());
@@ -2485,9 +2473,9 @@ class UserServiceImplTest {
         verify(this.passwordEncoder, atLeast(1)).encode(any());
         verify(this.credentialService).saveCredential(any());
         verify(this.addressService).saveAddressModel(any());
-        AddressDTO address1 = signupDTO.getAddress();
-        assertEquals(address, address1);
-        assertNull(address1.getId());
+        String zip = signupDTO.getZip();
+        assertEquals(address.getZip(), zip);
+        assertNotNull(zip);
     }
 
     @Test
@@ -2640,25 +2628,20 @@ class UserServiceImplTest {
         Optional<AddressDTO> ofResult1 = Optional.of(addressDTO);
         when(this.addressService.saveAddressModel(any())).thenReturn(ofResult1);
 
-        AddressDTO addressDTO1 = new AddressDTO();
-        addressDTO1.setApartement("Apartement");
-        addressDTO1.setCity("Oxford");
-        addressDTO1.setId(123L);
-        addressDTO1.setState("MD");
-        addressDTO1.setStreet("Street");
-        addressDTO1.setZip("21654");
-
         SignupDTO signupDTO = new SignupDTO();
-        signupDTO.setAddress(addressDTO1);
         signupDTO.setDob(LocalDate.ofEpochDay(1L));
         signupDTO.setEmail("jane.doe@example.org");
         signupDTO.setFname("Fname");
-        signupDTO.setId(123L);
         signupDTO.setImageURL("https://example.org/example");
         signupDTO.setLname("Lname");
         signupDTO.setPassword("iloveyou");
         signupDTO.setPhone("4105551212");
         signupDTO.setRole("Role");
+        signupDTO.setApartment("Apartement");
+        signupDTO.setCity("Oxford");
+        signupDTO.setState("MD");
+        signupDTO.setStreet("Street");
+        signupDTO.setZip("21654");
         assertThrows(UsernameNotFoundException.class, () -> this.userServiceImpl.saveUser(signupDTO));
         verify(this.userRepository).save(any());
         verify(userModel2).getAddress();

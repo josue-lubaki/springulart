@@ -7,7 +7,6 @@ import ca.ghostteam.springulart.service.haircut.HaircutService;
 import ca.ghostteam.springulart.service.mail.MailService;
 import ca.ghostteam.springulart.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,8 +21,12 @@ import java.time.LocalDate;
 @ConfigurationPropertiesScan
 @Slf4j
 public class SpringulartApplication {
-    @Autowired
-    private MailService mailService;
+
+    private final MailService mailService;
+
+    public SpringulartApplication(MailService mailService) {
+        this.mailService = mailService;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(SpringulartApplication.class, args);
@@ -58,12 +61,11 @@ public class SpringulartApplication {
         user1.setImageURL("https://static.wikia.nocookie.net/marvel-cinematic/images/3/32/Steve_Rogers_2.jpg");
         user1.setPhone("+1 873 873 8738");
         // set address information
-        addressModel1.setApartement("3");
-        addressModel1.setStreet("25 Rue de Caillière");
-        addressModel1.setCity("Trois-Rivières");
-        addressModel1.setZip("G8W 1B5");
-        addressModel1.setState("Québec");
-        user1.setAddress(addressModel1);
+        user1.setApartment("3");
+        user1.setStreet("25 Rue de Caillière");
+        user1.setCity("Trois-Rivières");
+        user1.setZip("G8W 1B5");
+        user1.setState("Québec");
         // add user
         userService.saveUser(user1);
 
@@ -79,12 +81,11 @@ public class SpringulartApplication {
         user2.setImageURL("https://assets-prd.ignimgs.com/2020/08/06/john-wick-button-1596757524663.jpg");
         user2.setPhone("+1 873 873 8738");
         // set address information
-        addressModel2.setApartement("101");
-        addressModel2.setStreet("3100 Boulevard des Forges");
-        addressModel2.setCity("Trois-Rivières");
-        addressModel2.setZip("G8Z 1V5");
-        addressModel2.setState("Québec");
-        user2.setAddress(addressModel2);
+        user2.setApartment("101");
+        user2.setStreet("3100 Boulevard des Forges");
+        user2.setCity("Trois-Rivières");
+        user2.setZip("G8Z 1V5");
+        user2.setState("Québec");
         // add user
         userService.saveUser(user2);
 
@@ -100,12 +101,11 @@ public class SpringulartApplication {
         user3.setImageURL("https://static.wikia.nocookie.net/marvelcentral/images/4/4a/Tony-Stark-iron-man-11234572-1485-2061.jpg");
         user3.setPhone("+1 873 873 8738");
         // set address information
-        addressModel3.setApartement("1B");
-        addressModel3.setStreet("1280 Rue de Terrière");
-        addressModel3.setCity("Trois-Rivières");
-        addressModel3.setZip("G8Z 3K2");
-        addressModel3.setState("Québec");
-        user3.setAddress(addressModel3);
+        user3.setApartment("1B");
+        user3.setStreet("1280 Rue de Terrière");
+        user3.setCity("Trois-Rivières");
+        user3.setZip("G8Z 3K2");
+        user3.setState("Québec");
         // add user
         userService.saveUser(user3);
     }

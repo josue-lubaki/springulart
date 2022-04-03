@@ -3,6 +3,7 @@ package ca.ghostteam.springulart.controller.user;
 import ca.ghostteam.springulart.config.bean.JwtConfig;
 import ca.ghostteam.springulart.dto.*;
 import ca.ghostteam.springulart.security.ApplicationUserRole;
+import ca.ghostteam.springulart.service.File.AWSS3Service;
 import ca.ghostteam.springulart.service.mail.MailService;
 import ca.ghostteam.springulart.service.user.UserService;
 import com.auth0.jwt.JWT;
@@ -12,17 +13,14 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -44,16 +42,19 @@ public class AuthController {
     private final JwtConfig jwtConfig;
     private final UserService userService;
     private final MailService mailService;
+    private final AWSS3Service awss3Service;
 
     public AuthController(
             AuthenticationManager authenticationManager,
             JwtConfig jwtConfig,
             UserService userService,
-            MailService mailService) {
+            MailService mailService,
+            AWSS3Service awss3Service) {
         this.authenticationManager = authenticationManager;
         this.jwtConfig = jwtConfig;
         this.userService = userService;
         this.mailService = mailService;
+        this.awss3Service = awss3Service;
     }
 
     @ApiResponses(value = {
@@ -93,14 +94,51 @@ public class AuthController {
     })
     @ApiOperation(value = "Register", notes = "Register to the application")
     @PostMapping(value ="/register", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public UserDTO registerUser(@RequestBody SignupDTO signupDTO) throws Exception {
+    public UserDTO registerUser(@ModelAttribute RegisterDTO registerDTO) throws Exception {
+
         // if user already exists
-        if (userService.existsUserByEmail(signupDTO.getEmail()))
+        if (userService.existsUserByEmail(registerDTO.getEmail()))
             throw new IllegalStateException("User already exists");
+
+        // retrieve imageURL property from signupDTO
+        MultipartFile imageURL = registerDTO.getImageURL();
+        // upload image to AWS S3
+        String imageURLString = awss3Service.uploadImage(imageURL);
+
+        // create SignupDTO
+        SignupDTO signupDTO = convertRegisterDTOtoSignupDTO(registerDTO);
+
+        // set imageURL property to signupDTO
+        signupDTO.setImageURL(imageURLString);
 
         return userService
                 .saveUser(signupDTO)
                 .orElseThrow(() -> new IllegalStateException("User not registered"));
+    }
+
+    /**
+     * Method to convert RegisterDTO to SignupDTO
+     * @param registerDTO registerDTO object with user information to be registered
+     * @return SignupDTO object with user information to be registered
+     */
+    private SignupDTO convertRegisterDTOtoSignupDTO(RegisterDTO registerDTO) {
+        SignupDTO signupDTO = new SignupDTO();
+        signupDTO.setFname(registerDTO.getFname());
+        signupDTO.setLname(registerDTO.getLname());
+        signupDTO.setEmail(registerDTO.getEmail());
+        signupDTO.setPassword(registerDTO.getPassword());
+        signupDTO.setDob(registerDTO.getDob());
+        signupDTO.setRole(registerDTO.getRole());
+
+        // set address information
+        signupDTO.setApartment(registerDTO.getApartment());
+        signupDTO.setStreet(registerDTO.getStreet());
+        signupDTO.setCity(registerDTO.getCity());
+        signupDTO.setState(registerDTO.getState());
+        signupDTO.setZip(registerDTO.getZip());
+        signupDTO.setPhone(registerDTO.getPhone());
+
+        return signupDTO;
     }
 
     /**

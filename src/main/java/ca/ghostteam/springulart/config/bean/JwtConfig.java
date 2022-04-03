@@ -1,7 +1,11 @@
 package ca.ghostteam.springulart.config.bean;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.google.common.net.HttpHeaders;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
@@ -22,4 +26,5 @@ public class JwtConfig {
     public String getAuthorizationHeader(){
         return HttpHeaders.AUTHORIZATION;
     }
+
 }

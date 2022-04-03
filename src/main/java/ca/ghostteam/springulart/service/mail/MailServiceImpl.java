@@ -52,6 +52,7 @@ public class MailServiceImpl implements MailService {
 
     private void sendPlainTextMessage(String to, String subject, String content) {
         try{
+            log.info("SenderEmail {} would send message to {}", senderEmail, to);
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
             messageHelper.setFrom(senderEmail);
