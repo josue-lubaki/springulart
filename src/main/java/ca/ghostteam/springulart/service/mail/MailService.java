@@ -1,6 +1,5 @@
 package ca.ghostteam.springulart.service.mail;
 
-import ca.ghostteam.springulart.model.UserModel;
 import org.springframework.scheduling.annotation.Async;
 
 /**

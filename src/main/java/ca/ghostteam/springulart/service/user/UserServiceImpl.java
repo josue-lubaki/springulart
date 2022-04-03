@@ -87,22 +87,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<UserDTO> saveUser(SignupDTO signupDTO) {
-
-        // extract AddressModel and save it
-        AddressModel addressModel = extractAddressModel(signupDTO);
-        AddressDTO addressSaved = addressService.saveAddressModel(addressModel).get();
-
-        // id id_address into UserModel Object
-        signupDTO.setAddress(addressSaved);
-        signupDTO.getAddress().setId(addressModel.getId());
-
         // created user
         UserModel user = extractUserModelToSignUp(signupDTO);
+        CredentialModel credentialModel = extractCredentialModel(signupDTO);
+        AddressModel addressModel = extractAddressModel(signupDTO);
+
+        AddressDTO addressSaved = addressService.saveAddressModel(addressModel).get();
+//        signupDTO.setAddress(addressSaved);
+//        signupDTO.getAddress().setId(addressModel.getId());
+
+        // id id_address into UserModel Object
         user.getAddress().setId(addressModel.getId());
 
-        // extract CredentialModel and save it, and set id_user into UserModel Object
-        CredentialModel credentialModel = extractCredentialModel(signupDTO);
         credentialModel.setUser(user);
+        // extract CredentialModel and save it, and set id_user into UserModel Object
         CredentialDTO credentialSaved = credentialService.saveCredential(credentialModel).get();
         CredentialModel credentiaModelSaved = converterCredentialDtoToCredentialModel(credentialSaved);
 
@@ -170,11 +168,11 @@ public class UserServiceImpl implements UserService {
     private AddressModel extractAddressModel(SignupDTO signupDTO) {
         AddressModel addressModel = new AddressModel();
         addressModel.setId(null);
-        addressModel.setApartement(signupDTO.getAddress().getApartement());
-        addressModel.setStreet(signupDTO.getAddress().getStreet());
-        addressModel.setZip(signupDTO.getAddress().getZip());
-        addressModel.setCity(signupDTO.getAddress().getCity());
-        addressModel.setState(signupDTO.getAddress().getState());
+        addressModel.setApartement(signupDTO.getApartment());
+        addressModel.setStreet(signupDTO.getStreet());
+        addressModel.setZip(signupDTO.getZip());
+        addressModel.setCity(signupDTO.getCity());
+        addressModel.setState(signupDTO.getState());
 
         return addressModel;
     }
@@ -187,7 +185,7 @@ public class UserServiceImpl implements UserService {
     private UserModel extractUserModelToSignUp(SignupDTO signupDTO) {
         // create userModel
         UserModel userModel = new UserModel();
-        userModel.setId(signupDTO.getId());
+        //userModel.setId(signupDTO.getId());
         userModel.setEmail(signupDTO.getEmail());
         userModel.setFname(signupDTO.getFname());
         userModel.setLname(signupDTO.getLname());
@@ -198,7 +196,12 @@ public class UserServiceImpl implements UserService {
         userModel.setDob(signupDTO.getDob());
         userModel.setCreated(LocalDate.now());
         userModel.setUpdated(LocalDate.now());
-        userModel.setAddress(convertAddressDtoTOAddressModel(signupDTO.getAddress()));
+
+        // create AddressModel
+        AddressModel addressModel = extractAddressModel(signupDTO);
+
+
+        userModel.setAddress(addressModel);
         userModel.setRole(signupDTO.getRole());
         return userModel;
     }
