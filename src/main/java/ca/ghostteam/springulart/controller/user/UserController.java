@@ -45,8 +45,8 @@ public class UserController {
 
     @ApiResponse(code = 200, message = "Successfully retrieved a user")
     @ApiOperation(value = "Get a user by ID")
-    @GetMapping("/{userId}")
-    public UserDTO getUser(@PathVariable("userId") Long userId) {
+    @GetMapping("/{id}")
+    public UserDTO getUser(@PathVariable("id") Long userId) {
         return userService
                 .findUserById(userId)
                 .orElseThrow(() -> new IllegalStateException("User with ID " + userId + " does not exist"));
@@ -54,9 +54,9 @@ public class UserController {
 
     @ApiResponse(code = 204, message = "Successfully Deleted a user")
     @ApiOperation(value = "Delete a user by ID")
-    @DeleteMapping(path = "{userId}")
+    @DeleteMapping(path = "{id}")
     @PreAuthorize("hasAuthority('client:write')")
-    public void deleteMyAccount(@PathVariable("userId") Long userId){
+    public void deleteMyAccount(@PathVariable("id") Long userId){
         // check if user has permission to do that
         if(dontDoThisOperation(userId))
             throw new IllegalStateException("You are not authorized to delete user with ID " + userId);
@@ -66,9 +66,9 @@ public class UserController {
 
     @ApiResponse(code = 200, message = "Successfully updated a user")
     @ApiOperation(value = "Update a user by ID")
-    @PutMapping(path = "{userId}")
+    @PutMapping(path = "{id}")
     @PreAuthorize("hasAuthority('client:write')")
-    public UserDTO updateUser(@PathVariable("userId") Long userId, @RequestBody UserDTO userDTO) throws Exception {
+    public UserDTO updateUser(@PathVariable("id") Long userId, @RequestBody UserDTO userDTO) throws Exception {
         // check if user has permission to do that
         if(dontDoThisOperation(userId))
             throw new IllegalStateException("You are not authorized to update user with ID " + userId);

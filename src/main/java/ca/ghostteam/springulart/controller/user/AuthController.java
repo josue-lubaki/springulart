@@ -2,12 +2,12 @@ package ca.ghostteam.springulart.controller.user;
 
 import ca.ghostteam.springulart.dto.*;
 import ca.ghostteam.springulart.service.file.AWSS3ServiceImpl;
+import ca.ghostteam.springulart.service.file.FileService;
 import ca.ghostteam.springulart.service.mail.MailService;
 import ca.ghostteam.springulart.service.user.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -25,17 +25,17 @@ import java.util.*;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UtilsUserController utilsUserController;
+    private final UtilsUserController utils;
     private final UserService userService;
     private final MailService mailService;
-    private final AWSS3ServiceImpl awss3ServiceImpl;
+    private final FileService awss3ServiceImpl;
 
     public AuthController(
-            UtilsUserController utilsUserController,
+            UtilsUserController utils,
             UserService userService,
             MailService mailService,
-            AWSS3ServiceImpl awss3ServiceImpl) {
-        this.utilsUserController = utilsUserController;
+            FileService awss3ServiceImpl) {
+        this.utils = utils;
         this.userService = userService;
         this.mailService = mailService;
         this.awss3ServiceImpl = awss3ServiceImpl;
@@ -50,19 +50,19 @@ public class AuthController {
     public ResponseEntity<LoginDTO> authenticateUser(@RequestBody AuthDTO authDTO) throws BadCredentialsException {
 
         // attempt authentication when user provides username and password
-        UserDetailsDTO userDetailsDTO = (UserDetailsDTO) utilsUserController.authenticate(authDTO).getPrincipal();
+        UserDetailsDTO userDetailsDTO = (UserDetailsDTO) utils.authenticate(authDTO).getPrincipal();
 
         // get username of user
         String username = authDTO.getUsername();
 
         // get Role of user
-        String userRole = utilsUserController.getUserRole(username);
+        String userRole = utils.getUserRole(username);
 
         // get All authorization of user
         Map<String, Object> authorities = UtilsUserController.getAllUserPermissions(userRole);
 
         // create Token
-        String token = utilsUserController.createJwtToken(username, authorities);
+        String token = utils.createJwtToken(username, authorities);
 
         // set token to userDetailsDTO
         userDetailsDTO.setToken(token);
