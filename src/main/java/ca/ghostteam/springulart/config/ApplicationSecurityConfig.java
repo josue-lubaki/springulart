@@ -52,7 +52,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 //            "/swagger-ui.html",
             "/swagger-ui/**",
             "/webjars/**",
-            "/actuator/health"
+            "/actuator/health",
+            "/swagger.yaml"
     };
 
     private static final String[] CLIENT_BARBER_ENDPOINTS = {

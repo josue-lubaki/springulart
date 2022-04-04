@@ -4,6 +4,7 @@ import ca.ghostteam.springulart.dto.RegisterDTO;
 import ca.ghostteam.springulart.dto.SignupDTO;
 import ca.ghostteam.springulart.dto.UserDTO;
 import ca.ghostteam.springulart.service.file.AWSS3ServiceImpl;
+import ca.ghostteam.springulart.service.file.FileService;
 import ca.ghostteam.springulart.service.user.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -25,10 +26,10 @@ import java.util.List;
 public class UserManagementController {
 
     private final UserService userService;
-    private final AWSS3ServiceImpl awss3ServiceImpl;
+    private final FileService awss3ServiceImpl;
 
     public UserManagementController(UserService userService,
-                                    AWSS3ServiceImpl awss3ServiceImpl) {
+                                    FileService awss3ServiceImpl) {
         this.userService = userService;
         this.awss3ServiceImpl = awss3ServiceImpl;
     }

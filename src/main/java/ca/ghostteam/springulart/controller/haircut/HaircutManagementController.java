@@ -3,6 +3,7 @@ package ca.ghostteam.springulart.controller.haircut;
 import ca.ghostteam.springulart.dto.HaircutCreateDTO;
 import ca.ghostteam.springulart.dto.HaircutDTO;
 import ca.ghostteam.springulart.service.file.AWSS3ServiceImpl;
+import ca.ghostteam.springulart.service.file.FileService;
 import ca.ghostteam.springulart.service.haircut.HaircutService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -26,10 +27,10 @@ import java.util.NoSuchElementException;
 public class HaircutManagementController {
 
     private final HaircutService haircutService;
-    private final AWSS3ServiceImpl awss3ServiceImpl;
+    private final FileService awss3ServiceImpl;
 
     public HaircutManagementController(HaircutService haircutService,
-                                       AWSS3ServiceImpl awss3ServiceImpl) {
+                                       FileService awss3ServiceImpl) {
         this.haircutService = haircutService;
         this.awss3ServiceImpl = awss3ServiceImpl;
     }

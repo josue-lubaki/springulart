@@ -2,6 +2,7 @@ package ca.ghostteam.springulart.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.ResponseEntity;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -10,6 +11,8 @@ import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger.web.SwaggerResource;
+import springfox.documentation.swagger.web.SwaggerResourcesProvider;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Collections;
@@ -50,12 +53,9 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public Docket api(){
+    public Docket api() {
         return new Docket(DocumentationType.OAS_30)
                 .apiInfo(metaData())
-                .pathMapping("/")
-                .forCodeGeneration(true)
-                .genericModelSubstitutes(ResponseEntity.class)
                 .produces(Collections.singleton(DATA_TYPE))
                 .consumes(Collections.singleton(DATA_TYPE))
                 .securityContexts(List.of(securityContexts()))
@@ -63,8 +63,23 @@ public class SwaggerConfig {
                 .useDefaultResponseMessages(false)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("ca.ghostteam.springulart"))
-                .paths(PathSelectors.regex(DEFAULT_INCLUDE_PATTERN))
+                .paths(PathSelectors.any())
                 .build();
+    }
+
+    @Primary
+    @Bean
+    public SwaggerResourcesProvider swaggerResourcesProvider() {
+        // using my custom swagger resource provider
+        // you need to put your YAML file to src/main/resource/static
+        return () -> {
+            SwaggerResource resource = new SwaggerResource();
+            resource.setName("Springular REST API");
+            resource.setSwaggerVersion("3.0");
+            resource.setLocation("/swagger.yaml");
+
+            return Collections.singletonList(resource);
+        };
     }
 
     /**
@@ -72,7 +87,7 @@ public class SwaggerConfig {
      * @return ApiKey
      **/
     private ApiKey apiKey() {
-        return new ApiKey("JWT", AUTHORIZATION_HEADER, "header");
+        return new ApiKey(AUTHORIZATION_HEADER, AUTHORIZATION_HEADER, "header");
     }
 
     /**
@@ -80,6 +95,7 @@ public class SwaggerConfig {
      * @return SecurityContext
      **/
     private SecurityContext securityContexts() {
+        // don't secure /auth and /api/v1/haircuts
         Pattern pattern = Pattern.compile("^(?!(/auth|/api/v1/haircuts)).*$");
 
         return SecurityContext.builder()
@@ -97,7 +113,7 @@ public class SwaggerConfig {
                 = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
-        return List.of(new SecurityReference("JWT", authorizationScopes));
+        return List.of(new SecurityReference(AUTHORIZATION_HEADER, authorizationScopes));
     }
 
 }
