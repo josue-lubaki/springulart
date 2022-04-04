@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.service.File;
+package ca.ghostteam.springulart.service.file;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;

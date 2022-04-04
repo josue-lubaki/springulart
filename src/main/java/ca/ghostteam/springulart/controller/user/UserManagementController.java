@@ -1,13 +1,16 @@
 package ca.ghostteam.springulart.controller.user;
 
+import ca.ghostteam.springulart.dto.RegisterDTO;
 import ca.ghostteam.springulart.dto.SignupDTO;
 import ca.ghostteam.springulart.dto.UserDTO;
+import ca.ghostteam.springulart.service.file.AWSS3ServiceImpl;
 import ca.ghostteam.springulart.service.user.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,9 +25,12 @@ import java.util.List;
 public class UserManagementController {
 
     private final UserService userService;
+    private final AWSS3ServiceImpl awss3ServiceImpl;
 
-    public UserManagementController(UserService userService) {
+    public UserManagementController(UserService userService,
+                                    AWSS3ServiceImpl awss3ServiceImpl) {
         this.userService = userService;
+        this.awss3ServiceImpl = awss3ServiceImpl;
     }
 
     @ApiResponse(code = 200, message = "Successfully retrieved all users")
@@ -53,10 +59,26 @@ public class UserManagementController {
     })
     @ApiOperation(value = "Create a new user")
     @PostMapping()
-    public UserDTO registerNewUser(@RequestBody SignupDTO signupDTO) throws Exception {
-        // check if user already exists
-        if(userService.existsUserByEmail(signupDTO.getEmail()))
+    public UserDTO registerUser(@ModelAttribute RegisterDTO registerDTO) throws Exception {
+
+        // if user already exists
+        if (userService.existsUserByEmail(registerDTO.getEmail()))
             throw new IllegalStateException("User already exists");
+
+        // check role of user, if null, put ROLE_CLIENT as default
+        if (registerDTO.getRole() == null)
+            registerDTO.setRole("ROLE_CLIENT");
+
+        // retrieve imageURL property from signupDTO
+        MultipartFile imageURL = registerDTO.getImageURL();
+        // upload image to AWS S3
+        String imageURLString = awss3ServiceImpl.uploadImage(imageURL);
+
+        // create SignupDTO
+        SignupDTO signupDTO = UtilsUserController.convertRegisterDTOtoSignupDTO(registerDTO);
+
+        // set imageURL property to signupDTO
+        signupDTO.setImageURL(imageURLString);
 
         return userService
                 .saveUser(signupDTO)
@@ -80,5 +102,6 @@ public class UserManagementController {
                 .orElseThrow(() -> new IllegalStateException(String.format("User with ID %s cannot found", userId)));
 
     }
+
 
 }

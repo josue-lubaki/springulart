@@ -1,174 +1,23 @@
-package ca.ghostteam.springulart.service.reservation;
+package ca.ghostteam.springulart.service.reservation.impl;
 
 import ca.ghostteam.springulart.dto.*;
 import ca.ghostteam.springulart.model.*;
-import ca.ghostteam.springulart.repository.ReservationRepository;
-import ca.ghostteam.springulart.service.haircut.HaircutService;
-import ca.ghostteam.springulart.service.location.LocationService;
-import ca.ghostteam.springulart.service.reservationtime.ReservationTimeService;
-import ca.ghostteam.springulart.service.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Josue Lubaki
  * @version 1.0
- * @since 2022-03-27
+ * @since 2022-04-04
  */
-@Service
-public class ReservationServiceImpl implements ReservationService {
-
-    private final ReservationRepository reservationRepository;
-    private final UserService userService;
-    private final HaircutService haircutService;
-    private final ReservationTimeService reservationTimeService;
-    private final LocationService locationService;
-
-    @Autowired
-    public ReservationServiceImpl(ReservationRepository reservationRepository,
-                                  UserService userService,
-                                  HaircutService haircutService,
-                                  ReservationTimeService reservationTimeService,
-                                  LocationService locationService) {
-        this.reservationRepository = reservationRepository;
-        this.userService = userService;
-        this.haircutService = haircutService;
-        this.reservationTimeService = reservationTimeService;
-        this.locationService = locationService;
-    }
-
-    @Override
-    public List<ReservationDTO> findAll() {
-        return reservationRepository
-                .findAll()
-                .stream()
-                .map(this::converterModelToDTO)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public Optional<ReservationDTO> findById(Long id) {
-        return reservationRepository
-                .findById(id)
-                .map(this::converterModelToDTO);
-    }
-
-    @Override
-    public Optional<ReservationDTO> save(ReservationDTO reservation) {
-        // verify a client
-        UserDTO client = userService.findUserByEmail(reservation.getClient().getEmail()).get();
-        boolean existClient = userService.existsUserByEmail(client.getEmail());
-
-        // verify a haircut
-        HaircutDTO haircut = reservation.getHaircut();
-        boolean existHaircutDTO = haircutService.existsHaircutById(haircut.getId());
-
-        if(!existClient || !existHaircutDTO)
-            throw new IllegalStateException("haircut not found");
-
-        // convert userDTO to userModel and haircutDTO to haircutModel
-        UserModel userModel = converterEntityDtoTOEntityModel(client);
-        HaircutModel haircutModel = converterHaircutDtoToHaircutModel(haircut);
-
-        // create time Reservation and Save it
-        ReservationTimeDTO reservationTimeDTO = reservation.getReservationTime();
-        ReservationTimeDTO reservationTimeSaved = reservationTimeService.save(reservationTimeDTO).get();
-        ReservationTimeModel reservationTime = converterReservationTimeDtoToReservationTimeModel(reservationTimeSaved);
-
-        // create Location and save it
-        LocationDTO locationModel = reservation.getLocation();
-        LocationDTO locationSaved = locationService.save(locationModel).get();
-        LocationModel location = converterLocationDtoToLocationModel(locationSaved);
-
-
-        UserModel barber = null;
-        if(Objects.nonNull(reservation.getBarber())) {
-                barber = converterEntityDtoTOEntityModel(reservation.getBarber());
-        }
-
-        // create ReservationModel
-        ReservationModel reservationModelToSave = new ReservationModel();
-        reservationModelToSave.setId(null);
-        reservationModelToSave.setBarber(barber);
-        reservationModelToSave.setClient(userModel);
-        reservationModelToSave.setHaircut(haircutModel);
-        reservationModelToSave.setReservationTime(reservationTime);
-        reservationModelToSave.setLocation(location);
-
-        // set foreign keys values
-        reservationTime.setReservationModel(Set.of(reservationModelToSave));
-        location.setReservationModel(reservationModelToSave);
-        haircutModel.setReservationModel(Set.of(reservationModelToSave));
-        userModel.setReservationModelClient(Set.of(reservationModelToSave));
-
-        if (Objects.nonNull(barber)) {
-            barber.setReservationModelBarber(Set.of(reservationModelToSave));
-        }
-
-        ReservationModel reservationModelSaved = reservationRepository.save(reservationModelToSave);
-        ReservationDTO reservationDTO = converterModelToDTO(reservationModelSaved);
-
-        return Optional.of(reservationDTO);
-    }
-
-    @Transactional
-    @Override
-    public Optional<ReservationDTO> update(Long id, ReservationDTO reservation) {
-        // get reservation
-        ReservationDTO reservationModelToUpdate =
-                converterModelToDTO(
-                reservationRepository
-                .findById(id)
-                .orElseThrow(
-                    () -> new IllegalStateException(String.format("Reservation with ID %s cannot found", id))
-                )
-        );
-
-        // Modify reservationTime and Location of reservation
-        ReservationTimeDTO reservationTimeDTO = reservation.getReservationTime();
-        reservationTimeDTO.setId(reservationModelToUpdate.getReservationTime().getId());
-        reservationTimeService.update(id, reservationTimeDTO).get();
-
-        LocationDTO locationDTO = reservation.getLocation();
-        locationDTO.setId(reservationModelToUpdate.getLocation().getId());
-        locationService.update(id, locationDTO).get();
-
-        // retrieve again reservation with new values
-        reservationModelToUpdate = converterModelToDTO(
-                reservationRepository
-                .findById(id)
-                .orElseThrow(() -> new IllegalStateException(String.format("Reservation with ID %s cannot found", id))
-                )
-        );
-
-        // return reservation with new values
-        return Optional.of(reservationModelToUpdate);
-    }
-
-
-    @Override
-    public void deleteReservationById(Long id) {
-        reservationRepository.deleteById(id);
-    }
-
-    @Override
-    public long count() {
-        return reservationRepository.findAll().size();
-    }
+@Component
+public class UtilsReservationService {
 
     /**
      * Method to convert a LocationDTO to a LocationModel
      * @param locationDTO LocationDTO to convert
      * @return LocationDTO
      * */
-    private LocationModel converterLocationDtoToLocationModel(LocationDTO locationDTO) {
+    public LocationModel converterLocationDtoToLocationModel(LocationDTO locationDTO) {
         LocationModel locationModel = new LocationModel();
         locationModel.setId(locationDTO.getId());
         locationModel.setReservationModel(null);
@@ -182,7 +31,7 @@ public class ReservationServiceImpl implements ReservationService {
      * @param locationModel LocationModel to convert
      * @return LocationModel
      * */
-    private LocationDTO converterLocationModelToLocationDTO(LocationModel locationModel) {
+    public LocationDTO converterLocationModelToLocationDTO(LocationModel locationModel) {
         LocationDTO locationDTO = new LocationDTO();
         locationDTO.setId(locationModel.getId());
         locationDTO.setLatitude(locationModel.getLatitude());
@@ -195,7 +44,7 @@ public class ReservationServiceImpl implements ReservationService {
      * @param reservationTimeDTO ReservationTimeDTO to convert
      * @return ReservationTimeModel
      * */
-    private ReservationTimeModel converterReservationTimeDtoToReservationTimeModel(ReservationTimeDTO reservationTimeDTO) {
+    public ReservationTimeModel converterReservationTimeDtoToReservationTimeModel(ReservationTimeDTO reservationTimeDTO) {
         ReservationTimeModel reservationTimeModel = new ReservationTimeModel();
         reservationTimeModel.setId(reservationTimeDTO.getId());
         reservationTimeModel.setHours(reservationTimeDTO.getHours());
@@ -208,7 +57,7 @@ public class ReservationServiceImpl implements ReservationService {
      * @param reservationTimeModel ReservationTimeModel to convert
      * @return ReservationTimeModel
      * */
-    private ReservationTimeDTO converterReservationTimeModelToReservationTimeDTO(ReservationTimeModel reservationTimeModel) {
+    public ReservationTimeDTO converterReservationTimeModelToReservationTimeDTO(ReservationTimeModel reservationTimeModel) {
         ReservationTimeDTO reservationTimeDTO = new ReservationTimeDTO();
         reservationTimeDTO.setId(reservationTimeModel.getId());
         reservationTimeDTO.setHours(reservationTimeModel.getHours());
@@ -221,7 +70,7 @@ public class ReservationServiceImpl implements ReservationService {
      * @param address AddressDTO object to convert
      * @return AddressModel
      **/
-    private AddressModel convertAddressDtoTOAddressModel(AddressDTO address) {
+    public AddressModel convertAddressDtoTOAddressModel(AddressDTO address) {
         AddressModel addressModel = new AddressModel();
         addressModel.setId(address.getId());
         addressModel.setApartement(address.getApartement());
@@ -237,7 +86,7 @@ public class ReservationServiceImpl implements ReservationService {
      * @param address AddressModel object to convert
      * @return AddressDTO
      **/
-    private AddressDTO convertAddressModelTOAddressDTO(AddressModel address) {
+    public AddressDTO convertAddressModelTOAddressDTO(AddressModel address) {
         AddressDTO addressDTO = new AddressDTO();
         addressDTO.setId(address.getId());
         addressDTO.setApartement(address.getApartement());
@@ -253,7 +102,7 @@ public class ReservationServiceImpl implements ReservationService {
      * @param user UserDTO object to convert
      * @return UserModel
      **/
-    private UserModel converterEntityDtoTOEntityModel(UserDTO user) {
+    public UserModel converterEntityDtoTOEntityModel(UserDTO user) {
         UserModel userModel = new UserModel();
         userModel.setId(user.getId());
         userModel.setFname(user.getFname());
@@ -272,7 +121,7 @@ public class ReservationServiceImpl implements ReservationService {
      * @param user UserModel object to convert
      * @return UserDTO
      **/
-    private UserDTO converterEntityModelTOEntityDto(UserModel user) {
+    public UserDTO converterEntityModelTOEntityDto(UserModel user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
         userDTO.setFname(user.getFname());
@@ -291,7 +140,7 @@ public class ReservationServiceImpl implements ReservationService {
      * @param haircutDTO the haircutDTO to convert
      * @return the haircutModel
      */
-    private HaircutModel converterHaircutDtoToHaircutModel(HaircutDTO haircutDTO) {
+    public HaircutModel converterHaircutDtoToHaircutModel(HaircutDTO haircutDTO) {
         HaircutModel haircutModel = new HaircutModel();
         haircutModel.setId(haircutDTO.getId());
         haircutModel.setTitle(haircutDTO.getTitle());
@@ -307,7 +156,7 @@ public class ReservationServiceImpl implements ReservationService {
      * @param haircutModel the haircutModel to convert
      * @return the haircutDTO
      */
-    private HaircutDTO converterHaircutModelToHaircutDTO(HaircutModel haircutModel) {
+    public HaircutDTO converterHaircutModelToHaircutDTO(HaircutModel haircutModel) {
         HaircutDTO haircutDTO = new HaircutDTO();
         haircutDTO.setId(haircutModel.getId());
         haircutDTO.setTitle(haircutModel.getTitle());
@@ -323,7 +172,7 @@ public class ReservationServiceImpl implements ReservationService {
      * @param reservationModel the reservationModel to convert
      * @return ReservationDTO
      */
-    private ReservationDTO converterModelToDTO(ReservationModel reservationModel) {
+    public ReservationDTO converterModelToDTO(ReservationModel reservationModel) {
         ReservationDTO reservationDTO = new ReservationDTO();
         ReservationTimeDTO reservationTime = converterReservationTimeModelToReservationTimeDTO(reservationModel.getReservationTime());
         UserDTO client = converterEntityModelTOEntityDto(reservationModel.getClient());
@@ -350,7 +199,7 @@ public class ReservationServiceImpl implements ReservationService {
      * @param reservationDTO the reservationDTO to convert
      * @return ReservationModel
      */
-    private ReservationModel converterDtoToModel(ReservationDTO reservationDTO) {
+    public ReservationModel converterDtoToModel(ReservationDTO reservationDTO) {
         ReservationModel reservationModel = new ReservationModel();
 
         ReservationTimeModel reservationTime = converterReservationTimeDtoToReservationTimeModel(reservationDTO.getReservationTime());

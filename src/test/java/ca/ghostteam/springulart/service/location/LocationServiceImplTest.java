@@ -1,6 +1,5 @@
-package ca.ghostteam.springulart.service.impl;
+package ca.ghostteam.springulart.service.location;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doNothing;
@@ -21,7 +20,8 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Optional;
 
-import ca.ghostteam.springulart.service.location.LocationServiceImpl;
+import ca.ghostteam.springulart.service.location.impl.LocationServiceImpl;
+import ca.ghostteam.springulart.service.location.impl.UtilsLocationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +38,17 @@ class LocationServiceImplTest {
     @Autowired
     private LocationServiceImpl locationServiceImpl;
 
+    @MockBean
+    private UtilsLocationService utilsLocationService;
+
     @Test
     void testFindById() {
+        LocationDTO locationDTO = new LocationDTO();
+        locationDTO.setId(123L);
+        locationDTO.setLatitude(10.0d);
+        locationDTO.setLongitude(10.0d);
+        when(this.utilsLocationService.converterModelToDTO(any())).thenReturn(locationDTO);
+
         AddressModel addressModel = new AddressModel();
         addressModel.setApartement("Apartement");
         addressModel.setCity("Oxford");
@@ -160,17 +169,18 @@ class LocationServiceImplTest {
         locationModel1.setReservationModel(reservationModel1);
         Optional<LocationModel> ofResult = Optional.of(locationModel1);
         when(this.locationRepository.findById(any())).thenReturn(ofResult);
-        Optional<LocationDTO> actualFindByIdResult = this.locationServiceImpl.findById(123L);
-        assertTrue(actualFindByIdResult.isPresent());
-        LocationDTO getResult = actualFindByIdResult.get();
-        assertEquals(123L, getResult.getId());
-        assertEquals(10.0d, getResult.getLongitude().doubleValue());
-        assertEquals(10.0d, getResult.getLatitude().doubleValue());
+        assertTrue(this.locationServiceImpl.findById(123L).isPresent());
+        verify(this.utilsLocationService).converterModelToDTO(any());
         verify(this.locationRepository).findById(any());
     }
 
     @Test
     void testSave() {
+        LocationDTO locationDTO = new LocationDTO();
+        locationDTO.setId(123L);
+        locationDTO.setLatitude(10.0d);
+        locationDTO.setLongitude(10.0d);
+
         AddressModel addressModel = new AddressModel();
         addressModel.setApartement("Apartement");
         addressModel.setCity("Oxford");
@@ -382,23 +392,240 @@ class LocationServiceImplTest {
         locationModel2.setLatitude(10.0d);
         locationModel2.setLongitude(10.0d);
         locationModel2.setReservationModel(reservationModel1);
-        when(this.locationRepository.save(any())).thenReturn(locationModel2);
+        when(this.utilsLocationService.converterModelToDTO(any())).thenReturn(locationDTO);
+        when(this.utilsLocationService.converterDtoToModel(any())).thenReturn(locationModel2);
 
-        LocationDTO locationDTO = new LocationDTO();
-        locationDTO.setId(123L);
-        locationDTO.setLatitude(10.0d);
-        locationDTO.setLongitude(10.0d);
-        Optional<LocationDTO> actualSaveResult = this.locationServiceImpl.save(locationDTO);
-        assertTrue(actualSaveResult.isPresent());
-        LocationDTO getResult = actualSaveResult.get();
-        assertEquals(123L, getResult.getId());
-        assertEquals(10.0d, getResult.getLongitude().doubleValue());
-        assertEquals(10.0d, getResult.getLatitude().doubleValue());
+        AddressModel addressModel2 = new AddressModel();
+        addressModel2.setApartement("Apartement");
+        addressModel2.setCity("Oxford");
+        addressModel2.setId(123L);
+        addressModel2.setState("MD");
+        addressModel2.setStreet("Street");
+        addressModel2.setUsers(new HashSet<>());
+        addressModel2.setZip("21654");
+
+        UserModel userModel6 = new UserModel();
+        userModel6.setAddress(new AddressModel());
+        userModel6.setCreated(null);
+        userModel6.setCredential(new CredentialModel());
+        userModel6.setDeleted(true);
+        userModel6.setDob(null);
+        userModel6.setEmail("jane.doe@example.org");
+        userModel6.setFname("Fname");
+        userModel6.setId(123L);
+        userModel6.setImageURL("https://example.org/example");
+        userModel6.setLname("Lname");
+        userModel6.setPassword("iloveyou");
+        userModel6.setPhone("4105551212");
+        userModel6.setReservationModelBarber(new HashSet<>());
+        userModel6.setReservationModelClient(new HashSet<>());
+        userModel6.setRole("Role");
+        userModel6.setUpdated(null);
+
+        CredentialModel credentialModel2 = new CredentialModel();
+        credentialModel2.setCreated(LocalDate.ofEpochDay(1L));
+        credentialModel2.setGrantedAuthority("JaneDoe");
+        credentialModel2.setId(123L);
+        credentialModel2.setPassword("iloveyou");
+        credentialModel2.setUpdated(LocalDate.ofEpochDay(1L));
+        credentialModel2.setUser(userModel6);
+        credentialModel2.setUsername("janedoe");
+
+        UserModel userModel7 = new UserModel();
+        userModel7.setAddress(addressModel2);
+        userModel7.setCreated(LocalDate.ofEpochDay(1L));
+        userModel7.setCredential(credentialModel2);
+        userModel7.setDeleted(true);
+        userModel7.setDob(LocalDate.ofEpochDay(1L));
+        userModel7.setEmail("jane.doe@example.org");
+        userModel7.setFname("Fname");
+        userModel7.setId(123L);
+        userModel7.setImageURL("https://example.org/example");
+        userModel7.setLname("Lname");
+        userModel7.setPassword("iloveyou");
+        userModel7.setPhone("4105551212");
+        userModel7.setReservationModelBarber(new HashSet<>());
+        userModel7.setReservationModelClient(new HashSet<>());
+        userModel7.setRole("Role");
+        userModel7.setUpdated(LocalDate.ofEpochDay(1L));
+
+        AddressModel addressModel3 = new AddressModel();
+        addressModel3.setApartement("Apartement");
+        addressModel3.setCity("Oxford");
+        addressModel3.setId(123L);
+        addressModel3.setState("MD");
+        addressModel3.setStreet("Street");
+        addressModel3.setUsers(new HashSet<>());
+        addressModel3.setZip("21654");
+
+        UserModel userModel8 = new UserModel();
+        userModel8.setAddress(new AddressModel());
+        userModel8.setCreated(null);
+        userModel8.setCredential(new CredentialModel());
+        userModel8.setDeleted(true);
+        userModel8.setDob(null);
+        userModel8.setEmail("jane.doe@example.org");
+        userModel8.setFname("Fname");
+        userModel8.setId(123L);
+        userModel8.setImageURL("https://example.org/example");
+        userModel8.setLname("Lname");
+        userModel8.setPassword("iloveyou");
+        userModel8.setPhone("4105551212");
+        userModel8.setReservationModelBarber(new HashSet<>());
+        userModel8.setReservationModelClient(new HashSet<>());
+        userModel8.setRole("Role");
+        userModel8.setUpdated(null);
+
+        CredentialModel credentialModel3 = new CredentialModel();
+        credentialModel3.setCreated(LocalDate.ofEpochDay(1L));
+        credentialModel3.setGrantedAuthority("JaneDoe");
+        credentialModel3.setId(123L);
+        credentialModel3.setPassword("iloveyou");
+        credentialModel3.setUpdated(LocalDate.ofEpochDay(1L));
+        credentialModel3.setUser(userModel8);
+        credentialModel3.setUsername("janedoe");
+
+        UserModel userModel9 = new UserModel();
+        userModel9.setAddress(addressModel3);
+        userModel9.setCreated(LocalDate.ofEpochDay(1L));
+        userModel9.setCredential(credentialModel3);
+        userModel9.setDeleted(true);
+        userModel9.setDob(LocalDate.ofEpochDay(1L));
+        userModel9.setEmail("jane.doe@example.org");
+        userModel9.setFname("Fname");
+        userModel9.setId(123L);
+        userModel9.setImageURL("https://example.org/example");
+        userModel9.setLname("Lname");
+        userModel9.setPassword("iloveyou");
+        userModel9.setPhone("4105551212");
+        userModel9.setReservationModelBarber(new HashSet<>());
+        userModel9.setReservationModelClient(new HashSet<>());
+        userModel9.setRole("Role");
+        userModel9.setUpdated(LocalDate.ofEpochDay(1L));
+
+        HaircutModel haircutModel2 = new HaircutModel();
+        haircutModel2.setDescription("The characteristics of someone or something");
+        haircutModel2.setEstimatedTime("Estimated Time");
+        haircutModel2.setId("42");
+        haircutModel2.setImageURL("https://example.org/example");
+        haircutModel2.setPrice(1);
+        haircutModel2.setReservationModel(new HashSet<>());
+        haircutModel2.setTitle("Dr");
+
+        UserModel userModel10 = new UserModel();
+        userModel10.setAddress(new AddressModel());
+        userModel10.setCreated(null);
+        userModel10.setCredential(new CredentialModel());
+        userModel10.setDeleted(true);
+        userModel10.setDob(null);
+        userModel10.setEmail("jane.doe@example.org");
+        userModel10.setFname("Fname");
+        userModel10.setId(123L);
+        userModel10.setImageURL("https://example.org/example");
+        userModel10.setLname("Lname");
+        userModel10.setPassword("iloveyou");
+        userModel10.setPhone("4105551212");
+        userModel10.setReservationModelBarber(new HashSet<>());
+        userModel10.setReservationModelClient(new HashSet<>());
+        userModel10.setRole("Role");
+        userModel10.setUpdated(null);
+
+        UserModel userModel11 = new UserModel();
+        userModel11.setAddress(new AddressModel());
+        userModel11.setCreated(null);
+        userModel11.setCredential(new CredentialModel());
+        userModel11.setDeleted(true);
+        userModel11.setDob(null);
+        userModel11.setEmail("jane.doe@example.org");
+        userModel11.setFname("Fname");
+        userModel11.setId(123L);
+        userModel11.setImageURL("https://example.org/example");
+        userModel11.setLname("Lname");
+        userModel11.setPassword("iloveyou");
+        userModel11.setPhone("4105551212");
+        userModel11.setReservationModelBarber(new HashSet<>());
+        userModel11.setReservationModelClient(new HashSet<>());
+        userModel11.setRole("Role");
+        userModel11.setUpdated(null);
+
+        HaircutModel haircutModel3 = new HaircutModel();
+        haircutModel3.setDescription("The characteristics of someone or something");
+        haircutModel3.setEstimatedTime("Estimated Time");
+        haircutModel3.setId("42");
+        haircutModel3.setImageURL("https://example.org/example");
+        haircutModel3.setPrice(1);
+        haircutModel3.setReservationModel(new HashSet<>());
+        haircutModel3.setTitle("Dr");
+
+        LocationModel locationModel3 = new LocationModel();
+        locationModel3.setId(123L);
+        locationModel3.setLatitude(10.0d);
+        locationModel3.setLongitude(10.0d);
+        locationModel3.setReservationModel(new ReservationModel());
+
+        ReservationTimeModel reservationTimeModel2 = new ReservationTimeModel();
+        reservationTimeModel2.setHours(1);
+        reservationTimeModel2.setId(123L);
+        reservationTimeModel2.setMinutes(1);
+        reservationTimeModel2.setReservationModel(new HashSet<>());
+
+        ReservationModel reservationModel2 = new ReservationModel();
+        reservationModel2.setBarber(userModel10);
+        reservationModel2.setClient(userModel11);
+        reservationModel2.setHaircut(haircutModel3);
+        reservationModel2.setId(123L);
+        reservationModel2.setLocation(locationModel3);
+        reservationModel2.setReservationDate(LocalDate.ofEpochDay(1L));
+        reservationModel2.setReservationTime(reservationTimeModel2);
+        reservationModel2.setStatus("Status");
+
+        LocationModel locationModel4 = new LocationModel();
+        locationModel4.setId(123L);
+        locationModel4.setLatitude(10.0d);
+        locationModel4.setLongitude(10.0d);
+        locationModel4.setReservationModel(reservationModel2);
+
+        ReservationTimeModel reservationTimeModel3 = new ReservationTimeModel();
+        reservationTimeModel3.setHours(1);
+        reservationTimeModel3.setId(123L);
+        reservationTimeModel3.setMinutes(1);
+        reservationTimeModel3.setReservationModel(new HashSet<>());
+
+        ReservationModel reservationModel3 = new ReservationModel();
+        reservationModel3.setBarber(userModel7);
+        reservationModel3.setClient(userModel9);
+        reservationModel3.setHaircut(haircutModel2);
+        reservationModel3.setId(123L);
+        reservationModel3.setLocation(locationModel4);
+        reservationModel3.setReservationDate(LocalDate.ofEpochDay(1L));
+        reservationModel3.setReservationTime(reservationTimeModel3);
+        reservationModel3.setStatus("Status");
+
+        LocationModel locationModel5 = new LocationModel();
+        locationModel5.setId(123L);
+        locationModel5.setLatitude(10.0d);
+        locationModel5.setLongitude(10.0d);
+        locationModel5.setReservationModel(reservationModel3);
+        when(this.locationRepository.save(any())).thenReturn(locationModel5);
+
+        LocationDTO locationDTO1 = new LocationDTO();
+        locationDTO1.setId(123L);
+        locationDTO1.setLatitude(10.0d);
+        locationDTO1.setLongitude(10.0d);
+        assertTrue(this.locationServiceImpl.save(locationDTO1).isPresent());
+        verify(this.utilsLocationService).converterModelToDTO(any());
+        verify(this.utilsLocationService).converterDtoToModel(any());
         verify(this.locationRepository).save(any());
     }
 
     @Test
     void testUpdate() {
+        LocationDTO locationDTO = new LocationDTO();
+        locationDTO.setId(123L);
+        locationDTO.setLatitude(10.0d);
+        locationDTO.setLongitude(10.0d);
+        when(this.utilsLocationService.converterModelToDTO(any())).thenReturn(locationDTO);
+
         AddressModel addressModel = new AddressModel();
         addressModel.setApartement("Apartement");
         addressModel.setCity("Oxford");
@@ -521,16 +748,12 @@ class LocationServiceImplTest {
         when(this.locationRepository.findById(any())).thenReturn(ofResult);
         doNothing().when(this.locationRepository).updateLocationById(any(), any(), any());
 
-        LocationDTO locationDTO = new LocationDTO();
-        locationDTO.setId(123L);
-        locationDTO.setLatitude(10.0d);
-        locationDTO.setLongitude(10.0d);
-        Optional<LocationDTO> actualUpdateResult = this.locationServiceImpl.update(123L, locationDTO);
-        assertTrue(actualUpdateResult.isPresent());
-        LocationDTO getResult = actualUpdateResult.get();
-        assertEquals(123L, getResult.getId());
-        assertEquals(10.0d, getResult.getLongitude().doubleValue());
-        assertEquals(10.0d, getResult.getLatitude().doubleValue());
+        LocationDTO locationDTO1 = new LocationDTO();
+        locationDTO1.setId(123L);
+        locationDTO1.setLatitude(10.0d);
+        locationDTO1.setLongitude(10.0d);
+        assertTrue(this.locationServiceImpl.update(123L, locationDTO1).isPresent());
+        verify(this.utilsLocationService).converterModelToDTO(any());
         verify(this.locationRepository).findById(any());
         verify(this.locationRepository).updateLocationById(any(), any(), any());
     }

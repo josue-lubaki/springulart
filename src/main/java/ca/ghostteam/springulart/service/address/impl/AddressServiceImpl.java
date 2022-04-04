@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.service.address;
+package ca.ghostteam.springulart.service.address.impl;
 
 import ca.ghostteam.springulart.dto.AddressDTO;
 import ca.ghostteam.springulart.model.AddressModel;
@@ -18,10 +18,13 @@ import java.util.Optional;
 public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
+    private final UtilsAddressService utils;
 
     @Autowired
-    public AddressServiceImpl(AddressRepository addressRepository) {
+    public AddressServiceImpl(AddressRepository addressRepository,
+                              UtilsAddressService utils) {
         this.addressRepository = addressRepository;
+        this.utils = utils;
     }
 
     @Override
@@ -29,7 +32,7 @@ public class AddressServiceImpl implements AddressService {
         return addressRepository
                 .findById(id)
                 .stream()
-                .map(this::converterAddressModelToAddressDTO)
+                .map(utils::converterAddressModelToAddressDTO)
                 .findFirst();
     }
 
@@ -44,7 +47,7 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public Optional<AddressDTO> saveAddress(AddressModel addressModel) {
         return Optional.of(
-                converterAddressModelToAddressDTO(
+                utils.converterAddressModelToAddressDTO(
                         addressRepository
                         .save(addressModel)
                 )
@@ -54,44 +57,10 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public Optional<AddressDTO> saveAddressModel(AddressModel addressModel) {
         return Optional.of(
-                converterAddressModelToAddressDTO(
+                utils.converterAddressModelToAddressDTO(
                     addressRepository
                     .save(addressModel)
                 )
         );
-    }
-
-    /**
-     * Method to convert AddressDTO to AddressModel
-     * @param addressDTO AddressDTO to convert
-     * @return AddressModel
-     * */
-    public AddressModel converterAddressDtoToAddressModel(AddressDTO addressDTO){
-        AddressModel address = new AddressModel();
-        address.setId(addressDTO.getId());
-        address.setApartement(addressDTO.getApartement());
-        address.setStreet(addressDTO.getStreet());
-        address.setState(addressDTO.getState());
-        address.setCity(addressDTO.getCity());
-        address.setZip(addressDTO.getZip());
-
-        return address;
-    }
-
-    /**
-     * Method to convert AddressModel to AddressDTO
-     * @param addressModel AddressModel to convert
-     * @return AddressDTO
-     * */
-    public AddressDTO converterAddressModelToAddressDTO(AddressModel addressModel){
-        AddressDTO address = new AddressDTO();
-        address.setId(addressModel.getId());
-        address.setApartement(addressModel.getApartement());
-        address.setStreet(addressModel.getStreet());
-        address.setState(addressModel.getState());
-        address.setCity(addressModel.getCity());
-        address.setZip(addressModel.getZip());
-
-        return address;
     }
 }

@@ -56,20 +56,4 @@ public class CredentialServiceImpl implements CredentialService {
         credential.setGrantedAuthority(credentialModel.getGrantedAuthority());
         return credential;
     }
-
-    /**
-     * Method to convert a CredentialDTO to a CredentialModel
-     * @param credentialDTO CredentialDTO to convert
-     * @return CredentialModel
-     * */
-    private CredentialModel converterCrendentialDtoToCredentialModel(CredentialDTO credentialDTO){
-        CredentialModel credential = new CredentialModel();
-        credential.setId(credentialDTO.getId());
-        credential.setUsername(credentialDTO.getUsername());
-        credential.setPassword(credentialDTO.getPassword());
-        credential.setCreated(credentialDTO.getCreated());
-        credential.setUpdated(credentialDTO.getUpdated());
-        credential.setGrantedAuthority(credentialDTO.getGrantedAuthority());
-        return credential;
-    }
 }

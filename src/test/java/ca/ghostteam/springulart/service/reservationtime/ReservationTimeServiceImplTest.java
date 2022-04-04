@@ -1,10 +1,8 @@
-package ca.ghostteam.springulart.service.impl;
+package ca.ghostteam.springulart.service.reservationtime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -15,7 +13,8 @@ import ca.ghostteam.springulart.repository.ReservationTimeRepository;
 import java.util.HashSet;
 import java.util.Optional;
 
-import ca.ghostteam.springulart.service.reservationtime.ReservationTimeServiceImpl;
+import ca.ghostteam.springulart.service.reservationtime.impl.ReservationTimeServiceImpl;
+import ca.ghostteam.springulart.service.reservationtime.impl.UtilsReservationTime;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,8 +32,17 @@ class ReservationTimeServiceImplTest {
     @Autowired
     private ReservationTimeServiceImpl reservationTimeServiceImpl;
 
+    @MockBean
+    private UtilsReservationTime utilsReservationTime;
+
     @Test
     void testFindById() {
+        ReservationTimeDTO reservationTimeDTO = new ReservationTimeDTO();
+        reservationTimeDTO.setHours(1);
+        reservationTimeDTO.setId(123L);
+        reservationTimeDTO.setMinutes(1);
+        when(this.utilsReservationTime.converterModelToDTO(any())).thenReturn(reservationTimeDTO);
+
         ReservationTimeModel reservationTimeModel = new ReservationTimeModel();
         reservationTimeModel.setHours(1);
         reservationTimeModel.setId(123L);
@@ -42,39 +50,51 @@ class ReservationTimeServiceImplTest {
         reservationTimeModel.setReservationModel(new HashSet<>());
         Optional<ReservationTimeModel> ofResult = Optional.of(reservationTimeModel);
         when(this.reservationTimeRepository.findById(any())).thenReturn(ofResult);
-        Optional<ReservationTimeDTO> actualFindByIdResult = this.reservationTimeServiceImpl.findById(123L);
-        assertTrue(actualFindByIdResult.isPresent());
-        ReservationTimeDTO getResult = actualFindByIdResult.get();
-        assertEquals(1, getResult.getHours().intValue());
-        assertEquals(1, getResult.getMinutes().intValue());
-        assertEquals(123L, getResult.getId());
+        assertTrue(this.reservationTimeServiceImpl.findById(123L).isPresent());
+        verify(this.utilsReservationTime).converterModelToDTO(any());
         verify(this.reservationTimeRepository).findById(any());
     }
 
     @Test
     void testSave() {
+        ReservationTimeDTO reservationTimeDTO = new ReservationTimeDTO();
+        reservationTimeDTO.setHours(1);
+        reservationTimeDTO.setId(123L);
+        reservationTimeDTO.setMinutes(1);
+
         ReservationTimeModel reservationTimeModel = new ReservationTimeModel();
         reservationTimeModel.setHours(1);
         reservationTimeModel.setId(123L);
         reservationTimeModel.setMinutes(1);
         reservationTimeModel.setReservationModel(new HashSet<>());
-        when(this.reservationTimeRepository.save(any())).thenReturn(reservationTimeModel);
+        when(this.utilsReservationTime.converterModelToDTO(any())).thenReturn(reservationTimeDTO);
+        when(this.utilsReservationTime.converterDtoToModel(any())).thenReturn(reservationTimeModel);
 
-        ReservationTimeDTO reservationTimeDTO = new ReservationTimeDTO();
-        reservationTimeDTO.setHours(1);
-        reservationTimeDTO.setId(123L);
-        reservationTimeDTO.setMinutes(1);
-        Optional<ReservationTimeDTO> actualSaveResult = this.reservationTimeServiceImpl.save(reservationTimeDTO);
-        assertTrue(actualSaveResult.isPresent());
-        ReservationTimeDTO getResult = actualSaveResult.get();
-        assertEquals(1, getResult.getHours().intValue());
-        assertEquals(1, getResult.getMinutes().intValue());
-        assertEquals(123L, getResult.getId());
+        ReservationTimeModel reservationTimeModel1 = new ReservationTimeModel();
+        reservationTimeModel1.setHours(1);
+        reservationTimeModel1.setId(123L);
+        reservationTimeModel1.setMinutes(1);
+        reservationTimeModel1.setReservationModel(new HashSet<>());
+        when(this.reservationTimeRepository.save(any())).thenReturn(reservationTimeModel1);
+
+        ReservationTimeDTO reservationTimeDTO1 = new ReservationTimeDTO();
+        reservationTimeDTO1.setHours(1);
+        reservationTimeDTO1.setId(123L);
+        reservationTimeDTO1.setMinutes(1);
+        assertTrue(this.reservationTimeServiceImpl.save(reservationTimeDTO1).isPresent());
+        verify(this.utilsReservationTime).converterModelToDTO(any());
+        verify(this.utilsReservationTime).converterDtoToModel(any());
         verify(this.reservationTimeRepository).save(any());
     }
 
     @Test
     void testUpdate() {
+        ReservationTimeDTO reservationTimeDTO = new ReservationTimeDTO();
+        reservationTimeDTO.setHours(1);
+        reservationTimeDTO.setId(123L);
+        reservationTimeDTO.setMinutes(1);
+        when(this.utilsReservationTime.converterModelToDTO(any())).thenReturn(reservationTimeDTO);
+
         ReservationTimeModel reservationTimeModel = new ReservationTimeModel();
         reservationTimeModel.setHours(1);
         reservationTimeModel.setId(123L);
@@ -85,18 +105,15 @@ class ReservationTimeServiceImplTest {
         doNothing().when(this.reservationTimeRepository)
                 .updateReservationTimeById(any(), any(), any());
 
-        ReservationTimeDTO reservationTimeDTO = new ReservationTimeDTO();
-        reservationTimeDTO.setHours(1);
-        reservationTimeDTO.setId(123L);
-        reservationTimeDTO.setMinutes(1);
-        Optional<ReservationTimeDTO> actualUpdateResult = this.reservationTimeServiceImpl.update(123L, reservationTimeDTO);
-        assertTrue(actualUpdateResult.isPresent());
-        ReservationTimeDTO getResult = actualUpdateResult.get();
-        assertEquals(1, getResult.getHours().intValue());
-        assertEquals(1, getResult.getMinutes().intValue());
-        assertEquals(123L, getResult.getId());
+        ReservationTimeDTO reservationTimeDTO1 = new ReservationTimeDTO();
+        reservationTimeDTO1.setHours(1);
+        reservationTimeDTO1.setId(123L);
+        reservationTimeDTO1.setMinutes(1);
+        assertTrue(this.reservationTimeServiceImpl.update(123L, reservationTimeDTO1).isPresent());
+        verify(this.utilsReservationTime).converterModelToDTO(any());
         verify(this.reservationTimeRepository).findById(any());
         verify(this.reservationTimeRepository).updateReservationTimeById(any(), any(), any());
     }
+
 }
 

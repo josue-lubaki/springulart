@@ -17,5 +17,4 @@ public interface ReservationTimeService {
 
     @Transactional
     Optional<ReservationTimeDTO> update(Long id, ReservationTimeDTO reservationModel);
-    void delete(Long id);
 }

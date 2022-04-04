@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.service.haircut;
+package ca.ghostteam.springulart.service.haircut.impl;
 
 import ca.ghostteam.springulart.dto.HaircutDTO;
 import ca.ghostteam.springulart.model.HaircutModel;
@@ -20,11 +20,14 @@ import java.util.stream.Collectors;
 public class HaircutServiceImpl implements HaircutService {
 
     private final HaircutRepository haircutRepository;
+    private final UtilsHaircutService utils;
 
     @Autowired
     public HaircutServiceImpl(
-            HaircutRepository haircutRepository) {
+            HaircutRepository haircutRepository,
+            UtilsHaircutService utils) {
         this.haircutRepository = haircutRepository;
+        this.utils = utils;
     }
 
     @Override
@@ -32,7 +35,7 @@ public class HaircutServiceImpl implements HaircutService {
         return haircutRepository
                 .findAll()
                 .stream()
-                .map(this::converterHaircutModelToHaircutDto)
+                .map(utils::converterHaircutModelToHaircutDto)
                 .collect(Collectors.toList());
     }
 
@@ -40,15 +43,15 @@ public class HaircutServiceImpl implements HaircutService {
     public Optional<HaircutDTO> findHaircutById(String id) {
         return haircutRepository
                 .findById(id)
-                .map(this::converterHaircutModelToHaircutDto);
+                .map(utils::converterHaircutModelToHaircutDto);
     }
 
     @Override
     public Optional<HaircutDTO> saveHaircut(HaircutDTO haircutDTO) {
         return Optional.of(
-                converterHaircutModelToHaircutDto(
+                utils.converterHaircutModelToHaircutDto(
                         haircutRepository
-                        .save(converterHaircutDtoToHaircutModel(haircutDTO))
+                        .save(utils.converterHaircutDtoToHaircutModel(haircutDTO))
                 )
         );
     }
@@ -63,7 +66,7 @@ public class HaircutServiceImpl implements HaircutService {
         haircutModel.setImageURL(haircutDToUpdated.getImageURL());
         haircutModel.setEstimatedTime(haircutDToUpdated.getEstimatedTime());
 
-        return saveHaircut(converterHaircutModelToHaircutDto(haircutModel));
+        return saveHaircut(utils.converterHaircutModelToHaircutDto(haircutModel));
     }
 
     @Override
@@ -74,37 +77,5 @@ public class HaircutServiceImpl implements HaircutService {
     @Override
     public boolean existsHaircutById(String id) {
         return haircutRepository.existsById(id);
-    }
-
-    /**
-     * Method to convert a haircutDTO to a haircutModel
-     * @param haircutDTO the haircutDTO to convert
-     * @return the haircutModel
-     */
-    private HaircutModel converterHaircutDtoToHaircutModel(HaircutDTO haircutDTO) {
-        HaircutModel haircutModel = new HaircutModel();
-        haircutModel.setId(haircutDTO.getId());
-        haircutModel.setTitle(haircutDTO.getTitle());
-        haircutModel.setDescription(haircutDTO.getDescription());
-        haircutModel.setPrice(haircutDTO.getPrice());
-        haircutModel.setImageURL(haircutDTO.getImageURL());
-        haircutModel.setEstimatedTime(haircutDTO.getEstimatedTime());
-        return haircutModel;
-    }
-
-    /**
-     * Method to convert a haircutModel to a haircutDTO
-     * @param haircutModel the haircutModel to convert
-     * @return the haircutDTO
-     */
-    private HaircutDTO converterHaircutModelToHaircutDto(HaircutModel haircutModel) {
-        HaircutDTO haircutDTO = new HaircutDTO();
-        haircutDTO.setId(haircutModel.getId());
-        haircutDTO.setTitle(haircutModel.getTitle());
-        haircutDTO.setDescription(haircutModel.getDescription());
-        haircutDTO.setPrice(haircutModel.getPrice());
-        haircutDTO.setImageURL(haircutModel.getImageURL());
-        haircutDTO.setEstimatedTime(haircutModel.getEstimatedTime());
-        return haircutDTO;
     }
 }
