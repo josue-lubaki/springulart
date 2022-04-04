@@ -30,7 +30,7 @@ public class SpringulartApplication {
     CommandLineRunner run(UserService userService,
                           HaircutService haircutService){
         return args -> {
-            initHaircuts(haircutService);
+            //initHaircuts(haircutService);
             //initUsers(userService);
             log.info("Nombre Haircuts dans la DB : " + haircutService.findAllHaircuts().size());
         };

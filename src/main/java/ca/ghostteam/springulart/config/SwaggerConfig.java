@@ -80,7 +80,6 @@ public class SwaggerConfig {
      * @return SecurityContext
      **/
     private SecurityContext securityContexts() {
-        // regex matches with any path except "/auth" and "/api/v1/haircuts"
         Pattern pattern = Pattern.compile("^(?!(/auth|/api/v1/haircuts)).*$");
 
         return SecurityContext.builder()

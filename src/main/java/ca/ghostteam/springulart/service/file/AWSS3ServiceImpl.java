@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.service.File;
+package ca.ghostteam.springulart.service.file;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -21,14 +21,14 @@ import java.util.regex.Pattern;
  * @since 2022-04-02
  */
 @Service
-public class AWSS3Service implements FileService {
+public class AWSS3ServiceImpl implements FileService {
 
     private final AmazonS3Client awsS3Client;
 
     @Value("${cloud.aws.s3.bucket.name}")
     private String bucketName;
 
-    public AWSS3Service(@Qualifier("amazonS3Client") AmazonS3Client awsS3Client) {
+    public AWSS3ServiceImpl(@Qualifier("amazonS3Client") AmazonS3Client awsS3Client) {
         this.awsS3Client = awsS3Client;
     }
 

@@ -18,7 +18,7 @@ public class RegisterDTO implements Serializable {
     private String email; // correspond to username
     private String password;
     private MultipartFile imageURL;
-    private LocalDate dob;
+    private String dob;
     private String phone;
     private String role;
     // private AddressDTO address;

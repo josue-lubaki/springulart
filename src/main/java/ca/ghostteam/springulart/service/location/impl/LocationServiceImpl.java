@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.service.location;
+package ca.ghostteam.springulart.service.location.impl;
 
 import ca.ghostteam.springulart.dto.LocationDTO;
 import ca.ghostteam.springulart.model.LocationModel;
@@ -18,15 +18,18 @@ import java.util.Optional;
 public class LocationServiceImpl implements LocationService {
 
     private final LocationRepository locationRepository;
+    private final UtilsLocationService utils;
 
     @Autowired
-    public LocationServiceImpl(LocationRepository locationRepository) {
+    public LocationServiceImpl(LocationRepository locationRepository,
+                               UtilsLocationService utils) {
         this.locationRepository = locationRepository;
+        this.utils = utils;
     }
 
     @Override
     public Optional<LocationDTO> findById(Long id) {
-        return Optional.of(converterModelToDTO(locationRepository
+        return Optional.of(utils.converterModelToDTO(locationRepository
                         .findById(id)
                         .stream()
                         .findFirst()
@@ -37,8 +40,8 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public Optional<LocationDTO> save(LocationDTO Location) {
         return Optional.of(
-                converterModelToDTO(
-                        locationRepository.save(converterDtoToModel(Location))
+                utils.converterModelToDTO(
+                        locationRepository.save(utils.converterDtoToModel(Location))
                 )
         );
     }
@@ -53,34 +56,6 @@ public class LocationServiceImpl implements LocationService {
                         .findFirst()
                         .get();
 
-        return Optional.of(converterModelToDTO(locationModel));
-    }
-
-    /**
-     * Method to convert LocationModel to LocationDTO
-     * @param locationModel LocationModel to convert
-     * @return LocationDTO
-     **/
-    private LocationDTO converterModelToDTO(LocationModel locationModel){
-        LocationDTO locationDTO = new LocationDTO();
-        locationDTO.setId(locationModel.getId());
-        locationDTO.setLatitude(locationModel.getLatitude());
-        locationDTO.setLongitude(locationModel.getLongitude());
-
-        return locationDTO;
-    }
-
-    /**
-     * Method to convert LocationDTO to LocationModel
-     * @param locationDTO LocationDTO to convert
-     * @return LocationModel
-     * */
-    private LocationModel converterDtoToModel(LocationDTO locationDTO){
-        LocationModel location = new LocationModel();
-        location.setId(null);
-        location.setLatitude(locationDTO.getLatitude());
-        location.setLongitude(locationDTO.getLongitude());
-
-        return location;
+        return Optional.of(utils.converterModelToDTO(locationModel));
     }
 }

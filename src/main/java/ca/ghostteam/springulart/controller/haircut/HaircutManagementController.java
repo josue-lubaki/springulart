@@ -1,6 +1,8 @@
 package ca.ghostteam.springulart.controller.haircut;
 
+import ca.ghostteam.springulart.dto.HaircutCreateDTO;
 import ca.ghostteam.springulart.dto.HaircutDTO;
+import ca.ghostteam.springulart.service.file.AWSS3ServiceImpl;
 import ca.ghostteam.springulart.service.haircut.HaircutService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -8,6 +10,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -23,9 +26,12 @@ import java.util.NoSuchElementException;
 public class HaircutManagementController {
 
     private final HaircutService haircutService;
+    private final AWSS3ServiceImpl awss3ServiceImpl;
 
-    public HaircutManagementController(HaircutService haircutService) {
+    public HaircutManagementController(HaircutService haircutService,
+                                       AWSS3ServiceImpl awss3ServiceImpl) {
         this.haircutService = haircutService;
+        this.awss3ServiceImpl = awss3ServiceImpl;
     }
 
     @ApiResponses(value = {
@@ -59,10 +65,35 @@ public class HaircutManagementController {
     @ApiOperation(value = "Create haircut")
     @PostMapping
     @PreAuthorize("hasAuthority('haircut:write')")
-    public HaircutDTO createHaircut(@RequestBody HaircutDTO haircutDTO) {
+    public HaircutDTO createHaircut(@ModelAttribute HaircutCreateDTO haircutCreateDTO) {
+
+        // Retrieve imageURL from haircutCreateDTO
+        MultipartFile image = haircutCreateDTO.getImageURL();
+        // upload image to S3
+        String imageURL = this.awss3ServiceImpl.uploadImage(image);
+
+        // Convert haircutCreateDTO to HaircutDTO
+        HaircutDTO haircutDTO = converterHaircutCreateDtoToHaircutDTO(haircutCreateDTO, imageURL);
+
         return this.haircutService
                 .saveHaircut(haircutDTO)
                 .orElseThrow(() -> new IllegalStateException("Haircut not created"));
+    }
+
+    /**
+     * Method to convert HaircutCreateDTO to HaircutDTO
+     * @param haircutCreateDTO HaircutCreateDTO object to convert to HaircutDTO
+     * @param imageURL imageURL to add to HaircutDTO object
+     * @return urn HaircutDTO object
+     * */
+    private HaircutDTO converterHaircutCreateDtoToHaircutDTO(HaircutCreateDTO haircutCreateDTO, String imageURL) {
+        HaircutDTO haircutDTO = new HaircutDTO();
+        haircutDTO.setTitle(haircutCreateDTO.getTitle());
+        haircutDTO.setDescription(haircutCreateDTO.getDescription());
+        haircutDTO.setPrice(haircutCreateDTO.getPrice());
+        haircutDTO.setEstimatedTime(haircutCreateDTO.getEstimatedTime());
+        haircutDTO.setImageURL(imageURL);
+        return haircutDTO;
     }
 
 
@@ -71,10 +102,23 @@ public class HaircutManagementController {
             @ApiResponse(code=400, message = "Bad Request"),
     })
     @ApiOperation(value = "Delete haircut")
-    @DeleteMapping(path = "/{haircutId}")
+    @DeleteMapping(path = "/{id}")
     @PreAuthorize("hasAuthority('haircut:write')")
-    public void deleteHaircut(@PathVariable("haircutId") String haircutId){
-        this.haircutService.deleteHaircut(haircutId);
+    public void deleteHaircut(@PathVariable("id") String id){
+        // get imageURL from haircut
+        String imageURL = this.haircutService
+                .findHaircutById(id)
+                .orElseThrow(
+                        () -> new NoSuchElementException(String.format("Haircut with id %s not found", id))
+                ).getImageURL();
+
+        // get name of image from imageURL
+        String imageName = imageURL.substring(imageURL.lastIndexOf("/") + 1);
+
+        // delete image from S3
+        this.awss3ServiceImpl.deleteImage(imageName);
+
+        this.haircutService.deleteHaircut(id);
     }
 
 
@@ -83,9 +127,9 @@ public class HaircutManagementController {
             @ApiResponse(code=400, message = "Bad Request"),
     })
     @ApiOperation(value = "Update haircut")
-    @PutMapping(path = "/{haircutId}")
+    @PutMapping(path = "/{id}")
     @PreAuthorize("hasAuthority('haircut:write')")
-    public HaircutDTO updateHaircut(@PathVariable("haircutId") String haircutId,
+    public HaircutDTO updateHaircut(@PathVariable("id") String haircutId,
                                     @RequestBody HaircutDTO haircutDTO){
         return this.haircutService
                 .updateHaircut(haircutId, haircutDTO)

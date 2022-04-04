@@ -68,6 +68,16 @@ public class MailServiceImpl implements MailService {
         sendPlainTextMessage(email, "Bienvenue sur angulart", content);
     }
 
+    /**
+     * Method to send a plain text message
+     * @param to the email address of the recipient
+     *           of the message
+     *           (e.g. "josuelubaki@gmail.com")
+     * @param subject the subject of the message
+     *                (e.g. "Réinitialisation de mot de passe")
+     * @param content the content of the message (e.g. "Your temporary password is: 12345")
+     * @catch MessagingException if the message cannot be sent
+     * */
     private void sendPlainTextMessage(String to, String subject, String content) {
         try{
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
