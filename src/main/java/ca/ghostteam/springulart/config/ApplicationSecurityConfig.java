@@ -36,16 +36,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
             "/auth/login",
             "/auth/register",
             "/auth/reset-password",
-            // css files
-            "/css/**",
-            // images
-            "/images/**",
-            // js files
-            "/js/**",
-            // fonts
-            "/fonts/**",
-            // favicon
-            "/favicon.ico",
     };
 
     private static final String[] PUBLIC_ENDPOINTS_GET_METHOD = {
@@ -53,7 +43,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/v1/haircuts/**"
     };
 
-    private static final String[] SWAGGER_ENDPOINTS = {
+    private static final String[] WEB_ENDPOINTS = {
             "/v2/api-docs",
             "/v3/api-docs",
             "/configuration/ui",
@@ -61,8 +51,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
             "/configuration/security",
             "/swagger-ui/**",
             "/webjars/**",
-            "/actuator/health",
-            "/swagger.yaml"
+            "/swagger.yaml",
+            "/fonts/**",
+            "/favicon.ico",
     };
 
     private static final String[] CLIENT_BARBER_ENDPOINTS = {
@@ -121,7 +112,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers(SWAGGER_ENDPOINTS);
+        web.ignoring().antMatchers(WEB_ENDPOINTS);
     }
 
     @Override
