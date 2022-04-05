@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -21,7 +22,7 @@ public class ReservationTimeModel {
 
     @OneToMany(mappedBy="reservationTime")
     @ToString.Exclude
-    private Set<ReservationModel> reservationModel;
+    private List<ReservationModel> reservationModel;
 
     @Override
     public boolean equals(Object o) {

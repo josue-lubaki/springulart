@@ -62,7 +62,7 @@ class HaircutServiceImplTest {
         haircutModel.setId("42");
         haircutModel.setImageURL("https://example.org/example");
         haircutModel.setPrice(1);
-        haircutModel.setReservationModel(new HashSet<>());
+        haircutModel.setReservationModel(new ArrayList<>());
         haircutModel.setTitle("Dr");
         Optional<HaircutModel> ofResult = Optional.of(haircutModel);
         when(this.haircutRepository.findById(any())).thenReturn(ofResult);
@@ -87,7 +87,7 @@ class HaircutServiceImplTest {
         haircutModel.setId("42");
         haircutModel.setImageURL("https://example.org/example");
         haircutModel.setPrice(1);
-        haircutModel.setReservationModel(new HashSet<>());
+        haircutModel.setReservationModel(new ArrayList<>());
         haircutModel.setTitle("Dr");
         when(this.utilsHaircutService.converterHaircutModelToHaircutDto(any())).thenReturn(haircutDTO);
         when(this.utilsHaircutService.converterHaircutDtoToHaircutModel(any())).thenReturn(haircutModel);
@@ -98,7 +98,7 @@ class HaircutServiceImplTest {
         haircutModel1.setId("42");
         haircutModel1.setImageURL("https://example.org/example");
         haircutModel1.setPrice(1);
-        haircutModel1.setReservationModel(new HashSet<>());
+        haircutModel1.setReservationModel(new ArrayList<>());
         haircutModel1.setTitle("Dr");
         when(this.haircutRepository.save(any())).thenReturn(haircutModel1);
 
@@ -131,7 +131,7 @@ class HaircutServiceImplTest {
         haircutModel.setId("42");
         haircutModel.setImageURL("https://example.org/example");
         haircutModel.setPrice(1);
-        haircutModel.setReservationModel(new HashSet<>());
+        haircutModel.setReservationModel(new ArrayList<>());
         haircutModel.setTitle("Dr");
         when(this.utilsHaircutService.converterHaircutModelToHaircutDto(any())).thenReturn(haircutDTO);
         when(this.utilsHaircutService.converterHaircutDtoToHaircutModel(any())).thenReturn(haircutModel);
@@ -142,7 +142,7 @@ class HaircutServiceImplTest {
         haircutModel1.setId("42");
         haircutModel1.setImageURL("https://example.org/example");
         haircutModel1.setPrice(1);
-        haircutModel1.setReservationModel(new HashSet<>());
+        haircutModel1.setReservationModel(new ArrayList<>());
         haircutModel1.setTitle("Dr");
         Optional<HaircutModel> ofResult = Optional.of(haircutModel1);
 
@@ -152,7 +152,7 @@ class HaircutServiceImplTest {
         haircutModel2.setId("42");
         haircutModel2.setImageURL("https://example.org/example");
         haircutModel2.setPrice(1);
-        haircutModel2.setReservationModel(new HashSet<>());
+        haircutModel2.setReservationModel(new ArrayList<>());
         haircutModel2.setTitle("Dr");
         when(this.haircutRepository.save(any())).thenReturn(haircutModel2);
         when(this.haircutRepository.findById(any())).thenReturn(ofResult);

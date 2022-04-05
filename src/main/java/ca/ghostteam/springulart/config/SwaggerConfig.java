@@ -58,8 +58,8 @@ public class SwaggerConfig {
                 .apiInfo(metaData())
                 .produces(Collections.singleton(DATA_TYPE))
                 .consumes(Collections.singleton(DATA_TYPE))
-                .securityContexts(List.of(securityContexts()))
-                .securitySchemes(List.of(apiKey()))
+                .securityContexts(Collections.singletonList(securityContexts()))
+                .securitySchemes(Collections.singletonList(apiKey()))
                 .useDefaultResponseMessages(false)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("ca.ghostteam.springulart"))
@@ -113,7 +113,7 @@ public class SwaggerConfig {
                 = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
-        return List.of(new SecurityReference(AUTHORIZATION_HEADER, authorizationScopes));
+        return Collections.singletonList(new SecurityReference(AUTHORIZATION_HEADER, authorizationScopes));
     }
 
 }

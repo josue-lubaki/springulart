@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -107,13 +104,13 @@ public class ReservationServiceImpl implements ReservationService {
         reservationModelToSave.setLocation(location);
 
         // set foreign keys values
-        reservationTime.setReservationModel(Set.of(reservationModelToSave));
+        reservationTime.setReservationModel(Arrays.asList(reservationModelToSave));
         location.setReservationModel(reservationModelToSave);
-        haircutModel.setReservationModel(Set.of(reservationModelToSave));
-        userModel.setReservationModelClient(Set.of(reservationModelToSave));
+        haircutModel.setReservationModel(Arrays.asList(reservationModelToSave));
+        userModel.setReservationModelClient(Arrays.asList(reservationModelToSave));
 
         if (Objects.nonNull(barber)) {
-            barber.setReservationModelBarber(Set.of(reservationModelToSave));
+            barber.setReservationModelBarber(Arrays.asList(reservationModelToSave));
         }
 
         ReservationModel reservationModelSaved = reservationRepository.save(reservationModelToSave);

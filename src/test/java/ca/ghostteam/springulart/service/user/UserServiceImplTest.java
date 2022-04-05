@@ -94,8 +94,8 @@ class UserServiceImplTest {
         userModel.setLname("Lname");
         userModel.setPassword("iloveyou");
         userModel.setPhone("4105551212");
-        userModel.setReservationModelBarber(new HashSet<>());
-        userModel.setReservationModelClient(new HashSet<>());
+        userModel.setReservationModelBarber(new ArrayList<>());
+        userModel.setReservationModelClient(new ArrayList<>());
         userModel.setRole("Role");
         userModel.setUpdated(null);
 
@@ -121,8 +121,8 @@ class UserServiceImplTest {
         userModel1.setLname("Lname");
         userModel1.setPassword("iloveyou");
         userModel1.setPhone("4105551212");
-        userModel1.setReservationModelBarber(new HashSet<>());
-        userModel1.setReservationModelClient(new HashSet<>());
+        userModel1.setReservationModelBarber(new ArrayList<>());
+        userModel1.setReservationModelClient(new ArrayList<>());
         userModel1.setRole("Role");
         userModel1.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -175,8 +175,8 @@ class UserServiceImplTest {
         userModel2.setLname("Lname");
         userModel2.setPassword("iloveyou");
         userModel2.setPhone("4105551212");
-        userModel2.setReservationModelBarber(new HashSet<>());
-        userModel2.setReservationModelClient(new HashSet<>());
+        userModel2.setReservationModelBarber(new ArrayList<>());
+        userModel2.setReservationModelClient(new ArrayList<>());
         userModel2.setRole("Role");
         userModel2.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -202,8 +202,8 @@ class UserServiceImplTest {
         userModel3.setLname("Lname");
         userModel3.setPassword("iloveyou");
         userModel3.setPhone("4105551212");
-        userModel3.setReservationModelBarber(new HashSet<>());
-        userModel3.setReservationModelClient(new HashSet<>());
+        userModel3.setReservationModelBarber(new ArrayList<>());
+        userModel3.setReservationModelClient(new ArrayList<>());
         userModel3.setRole("Role");
         userModel3.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -253,8 +253,8 @@ class UserServiceImplTest {
         userModel4.setLname("Lname");
         userModel4.setPassword("iloveyou");
         userModel4.setPhone("4105551212");
-        userModel4.setReservationModelBarber(new HashSet<>());
-        userModel4.setReservationModelClient(new HashSet<>());
+        userModel4.setReservationModelBarber(new ArrayList<>());
+        userModel4.setReservationModelClient(new ArrayList<>());
         userModel4.setRole("Role");
         userModel4.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -280,8 +280,8 @@ class UserServiceImplTest {
         userModel5.setLname("Lname");
         userModel5.setPassword("iloveyou");
         userModel5.setPhone("4105551212");
-        userModel5.setReservationModelBarber(new HashSet<>());
-        userModel5.setReservationModelClient(new HashSet<>());
+        userModel5.setReservationModelBarber(new ArrayList<>());
+        userModel5.setReservationModelClient(new ArrayList<>());
         userModel5.setRole("Role");
         userModel5.setUpdated(LocalDate.ofEpochDay(1L));
         Optional<UserModel> ofResult = Optional.of(userModel5);
@@ -356,8 +356,8 @@ class UserServiceImplTest {
         userModel.setLname("Lname");
         userModel.setPassword("iloveyou");
         userModel.setPhone("4105551212");
-        userModel.setReservationModelBarber(new HashSet<>());
-        userModel.setReservationModelClient(new HashSet<>());
+        userModel.setReservationModelBarber(new ArrayList<>());
+        userModel.setReservationModelClient(new ArrayList<>());
         userModel.setRole("Role");
         userModel.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -383,8 +383,8 @@ class UserServiceImplTest {
         userModel1.setLname("Lname");
         userModel1.setPassword("iloveyou");
         userModel1.setPhone("4105551212");
-        userModel1.setReservationModelBarber(new HashSet<>());
-        userModel1.setReservationModelClient(new HashSet<>());
+        userModel1.setReservationModelBarber(new ArrayList<>());
+        userModel1.setReservationModelClient(new ArrayList<>());
         userModel1.setRole("Role");
         userModel1.setUpdated(LocalDate.ofEpochDay(1L));
         Optional<UserModel> ofResult = Optional.of(userModel1);
@@ -420,8 +420,8 @@ class UserServiceImplTest {
         userModel2.setLname("Lname");
         userModel2.setPassword("iloveyou");
         userModel2.setPhone("4105551212");
-        userModel2.setReservationModelBarber(new HashSet<>());
-        userModel2.setReservationModelClient(new HashSet<>());
+        userModel2.setReservationModelBarber(new ArrayList<>());
+        userModel2.setReservationModelClient(new ArrayList<>());
         userModel2.setRole("Role");
         userModel2.setUpdated(null);
 
@@ -447,8 +447,8 @@ class UserServiceImplTest {
         userModel3.setLname("Lname");
         userModel3.setPassword("iloveyou");
         userModel3.setPhone("4105551212");
-        userModel3.setReservationModelBarber(new HashSet<>());
-        userModel3.setReservationModelClient(new HashSet<>());
+        userModel3.setReservationModelBarber(new ArrayList<>());
+        userModel3.setReservationModelClient(new ArrayList<>());
         userModel3.setRole("Role");
         userModel3.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -474,8 +474,8 @@ class UserServiceImplTest {
         userModel4.setLname("Lname");
         userModel4.setPassword("iloveyou");
         userModel4.setPhone("4105551212");
-        userModel4.setReservationModelBarber(new HashSet<>());
-        userModel4.setReservationModelClient(new HashSet<>());
+        userModel4.setReservationModelBarber(new ArrayList<>());
+        userModel4.setReservationModelClient(new ArrayList<>());
         userModel4.setRole("Role");
         userModel4.setUpdated(LocalDate.ofEpochDay(1L));
         when(this.userRepository.save(any())).thenReturn(userModel4);
@@ -573,8 +573,8 @@ class UserServiceImplTest {
         userModel.setLname("Lname");
         userModel.setPassword("iloveyou");
         userModel.setPhone("4105551212");
-        userModel.setReservationModelBarber(new HashSet<>());
-        userModel.setReservationModelClient(new HashSet<>());
+        userModel.setReservationModelBarber(new ArrayList<>());
+        userModel.setReservationModelClient(new ArrayList<>());
         userModel.setRole("Role");
         userModel.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -600,8 +600,8 @@ class UserServiceImplTest {
         userModel1.setLname("Lname");
         userModel1.setPassword("iloveyou");
         userModel1.setPhone("4105551212");
-        userModel1.setReservationModelBarber(new HashSet<>());
-        userModel1.setReservationModelClient(new HashSet<>());
+        userModel1.setReservationModelBarber(new ArrayList<>());
+        userModel1.setReservationModelClient(new ArrayList<>());
         userModel1.setRole("Role");
         userModel1.setUpdated(LocalDate.ofEpochDay(1L));
         Optional<UserModel> ofResult = Optional.of(userModel1);
@@ -699,8 +699,8 @@ class UserServiceImplTest {
         userModel.setLname("Lname");
         userModel.setPassword("iloveyou");
         userModel.setPhone("4105551212");
-        userModel.setReservationModelBarber(new HashSet<>());
-        userModel.setReservationModelClient(new HashSet<>());
+        userModel.setReservationModelBarber(new ArrayList<>());
+        userModel.setReservationModelClient(new ArrayList<>());
         userModel.setRole("Role");
         userModel.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -726,8 +726,8 @@ class UserServiceImplTest {
         userModel1.setLname("Lname");
         userModel1.setPassword("iloveyou");
         userModel1.setPhone("4105551212");
-        userModel1.setReservationModelBarber(new HashSet<>());
-        userModel1.setReservationModelClient(new HashSet<>());
+        userModel1.setReservationModelBarber(new ArrayList<>());
+        userModel1.setReservationModelClient(new ArrayList<>());
         userModel1.setRole("Role");
         userModel1.setUpdated(LocalDate.ofEpochDay(1L));
         Optional<UserModel> ofResult = Optional.of(userModel1);
@@ -781,8 +781,8 @@ class UserServiceImplTest {
         userModel.setLname("Lname");
         userModel.setPassword("iloveyou");
         userModel.setPhone("4105551212");
-        userModel.setReservationModelBarber(new HashSet<>());
-        userModel.setReservationModelClient(new HashSet<>());
+        userModel.setReservationModelBarber(new ArrayList<>());
+        userModel.setReservationModelClient(new ArrayList<>());
         userModel.setRole("Role");
         userModel.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -808,8 +808,8 @@ class UserServiceImplTest {
         userModel1.setLname("Lname");
         userModel1.setPassword("iloveyou");
         userModel1.setPhone("4105551212");
-        userModel1.setReservationModelBarber(new HashSet<>());
-        userModel1.setReservationModelClient(new HashSet<>());
+        userModel1.setReservationModelBarber(new ArrayList<>());
+        userModel1.setReservationModelClient(new ArrayList<>());
         userModel1.setRole("Role");
         userModel1.setUpdated(LocalDate.ofEpochDay(1L));
         Optional<UserModel> ofResult = Optional.of(userModel1);
@@ -896,8 +896,8 @@ class UserServiceImplTest {
         userModel.setLname("Lname");
         userModel.setPassword("iloveyou");
         userModel.setPhone("4105551212");
-        userModel.setReservationModelBarber(new HashSet<>());
-        userModel.setReservationModelClient(new HashSet<>());
+        userModel.setReservationModelBarber(new ArrayList<>());
+        userModel.setReservationModelClient(new ArrayList<>());
         userModel.setRole("Role");
         userModel.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -923,8 +923,8 @@ class UserServiceImplTest {
         userModel1.setLname("Lname");
         userModel1.setPassword("iloveyou");
         userModel1.setPhone("4105551212");
-        userModel1.setReservationModelBarber(new HashSet<>());
-        userModel1.setReservationModelClient(new HashSet<>());
+        userModel1.setReservationModelBarber(new ArrayList<>());
+        userModel1.setReservationModelClient(new ArrayList<>());
         userModel1.setRole("Role");
         userModel1.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -968,8 +968,8 @@ class UserServiceImplTest {
         userModel2.setLname("Lname");
         userModel2.setPassword("iloveyou");
         userModel2.setPhone("4105551212");
-        userModel2.setReservationModelBarber(new HashSet<>());
-        userModel2.setReservationModelClient(new HashSet<>());
+        userModel2.setReservationModelBarber(new ArrayList<>());
+        userModel2.setReservationModelClient(new ArrayList<>());
         userModel2.setRole("Role");
         userModel2.setUpdated(null);
 
@@ -995,8 +995,8 @@ class UserServiceImplTest {
         userModel3.setLname("Lname");
         userModel3.setPassword("iloveyou");
         userModel3.setPhone("4105551212");
-        userModel3.setReservationModelBarber(new HashSet<>());
-        userModel3.setReservationModelClient(new HashSet<>());
+        userModel3.setReservationModelBarber(new ArrayList<>());
+        userModel3.setReservationModelClient(new ArrayList<>());
         userModel3.setRole("Role");
         userModel3.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -1022,8 +1022,8 @@ class UserServiceImplTest {
         userModel4.setLname("Lname");
         userModel4.setPassword("iloveyou");
         userModel4.setPhone("4105551212");
-        userModel4.setReservationModelBarber(new HashSet<>());
-        userModel4.setReservationModelClient(new HashSet<>());
+        userModel4.setReservationModelBarber(new ArrayList<>());
+        userModel4.setReservationModelClient(new ArrayList<>());
         userModel4.setRole("Role");
         userModel4.setUpdated(LocalDate.ofEpochDay(1L));
         when(this.utilsUserService.extractAddressModel(any())).thenReturn(addressModel);
@@ -1115,8 +1115,8 @@ class UserServiceImplTest {
         userModel.setLname("Lname");
         userModel.setPassword("iloveyou");
         userModel.setPhone("4105551212");
-        userModel.setReservationModelBarber(new HashSet<>());
-        userModel.setReservationModelClient(new HashSet<>());
+        userModel.setReservationModelBarber(new ArrayList<>());
+        userModel.setReservationModelClient(new ArrayList<>());
         userModel.setRole("Role");
         userModel.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -1142,8 +1142,8 @@ class UserServiceImplTest {
         userModel1.setLname("Lname");
         userModel1.setPassword("iloveyou");
         userModel1.setPhone("4105551212");
-        userModel1.setReservationModelBarber(new HashSet<>());
-        userModel1.setReservationModelClient(new HashSet<>());
+        userModel1.setReservationModelBarber(new ArrayList<>());
+        userModel1.setReservationModelClient(new ArrayList<>());
         userModel1.setRole("Role");
         userModel1.setUpdated(LocalDate.ofEpochDay(1L));
         CredentialModel credentialModel2 = mock(CredentialModel.class);
@@ -1193,8 +1193,8 @@ class UserServiceImplTest {
         userModel2.setLname("Lname");
         userModel2.setPassword("iloveyou");
         userModel2.setPhone("4105551212");
-        userModel2.setReservationModelBarber(new HashSet<>());
-        userModel2.setReservationModelClient(new HashSet<>());
+        userModel2.setReservationModelBarber(new ArrayList<>());
+        userModel2.setReservationModelClient(new ArrayList<>());
         userModel2.setRole("Role");
         userModel2.setUpdated(null);
 
@@ -1220,8 +1220,8 @@ class UserServiceImplTest {
         userModel3.setLname("Lname");
         userModel3.setPassword("iloveyou");
         userModel3.setPhone("4105551212");
-        userModel3.setReservationModelBarber(new HashSet<>());
-        userModel3.setReservationModelClient(new HashSet<>());
+        userModel3.setReservationModelBarber(new ArrayList<>());
+        userModel3.setReservationModelClient(new ArrayList<>());
         userModel3.setRole("Role");
         userModel3.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -1247,8 +1247,8 @@ class UserServiceImplTest {
         userModel4.setLname("Lname");
         userModel4.setPassword("iloveyou");
         userModel4.setPhone("4105551212");
-        userModel4.setReservationModelBarber(new HashSet<>());
-        userModel4.setReservationModelClient(new HashSet<>());
+        userModel4.setReservationModelBarber(new ArrayList<>());
+        userModel4.setReservationModelClient(new ArrayList<>());
         userModel4.setRole("Role");
         userModel4.setUpdated(LocalDate.ofEpochDay(1L));
         when(this.utilsUserService.extractAddressModel(any())).thenReturn(addressModel);
@@ -1361,8 +1361,8 @@ class UserServiceImplTest {
         userModel.setLname("Lname");
         userModel.setPassword("iloveyou");
         userModel.setPhone("4105551212");
-        userModel.setReservationModelBarber(new HashSet<>());
-        userModel.setReservationModelClient(new HashSet<>());
+        userModel.setReservationModelBarber(new ArrayList<>());
+        userModel.setReservationModelClient(new ArrayList<>());
         userModel.setRole("Role");
         userModel.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -1388,8 +1388,8 @@ class UserServiceImplTest {
         userModel1.setLname("Lname");
         userModel1.setPassword("iloveyou");
         userModel1.setPhone("4105551212");
-        userModel1.setReservationModelBarber(new HashSet<>());
-        userModel1.setReservationModelClient(new HashSet<>());
+        userModel1.setReservationModelBarber(new ArrayList<>());
+        userModel1.setReservationModelClient(new ArrayList<>());
         userModel1.setRole("Role");
         userModel1.setUpdated(LocalDate.ofEpochDay(1L));
         Optional<UserModel> ofResult = Optional.of(userModel1);
@@ -1462,8 +1462,8 @@ class UserServiceImplTest {
         userModel.setLname("Lname");
         userModel.setPassword("iloveyou");
         userModel.setPhone("4105551212");
-        userModel.setReservationModelBarber(new HashSet<>());
-        userModel.setReservationModelClient(new HashSet<>());
+        userModel.setReservationModelBarber(new ArrayList<>());
+        userModel.setReservationModelClient(new ArrayList<>());
         userModel.setRole("Role");
         userModel.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -1489,8 +1489,8 @@ class UserServiceImplTest {
         userModel1.setLname("Lname");
         userModel1.setPassword("iloveyou");
         userModel1.setPhone("4105551212");
-        userModel1.setReservationModelBarber(new HashSet<>());
-        userModel1.setReservationModelClient(new HashSet<>());
+        userModel1.setReservationModelBarber(new ArrayList<>());
+        userModel1.setReservationModelClient(new ArrayList<>());
         userModel1.setRole("Role");
         userModel1.setUpdated(LocalDate.ofEpochDay(1L));
         Optional<UserModel> ofResult = Optional.of(userModel1);
@@ -1545,8 +1545,8 @@ class UserServiceImplTest {
         userModel.setLname("Lname");
         userModel.setPassword("iloveyou");
         userModel.setPhone("4105551212");
-        userModel.setReservationModelBarber(new HashSet<>());
-        userModel.setReservationModelClient(new HashSet<>());
+        userModel.setReservationModelBarber(new ArrayList<>());
+        userModel.setReservationModelClient(new ArrayList<>());
         userModel.setRole("Role");
         userModel.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -1572,8 +1572,8 @@ class UserServiceImplTest {
         userModel1.setLname("Lname");
         userModel1.setPassword("iloveyou");
         userModel1.setPhone("4105551212");
-        userModel1.setReservationModelBarber(new HashSet<>());
-        userModel1.setReservationModelClient(new HashSet<>());
+        userModel1.setReservationModelBarber(new ArrayList<>());
+        userModel1.setReservationModelClient(new ArrayList<>());
         userModel1.setRole("Role");
         userModel1.setUpdated(LocalDate.ofEpochDay(1L));
         Optional<UserModel> ofResult = Optional.of(userModel1);
@@ -1628,8 +1628,8 @@ class UserServiceImplTest {
         userModel.setLname("Lname");
         userModel.setPassword("iloveyou");
         userModel.setPhone("4105551212");
-        userModel.setReservationModelBarber(new HashSet<>());
-        userModel.setReservationModelClient(new HashSet<>());
+        userModel.setReservationModelBarber(new ArrayList<>());
+        userModel.setReservationModelClient(new ArrayList<>());
         userModel.setRole("Role");
         userModel.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -1671,8 +1671,8 @@ class UserServiceImplTest {
         userModel1.setLname("Lname");
         userModel1.setPassword("iloveyou");
         userModel1.setPhone("4105551212");
-        userModel1.setReservationModelBarber(new HashSet<>());
-        userModel1.setReservationModelClient(new HashSet<>());
+        userModel1.setReservationModelBarber(new ArrayList<>());
+        userModel1.setReservationModelClient(new ArrayList<>());
         userModel1.setRole("Role");
         userModel1.setUpdated(LocalDate.ofEpochDay(1L));
         Optional<UserModel> ofResult = Optional.of(userModel1);
