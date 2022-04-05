@@ -3,7 +3,6 @@ package ca.ghostteam.springulart.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.http.ResponseEntity;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -35,7 +34,6 @@ public class SwaggerConfig {
     private static final String CONTACT_URL = "https://josue-lubaki.ca";
     private static final String CONTACT_EMAIL = "josue.lubaki@uqtr.ca; ismael.coulibaly@uqtr.ca; jonathan.kanyinda@uqtr.ca";
     public static final String AUTHORIZATION_HEADER = "Authorization";
-    public static final String DEFAULT_INCLUDE_PATTERN =  "(/.*)";
     public static final String DATA_TYPE = "application/json";
 
     /**

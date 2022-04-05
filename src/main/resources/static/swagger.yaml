@@ -10,7 +10,7 @@ info:
     name: Apache License Version 2.0
   version: 1.0.0
 servers:
-  - url: http://localhost:8080
+  - url: https://springulart.herokuapp.com
     description: Base Url
 tags:
   - name: Registration of accounts

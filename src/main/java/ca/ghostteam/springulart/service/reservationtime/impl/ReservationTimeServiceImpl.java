@@ -4,7 +4,6 @@ import ca.ghostteam.springulart.dto.ReservationTimeDTO;
 import ca.ghostteam.springulart.model.ReservationTimeModel;
 import ca.ghostteam.springulart.repository.ReservationTimeRepository;
 import ca.ghostteam.springulart.service.reservationtime.ReservationTimeService;
-import ca.ghostteam.springulart.service.reservationtime.impl.UtilsReservationTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +18,13 @@ import java.util.Optional;
 public class ReservationTimeServiceImpl implements ReservationTimeService {
 
     private final ReservationTimeRepository reservationTimeRepository;
-    private final UtilsReservationTime utilsReservationTime;
+    private final UtilsReservationTime utils;
 
     @Autowired
-    public ReservationTimeServiceImpl(ReservationTimeRepository reservationTimeService, UtilsReservationTime utilsReservationTime) {
+    public ReservationTimeServiceImpl(ReservationTimeRepository reservationTimeService,
+                                      UtilsReservationTime utils) {
         this.reservationTimeRepository = reservationTimeService;
-        this.utilsReservationTime = utilsReservationTime;
+        this.utils = utils;
     }
 
     @Override
@@ -33,15 +33,15 @@ public class ReservationTimeServiceImpl implements ReservationTimeService {
                 .findById(id)
                 .get();
 
-        return Optional.of(utilsReservationTime.converterModelToDTO(reservationModel));
+        return Optional.of(utils.converterModelToDTO(reservationModel));
     }
 
     @Override
     public Optional<ReservationTimeDTO> save(ReservationTimeDTO reservationDTO) {
         ReservationTimeModel reservationModelSaved =
-                reservationTimeRepository.save(utilsReservationTime.converterDtoToModel(reservationDTO));
+                reservationTimeRepository.save(utils.converterDtoToModel(reservationDTO));
 
-        ReservationTimeDTO reservationTimeDTOSaved = utilsReservationTime.converterModelToDTO(reservationModelSaved);
+        ReservationTimeDTO reservationTimeDTOSaved = utils.converterModelToDTO(reservationModelSaved);
         return Optional.of(reservationTimeDTOSaved);
     }
 
@@ -50,6 +50,6 @@ public class ReservationTimeServiceImpl implements ReservationTimeService {
         reservationTimeRepository.updateReservationTimeById(id, reservationModel.getHours(), reservationModel.getMinutes());
         // get the updated reservation time
         ReservationTimeModel reservationTimeModel = reservationTimeRepository.findById(id).get();
-        return Optional.of(utilsReservationTime.converterModelToDTO(reservationTimeModel));
+        return Optional.of(utils.converterModelToDTO(reservationTimeModel));
     }
 }
