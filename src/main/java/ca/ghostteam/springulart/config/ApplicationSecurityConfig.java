@@ -35,7 +35,17 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
             "/index",
             "/auth/login",
             "/auth/register",
-            "/auth/reset-password"
+            "/auth/reset-password",
+            // css files
+            "/css/**",
+            // images
+            "/images/**",
+            // js files
+            "/js/**",
+            // fonts
+            "/fonts/**",
+            // favicon
+            "/favicon.ico",
     };
 
     private static final String[] PUBLIC_ENDPOINTS_GET_METHOD = {
@@ -49,7 +59,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
             "/configuration/ui",
             "/swagger-resources/**",
             "/configuration/security",
-//            "/swagger-ui.html",
             "/swagger-ui/**",
             "/webjars/**",
             "/actuator/health",
