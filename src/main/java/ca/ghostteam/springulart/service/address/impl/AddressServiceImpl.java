@@ -31,17 +31,15 @@ public class AddressServiceImpl implements AddressService {
     public Optional<AddressDTO> findAddressUserById(Long id) {
         return addressRepository
                 .findById(id)
-                .stream()
                 .map(utils::converterAddressModelToAddressDTO)
-                .findFirst();
+                .map(Optional::of).orElse(Optional.empty());
     }
 
     @Override
     public Optional<AddressModel> findAddressModelUserById(Long id) {
         return addressRepository
                 .findById(id)
-                .stream()
-                .findFirst();
+                .map(Optional::of).orElse(Optional.empty());
     }
 
     @Override

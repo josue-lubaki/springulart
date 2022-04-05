@@ -15,6 +15,7 @@ import ca.ghostteam.springulart.model.UserModel;
 import ca.ghostteam.springulart.repository.CredentialRepository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
 
@@ -59,8 +60,8 @@ class CredentialServiceImplTest {
         userModel.setLname("Lname");
         userModel.setPassword("iloveyou");
         userModel.setPhone("4105551212");
-        userModel.setReservationModelBarber(new HashSet<>());
-        userModel.setReservationModelClient(new HashSet<>());
+        userModel.setReservationModelBarber(new ArrayList<>());
+        userModel.setReservationModelClient(new ArrayList<>());
         userModel.setRole("Role");
         userModel.setUpdated(null);
 
@@ -86,8 +87,8 @@ class CredentialServiceImplTest {
         userModel1.setLname("Lname");
         userModel1.setPassword("iloveyou");
         userModel1.setPhone("4105551212");
-        userModel1.setReservationModelBarber(new HashSet<>());
-        userModel1.setReservationModelClient(new HashSet<>());
+        userModel1.setReservationModelBarber(new ArrayList<>());
+        userModel1.setReservationModelClient(new ArrayList<>());
         userModel1.setRole("Role");
         userModel1.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -138,8 +139,8 @@ class CredentialServiceImplTest {
         userModel.setLname("Lname");
         userModel.setPassword("iloveyou");
         userModel.setPhone("4105551212");
-        userModel.setReservationModelBarber(new HashSet<>());
-        userModel.setReservationModelClient(new HashSet<>());
+        userModel.setReservationModelBarber(new ArrayList<>());
+        userModel.setReservationModelClient(new ArrayList<>());
         userModel.setRole("Role");
         userModel.setUpdated(null);
 
@@ -165,8 +166,8 @@ class CredentialServiceImplTest {
         userModel1.setLname("Lname");
         userModel1.setPassword("iloveyou");
         userModel1.setPhone("4105551212");
-        userModel1.setReservationModelBarber(new HashSet<>());
-        userModel1.setReservationModelClient(new HashSet<>());
+        userModel1.setReservationModelBarber(new ArrayList<>());
+        userModel1.setReservationModelClient(new ArrayList<>());
         userModel1.setRole("Role");
         userModel1.setUpdated(LocalDate.ofEpochDay(1L));
         CredentialModel credentialModel1 = mock(CredentialModel.class);
@@ -260,8 +261,8 @@ class CredentialServiceImplTest {
         userModel.setLname("Lname");
         userModel.setPassword("iloveyou");
         userModel.setPhone("4105551212");
-        userModel.setReservationModelBarber(new HashSet<>());
-        userModel.setReservationModelClient(new HashSet<>());
+        userModel.setReservationModelBarber(new ArrayList<>());
+        userModel.setReservationModelClient(new ArrayList<>());
         userModel.setRole("Role");
         userModel.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -287,8 +288,8 @@ class CredentialServiceImplTest {
         userModel1.setLname("Lname");
         userModel1.setPassword("iloveyou");
         userModel1.setPhone("4105551212");
-        userModel1.setReservationModelBarber(new HashSet<>());
-        userModel1.setReservationModelClient(new HashSet<>());
+        userModel1.setReservationModelBarber(new ArrayList<>());
+        userModel1.setReservationModelClient(new ArrayList<>());
         userModel1.setRole("Role");
         userModel1.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -324,8 +325,8 @@ class CredentialServiceImplTest {
         userModel2.setLname("Lname");
         userModel2.setPassword("iloveyou");
         userModel2.setPhone("4105551212");
-        userModel2.setReservationModelBarber(new HashSet<>());
-        userModel2.setReservationModelClient(new HashSet<>());
+        userModel2.setReservationModelBarber(new ArrayList<>());
+        userModel2.setReservationModelClient(new ArrayList<>());
         userModel2.setRole("Role");
         userModel2.setUpdated(null);
 
@@ -351,8 +352,8 @@ class CredentialServiceImplTest {
         userModel3.setLname("Lname");
         userModel3.setPassword("iloveyou");
         userModel3.setPhone("4105551212");
-        userModel3.setReservationModelBarber(new HashSet<>());
-        userModel3.setReservationModelClient(new HashSet<>());
+        userModel3.setReservationModelBarber(new ArrayList<>());
+        userModel3.setReservationModelClient(new ArrayList<>());
         userModel3.setRole("Role");
         userModel3.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -418,8 +419,8 @@ class CredentialServiceImplTest {
         userModel.setLname("Lname");
         userModel.setPassword("iloveyou");
         userModel.setPhone("4105551212");
-        userModel.setReservationModelBarber(new HashSet<>());
-        userModel.setReservationModelClient(new HashSet<>());
+        userModel.setReservationModelBarber(new ArrayList<>());
+        userModel.setReservationModelClient(new ArrayList<>());
         userModel.setRole("Role");
         userModel.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -445,8 +446,8 @@ class CredentialServiceImplTest {
         userModel1.setLname("Lname");
         userModel1.setPassword("iloveyou");
         userModel1.setPhone("4105551212");
-        userModel1.setReservationModelBarber(new HashSet<>());
-        userModel1.setReservationModelClient(new HashSet<>());
+        userModel1.setReservationModelBarber(new ArrayList<>());
+        userModel1.setReservationModelClient(new ArrayList<>());
         userModel1.setRole("Role");
         userModel1.setUpdated(LocalDate.ofEpochDay(1L));
         CredentialModel credentialModel2 = mock(CredentialModel.class);
@@ -494,8 +495,8 @@ class CredentialServiceImplTest {
         userModel2.setLname("Lname");
         userModel2.setPassword("iloveyou");
         userModel2.setPhone("4105551212");
-        userModel2.setReservationModelBarber(new HashSet<>());
-        userModel2.setReservationModelClient(new HashSet<>());
+        userModel2.setReservationModelBarber(new ArrayList<>());
+        userModel2.setReservationModelClient(new ArrayList<>());
         userModel2.setRole("Role");
         userModel2.setUpdated(null);
 
@@ -521,8 +522,8 @@ class CredentialServiceImplTest {
         userModel3.setLname("Lname");
         userModel3.setPassword("iloveyou");
         userModel3.setPhone("4105551212");
-        userModel3.setReservationModelBarber(new HashSet<>());
-        userModel3.setReservationModelClient(new HashSet<>());
+        userModel3.setReservationModelBarber(new ArrayList<>());
+        userModel3.setReservationModelClient(new ArrayList<>());
         userModel3.setRole("Role");
         userModel3.setUpdated(LocalDate.ofEpochDay(1L));
 
