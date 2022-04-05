@@ -5,6 +5,7 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -39,11 +40,11 @@ public class UserModel {
 
     @OneToMany(mappedBy = "barber", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @ToString.Exclude
-    private Set<ReservationModel> reservationModelBarber;
+    private List<ReservationModel> reservationModelBarber;
 
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @ToString.Exclude
-    private Set<ReservationModel> reservationModelClient;
+    private List<ReservationModel> reservationModelClient;
 
     @Override
     public boolean equals(Object o) {

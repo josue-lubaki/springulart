@@ -31,8 +31,6 @@ public class ReservationTimeServiceImpl implements ReservationTimeService {
     public Optional<ReservationTimeDTO> findById(Long id) {
         ReservationTimeModel reservationModel = reservationTimeRepository
                 .findById(id)
-                .stream()
-                .findFirst()
                 .get();
 
         return Optional.of(utilsReservationTime.converterModelToDTO(reservationModel));

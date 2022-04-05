@@ -17,6 +17,7 @@ import ca.ghostteam.springulart.model.UserModel;
 import ca.ghostteam.springulart.repository.LocationRepository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
 
@@ -80,8 +81,8 @@ class LocationServiceImplTest {
         userModel.setLname("Lname");
         userModel.setPassword("iloveyou");
         userModel.setPhone("4105551212");
-        userModel.setReservationModelBarber(new HashSet<>());
-        userModel.setReservationModelClient(new HashSet<>());
+        userModel.setReservationModelBarber(new ArrayList<>());
+        userModel.setReservationModelClient(new ArrayList<>());
         userModel.setRole("Role");
         userModel.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -116,8 +117,8 @@ class LocationServiceImplTest {
         userModel1.setLname("Lname");
         userModel1.setPassword("iloveyou");
         userModel1.setPhone("4105551212");
-        userModel1.setReservationModelBarber(new HashSet<>());
-        userModel1.setReservationModelClient(new HashSet<>());
+        userModel1.setReservationModelBarber(new ArrayList<>());
+        userModel1.setReservationModelClient(new ArrayList<>());
         userModel1.setRole("Role");
         userModel1.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -127,7 +128,7 @@ class LocationServiceImplTest {
         haircutModel.setId("42");
         haircutModel.setImageURL("https://example.org/example");
         haircutModel.setPrice(1);
-        haircutModel.setReservationModel(new HashSet<>());
+        haircutModel.setReservationModel(new ArrayList<>());
         haircutModel.setTitle("Dr");
 
         ReservationModel reservationModel = new ReservationModel();
@@ -150,7 +151,7 @@ class LocationServiceImplTest {
         reservationTimeModel.setHours(1);
         reservationTimeModel.setId(123L);
         reservationTimeModel.setMinutes(1);
-        reservationTimeModel.setReservationModel(new HashSet<>());
+        reservationTimeModel.setReservationModel(new ArrayList<>());
 
         ReservationModel reservationModel1 = new ReservationModel();
         reservationModel1.setBarber(userModel);
@@ -203,8 +204,8 @@ class LocationServiceImplTest {
         userModel.setLname("Lname");
         userModel.setPassword("iloveyou");
         userModel.setPhone("4105551212");
-        userModel.setReservationModelBarber(new HashSet<>());
-        userModel.setReservationModelClient(new HashSet<>());
+        userModel.setReservationModelBarber(new ArrayList<>());
+        userModel.setReservationModelClient(new ArrayList<>());
         userModel.setRole("Role");
         userModel.setUpdated(null);
 
@@ -230,8 +231,8 @@ class LocationServiceImplTest {
         userModel1.setLname("Lname");
         userModel1.setPassword("iloveyou");
         userModel1.setPhone("4105551212");
-        userModel1.setReservationModelBarber(new HashSet<>());
-        userModel1.setReservationModelClient(new HashSet<>());
+        userModel1.setReservationModelBarber(new ArrayList<>());
+        userModel1.setReservationModelClient(new ArrayList<>());
         userModel1.setRole("Role");
         userModel1.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -257,8 +258,8 @@ class LocationServiceImplTest {
         userModel2.setLname("Lname");
         userModel2.setPassword("iloveyou");
         userModel2.setPhone("4105551212");
-        userModel2.setReservationModelBarber(new HashSet<>());
-        userModel2.setReservationModelClient(new HashSet<>());
+        userModel2.setReservationModelBarber(new ArrayList<>());
+        userModel2.setReservationModelClient(new ArrayList<>());
         userModel2.setRole("Role");
         userModel2.setUpdated(null);
 
@@ -284,8 +285,8 @@ class LocationServiceImplTest {
         userModel3.setLname("Lname");
         userModel3.setPassword("iloveyou");
         userModel3.setPhone("4105551212");
-        userModel3.setReservationModelBarber(new HashSet<>());
-        userModel3.setReservationModelClient(new HashSet<>());
+        userModel3.setReservationModelBarber(new ArrayList<>());
+        userModel3.setReservationModelClient(new ArrayList<>());
         userModel3.setRole("Role");
         userModel3.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -295,7 +296,7 @@ class LocationServiceImplTest {
         haircutModel.setId("42");
         haircutModel.setImageURL("https://example.org/example");
         haircutModel.setPrice(1);
-        haircutModel.setReservationModel(new HashSet<>());
+        haircutModel.setReservationModel(new ArrayList<>());
         haircutModel.setTitle("Dr");
 
         UserModel userModel4 = new UserModel();
@@ -311,8 +312,8 @@ class LocationServiceImplTest {
         userModel4.setLname("Lname");
         userModel4.setPassword("iloveyou");
         userModel4.setPhone("4105551212");
-        userModel4.setReservationModelBarber(new HashSet<>());
-        userModel4.setReservationModelClient(new HashSet<>());
+        userModel4.setReservationModelBarber(new ArrayList<>());
+        userModel4.setReservationModelClient(new ArrayList<>());
         userModel4.setRole("Role");
         userModel4.setUpdated(null);
 
@@ -329,8 +330,8 @@ class LocationServiceImplTest {
         userModel5.setLname("Lname");
         userModel5.setPassword("iloveyou");
         userModel5.setPhone("4105551212");
-        userModel5.setReservationModelBarber(new HashSet<>());
-        userModel5.setReservationModelClient(new HashSet<>());
+        userModel5.setReservationModelBarber(new ArrayList<>());
+        userModel5.setReservationModelClient(new ArrayList<>());
         userModel5.setRole("Role");
         userModel5.setUpdated(null);
 
@@ -340,7 +341,7 @@ class LocationServiceImplTest {
         haircutModel1.setId("42");
         haircutModel1.setImageURL("https://example.org/example");
         haircutModel1.setPrice(1);
-        haircutModel1.setReservationModel(new HashSet<>());
+        haircutModel1.setReservationModel(new ArrayList<>());
         haircutModel1.setTitle("Dr");
 
         LocationModel locationModel = new LocationModel();
@@ -353,7 +354,7 @@ class LocationServiceImplTest {
         reservationTimeModel.setHours(1);
         reservationTimeModel.setId(123L);
         reservationTimeModel.setMinutes(1);
-        reservationTimeModel.setReservationModel(new HashSet<>());
+        reservationTimeModel.setReservationModel(new ArrayList<>());
 
         ReservationModel reservationModel = new ReservationModel();
         reservationModel.setBarber(userModel4);
@@ -375,7 +376,7 @@ class LocationServiceImplTest {
         reservationTimeModel1.setHours(1);
         reservationTimeModel1.setId(123L);
         reservationTimeModel1.setMinutes(1);
-        reservationTimeModel1.setReservationModel(new HashSet<>());
+        reservationTimeModel1.setReservationModel(new ArrayList<>());
 
         ReservationModel reservationModel1 = new ReservationModel();
         reservationModel1.setBarber(userModel1);
@@ -417,8 +418,8 @@ class LocationServiceImplTest {
         userModel6.setLname("Lname");
         userModel6.setPassword("iloveyou");
         userModel6.setPhone("4105551212");
-        userModel6.setReservationModelBarber(new HashSet<>());
-        userModel6.setReservationModelClient(new HashSet<>());
+        userModel6.setReservationModelBarber(new ArrayList<>());
+        userModel6.setReservationModelClient(new ArrayList<>());
         userModel6.setRole("Role");
         userModel6.setUpdated(null);
 
@@ -444,8 +445,8 @@ class LocationServiceImplTest {
         userModel7.setLname("Lname");
         userModel7.setPassword("iloveyou");
         userModel7.setPhone("4105551212");
-        userModel7.setReservationModelBarber(new HashSet<>());
-        userModel7.setReservationModelClient(new HashSet<>());
+        userModel7.setReservationModelBarber(new ArrayList<>());
+        userModel7.setReservationModelClient(new ArrayList<>());
         userModel7.setRole("Role");
         userModel7.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -471,8 +472,8 @@ class LocationServiceImplTest {
         userModel8.setLname("Lname");
         userModel8.setPassword("iloveyou");
         userModel8.setPhone("4105551212");
-        userModel8.setReservationModelBarber(new HashSet<>());
-        userModel8.setReservationModelClient(new HashSet<>());
+        userModel8.setReservationModelBarber(new ArrayList<>());
+        userModel8.setReservationModelClient(new ArrayList<>());
         userModel8.setRole("Role");
         userModel8.setUpdated(null);
 
@@ -498,8 +499,8 @@ class LocationServiceImplTest {
         userModel9.setLname("Lname");
         userModel9.setPassword("iloveyou");
         userModel9.setPhone("4105551212");
-        userModel9.setReservationModelBarber(new HashSet<>());
-        userModel9.setReservationModelClient(new HashSet<>());
+        userModel9.setReservationModelBarber(new ArrayList<>());
+        userModel9.setReservationModelClient(new ArrayList<>());
         userModel9.setRole("Role");
         userModel9.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -509,7 +510,7 @@ class LocationServiceImplTest {
         haircutModel2.setId("42");
         haircutModel2.setImageURL("https://example.org/example");
         haircutModel2.setPrice(1);
-        haircutModel2.setReservationModel(new HashSet<>());
+        haircutModel2.setReservationModel(new ArrayList<>());
         haircutModel2.setTitle("Dr");
 
         UserModel userModel10 = new UserModel();
@@ -525,8 +526,8 @@ class LocationServiceImplTest {
         userModel10.setLname("Lname");
         userModel10.setPassword("iloveyou");
         userModel10.setPhone("4105551212");
-        userModel10.setReservationModelBarber(new HashSet<>());
-        userModel10.setReservationModelClient(new HashSet<>());
+        userModel10.setReservationModelBarber(new ArrayList<>());
+        userModel10.setReservationModelClient(new ArrayList<>());
         userModel10.setRole("Role");
         userModel10.setUpdated(null);
 
@@ -543,8 +544,8 @@ class LocationServiceImplTest {
         userModel11.setLname("Lname");
         userModel11.setPassword("iloveyou");
         userModel11.setPhone("4105551212");
-        userModel11.setReservationModelBarber(new HashSet<>());
-        userModel11.setReservationModelClient(new HashSet<>());
+        userModel11.setReservationModelBarber(new ArrayList<>());
+        userModel11.setReservationModelClient(new ArrayList<>());
         userModel11.setRole("Role");
         userModel11.setUpdated(null);
 
@@ -554,7 +555,7 @@ class LocationServiceImplTest {
         haircutModel3.setId("42");
         haircutModel3.setImageURL("https://example.org/example");
         haircutModel3.setPrice(1);
-        haircutModel3.setReservationModel(new HashSet<>());
+        haircutModel3.setReservationModel(new ArrayList<>());
         haircutModel3.setTitle("Dr");
 
         LocationModel locationModel3 = new LocationModel();
@@ -567,7 +568,7 @@ class LocationServiceImplTest {
         reservationTimeModel2.setHours(1);
         reservationTimeModel2.setId(123L);
         reservationTimeModel2.setMinutes(1);
-        reservationTimeModel2.setReservationModel(new HashSet<>());
+        reservationTimeModel2.setReservationModel(new ArrayList<>());
 
         ReservationModel reservationModel2 = new ReservationModel();
         reservationModel2.setBarber(userModel10);
@@ -589,7 +590,7 @@ class LocationServiceImplTest {
         reservationTimeModel3.setHours(1);
         reservationTimeModel3.setId(123L);
         reservationTimeModel3.setMinutes(1);
-        reservationTimeModel3.setReservationModel(new HashSet<>());
+        reservationTimeModel3.setReservationModel(new ArrayList<>());
 
         ReservationModel reservationModel3 = new ReservationModel();
         reservationModel3.setBarber(userModel7);
@@ -657,8 +658,8 @@ class LocationServiceImplTest {
         userModel.setLname("Lname");
         userModel.setPassword("iloveyou");
         userModel.setPhone("4105551212");
-        userModel.setReservationModelBarber(new HashSet<>());
-        userModel.setReservationModelClient(new HashSet<>());
+        userModel.setReservationModelBarber(new ArrayList<>());
+        userModel.setReservationModelClient(new ArrayList<>());
         userModel.setRole("Role");
         userModel.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -693,8 +694,8 @@ class LocationServiceImplTest {
         userModel1.setLname("Lname");
         userModel1.setPassword("iloveyou");
         userModel1.setPhone("4105551212");
-        userModel1.setReservationModelBarber(new HashSet<>());
-        userModel1.setReservationModelClient(new HashSet<>());
+        userModel1.setReservationModelBarber(new ArrayList<>());
+        userModel1.setReservationModelClient(new ArrayList<>());
         userModel1.setRole("Role");
         userModel1.setUpdated(LocalDate.ofEpochDay(1L));
 
@@ -704,7 +705,7 @@ class LocationServiceImplTest {
         haircutModel.setId("42");
         haircutModel.setImageURL("https://example.org/example");
         haircutModel.setPrice(1);
-        haircutModel.setReservationModel(new HashSet<>());
+        haircutModel.setReservationModel(new ArrayList<>());
         haircutModel.setTitle("Dr");
 
         ReservationModel reservationModel = new ReservationModel();
@@ -727,7 +728,7 @@ class LocationServiceImplTest {
         reservationTimeModel.setHours(1);
         reservationTimeModel.setId(123L);
         reservationTimeModel.setMinutes(1);
-        reservationTimeModel.setReservationModel(new HashSet<>());
+        reservationTimeModel.setReservationModel(new ArrayList<>());
 
         ReservationModel reservationModel1 = new ReservationModel();
         reservationModel1.setBarber(userModel);

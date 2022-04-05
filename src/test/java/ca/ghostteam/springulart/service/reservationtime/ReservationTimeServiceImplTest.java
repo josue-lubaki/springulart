@@ -10,6 +10,7 @@ import ca.ghostteam.springulart.dto.ReservationTimeDTO;
 import ca.ghostteam.springulart.model.ReservationTimeModel;
 import ca.ghostteam.springulart.repository.ReservationTimeRepository;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
 
@@ -47,7 +48,7 @@ class ReservationTimeServiceImplTest {
         reservationTimeModel.setHours(1);
         reservationTimeModel.setId(123L);
         reservationTimeModel.setMinutes(1);
-        reservationTimeModel.setReservationModel(new HashSet<>());
+        reservationTimeModel.setReservationModel(new ArrayList<>());
         Optional<ReservationTimeModel> ofResult = Optional.of(reservationTimeModel);
         when(this.reservationTimeRepository.findById(any())).thenReturn(ofResult);
         assertTrue(this.reservationTimeServiceImpl.findById(123L).isPresent());
@@ -66,7 +67,7 @@ class ReservationTimeServiceImplTest {
         reservationTimeModel.setHours(1);
         reservationTimeModel.setId(123L);
         reservationTimeModel.setMinutes(1);
-        reservationTimeModel.setReservationModel(new HashSet<>());
+        reservationTimeModel.setReservationModel(new ArrayList<>());
         when(this.utilsReservationTime.converterModelToDTO(any())).thenReturn(reservationTimeDTO);
         when(this.utilsReservationTime.converterDtoToModel(any())).thenReturn(reservationTimeModel);
 
@@ -74,7 +75,7 @@ class ReservationTimeServiceImplTest {
         reservationTimeModel1.setHours(1);
         reservationTimeModel1.setId(123L);
         reservationTimeModel1.setMinutes(1);
-        reservationTimeModel1.setReservationModel(new HashSet<>());
+        reservationTimeModel1.setReservationModel(new ArrayList<>());
         when(this.reservationTimeRepository.save(any())).thenReturn(reservationTimeModel1);
 
         ReservationTimeDTO reservationTimeDTO1 = new ReservationTimeDTO();
@@ -99,7 +100,7 @@ class ReservationTimeServiceImplTest {
         reservationTimeModel.setHours(1);
         reservationTimeModel.setId(123L);
         reservationTimeModel.setMinutes(1);
-        reservationTimeModel.setReservationModel(new HashSet<>());
+        reservationTimeModel.setReservationModel(new ArrayList<>());
         Optional<ReservationTimeModel> ofResult = Optional.of(reservationTimeModel);
         when(this.reservationTimeRepository.findById(any())).thenReturn(ofResult);
         doNothing().when(this.reservationTimeRepository)

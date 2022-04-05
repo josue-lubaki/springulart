@@ -31,8 +31,6 @@ public class LocationServiceImpl implements LocationService {
     public Optional<LocationDTO> findById(Long id) {
         return Optional.of(utils.converterModelToDTO(locationRepository
                         .findById(id)
-                        .stream()
-                        .findFirst()
                         .get()
                 ));
     }
@@ -52,8 +50,6 @@ public class LocationServiceImpl implements LocationService {
         LocationModel locationModel =
                 locationRepository
                         .findById(id)
-                        .stream()
-                        .findFirst()
                         .get();
 
         return Optional.of(utils.converterModelToDTO(locationModel));

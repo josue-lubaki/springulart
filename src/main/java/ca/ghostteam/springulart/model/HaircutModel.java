@@ -5,6 +5,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -26,7 +27,7 @@ public class HaircutModel {
 
     @OneToMany(mappedBy = "haircut", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @ToString.Exclude
-    private Set<ReservationModel> reservationModel;
+    private List<ReservationModel> reservationModel;
 
     @Override
     public boolean equals(Object o) {

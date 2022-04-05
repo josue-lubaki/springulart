@@ -28,9 +28,8 @@ public class CredentialServiceImpl implements CredentialService {
     public Optional<CredentialDTO> findCredentialUserById(Long id) {
         return credentialRepository
                 .findById(id)
-                .stream()
                 .map(this::converterCrendentialModelToCredentialDTO)
-                .findFirst();
+                .map(Optional::of).orElse(Optional.empty());
     }
 
     @Override
