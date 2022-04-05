@@ -1,0 +1,1785 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: josue.lubaki@uqtr.ca
+    name: Josue Lubaki
+    url: https://josue-lubaki.ca
+  description: Springular REST API
+  license:
+    name: Apache License Version 2.0
+  title: Springular REST API
+  version: 1.0.0
+servers:
+- description: Base Url
+  url: http://localhost:8080
+tags:
+- description: First step in the application
+  name: Registration of accounts
+- description: Collection of methods for interacting with haircuts
+  name: Haircut consultation
+- description: Collection of methods for interacting with users
+  name: User Controller
+- description: Collection of methods for interacting with reservations
+  name: Reservation Controller
+- description: Operation reserved for the Administrator concerning all haircuts
+  name: Haircut Management Controller
+- description: peration reserved for the Administrator concerning all users
+  name: User Management Controller
+- description: Operation reserved for the Administrator concerning all reservations
+  name: Reservation Management Controller
+paths:
+  /auth/login:
+    post:
+      description: Login to the application
+      operationId: authenticateUserUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthDTO'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginDTO'
+          description: OK
+        "400":
+          description: Bad Request
+      summary: Login
+      tags:
+      - Registration of accounts
+      x-contentType: application/json
+      x-accepts: application/json
+  /auth/register:
+    post:
+      description: Register to the application
+      operationId: registerUserUsingPOST
+      parameters:
+      - explode: true
+        in: query
+        name: apartment
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: city
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: dob
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: email
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: fname
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: imageURL
+        required: false
+        schema:
+          format: binary
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: lname
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: password
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: phone
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: role
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: state
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: street
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: zip
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+          description: OK
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+          description: Successfully created an account
+        "400":
+          description: Bad Request
+      summary: Register
+      tags:
+      - Registration of accounts
+      x-accepts: application/json
+  /auth/reset-password:
+    post:
+      operationId: resetPasswordUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthDTO'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                additionalProperties:
+                  type: string
+                type: object
+          description: Successfully reset password
+      summary: Reset password
+      tags:
+      - Registration of accounts
+      x-contentType: application/json
+      x-accepts: application/json
+  /api/v1/haircuts:
+    get:
+      operationId: getHaircutsUsingGET
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/HaircutDTO'
+                type: array
+          description: Successfully retrieved all haircuts
+      summary: Get all haircuts
+      tags:
+      - Haircut consultation
+      x-accepts: '*/*'
+  /api/v1/haircuts/{id}:
+    get:
+      operationId: getHaircutUsingGET
+      parameters:
+      - description: Identifier of the hairstyle to consult
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HaircutDTO'
+          description: Successfully retrieved haircut
+      summary: Get haircut by id
+      tags:
+      - Haircut consultation
+      x-accepts: application/json
+  /management/api/v1/haircuts:
+    get:
+      operationId: getHaircutsUsingGET_1
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/HaircutDTO'
+                type: array
+          description: OK
+        "400":
+          description: Bad Request
+      security:
+      - JWT:
+        - global
+      summary: Get all haircuts
+      tags:
+      - Haircut Management Controller
+      x-accepts: '*/*'
+    post:
+      operationId: createHaircutUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HaircutDTO'
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HaircutDTO'
+          description: OK
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+      security:
+      - JWT:
+        - global
+      summary: Create haircut
+      tags:
+      - Haircut Management Controller
+      x-contentType: application/json
+      x-accepts: '*/*'
+  /management/api/v1/haircuts/{id}:
+    delete:
+      operationId: deleteHaircutUsingDELETE
+      parameters:
+      - description: id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Deleted hair
+        "400":
+          description: Bad Request
+      security:
+      - JWT:
+        - global
+      summary: Delete haircut
+      tags:
+      - Haircut Management Controller
+      x-accepts: application/json
+    get:
+      operationId: getHaircutUsingGET_1
+      parameters:
+      - description: id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HaircutDTO'
+          description: OK
+        "400":
+          description: Bad Request
+      security:
+      - JWT:
+        - global
+      summary: Get haircut by ID
+      tags:
+      - Haircut Management Controller
+      x-accepts: application/json
+    put:
+      operationId: updateHaircutUsingPUT
+      parameters:
+      - description: id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HaircutDTO'
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HaircutDTO'
+          description: Updated hair
+        "400":
+          description: Bad Request
+      security:
+      - JWT:
+        - global
+      summary: Update haircut
+      tags:
+      - Haircut Management Controller
+      x-contentType: application/json
+      x-accepts: '*/*'
+  /api/v1/reservations:
+    get:
+      operationId: getAllReservationsUsingGET
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/ReservationDTORes'
+                type: array
+          description: Successfully retrieved all reservations of User
+      security:
+      - JWT:
+        - global
+      summary: Get all reservations
+      tags:
+      - Reservation Controller
+      x-accepts: '*/*'
+    post:
+      operationId: createReservationUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationDTOReq'
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ReservationDTORes'
+          description: OK
+        "201":
+          description: Successfully save a reservation
+      security:
+      - JWT:
+        - global
+      summary: Save a reservation
+      tags:
+      - Reservation Controller
+      x-contentType: application/json
+      x-accepts: '*/*'
+  /api/v1/reservations/accept/{id}:
+    patch:
+      operationId: acceptReservationUsingPATCH
+      parameters:
+      - description: Reservation ID to accept
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationDTOReq'
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ReservationDTORes'
+          description: Successfully accepted a reservation
+      security:
+      - JWT:
+        - global
+      summary: Accept a reservation
+      tags:
+      - Reservation Controller
+      x-contentType: application/json
+      x-accepts: '*/*'
+  /api/v1/reservations/{id}:
+    delete:
+      operationId: deleteReservationUsingDELETE
+      parameters:
+      - description: Reservation ID to delete
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          description: OK
+        "204":
+          description: Successfully deleted a reservation
+      security:
+      - JWT:
+        - global
+      summary: Delete a reservation
+      tags:
+      - Reservation Controller
+      x-accepts: application/json
+    get:
+      operationId: getReservationByIdUsingGET
+      parameters:
+      - description: Reservation ID to consult
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ReservationDTORes'
+          description: Successfully retrieved a reservation by id
+      security:
+      - JWT:
+        - global
+      summary: Get reservation by id
+      tags:
+      - Reservation Controller
+      x-accepts: '*/*'
+    put:
+      operationId: updateReservationUsingPUT
+      parameters:
+      - description: Reservation ID to update
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationDTOReq'
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ReservationDTORes'
+          description: Successfully updated a reservation
+      security:
+      - JWT:
+        - global
+      summary: Update a reservation
+      tags:
+      - Reservation Controller
+      x-contentType: application/json
+      x-accepts: '*/*'
+  /management/api/v1/reservations:
+    get:
+      operationId: getAllReservationsUsingGET_1
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/ReservationDTORes'
+                type: array
+          description: Successfully retrieved all reservations of User
+      security:
+      - JWT:
+        - global
+      summary: Get all reservations
+      tags:
+      - Reservation Management Controller
+      x-accepts: '*/*'
+    post:
+      operationId: createReservationUsingPOST_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationDTOReq'
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ReservationDTORes'
+          description: OK
+        "201":
+          description: Successfully save a reservation
+      security:
+      - JWT:
+        - global
+      summary: Save a reservation
+      tags:
+      - Reservation Management Controller
+      x-contentType: application/json
+      x-accepts: '*/*'
+  /management/api/v1/reservations/{id}:
+    delete:
+      operationId: deleteReservationUsingDELETE_1
+      parameters:
+      - description: Reservation ID to delete
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          description: OK
+        "204":
+          description: Successfully deleted a reservation
+      security:
+      - JWT:
+        - global
+      summary: Delete a reservation
+      tags:
+      - Reservation Management Controller
+      x-accepts: application/json
+    get:
+      operationId: getReservationByIdUsingGET_1
+      parameters:
+      - description: Reservation ID to consult
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ReservationDTORes'
+          description: Successfully retrieved a reservation by id
+      security:
+      - JWT:
+        - global
+      summary: Get a reservation by id
+      tags:
+      - Reservation Management Controller
+      x-accepts: '*/*'
+    put:
+      operationId: updateReservationUsingPUT_1
+      parameters:
+      - description: Reservation ID to update
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationDTOReq'
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ReservationDTORes'
+          description: Successfully updated a reservation
+      security:
+      - JWT:
+        - global
+      summary: Update a reservation
+      tags:
+      - Reservation Management Controller
+      x-contentType: application/json
+      x-accepts: '*/*'
+  /api/v1/users/{id}:
+    delete:
+      operationId: deleteMyAccountUsingDELETE
+      parameters:
+      - description: User ID to delete
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          description: OK
+        "204":
+          description: Successfully Deleted a user
+      security:
+      - JWT:
+        - global
+      summary: Delete a user by ID
+      tags:
+      - User Controller
+      x-accepts: application/json
+    get:
+      operationId: getUserUsingGET
+      parameters:
+      - description: User ID to consult
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDTORes'
+          description: Successfully retrieved a user
+      security:
+      - JWT:
+        - global
+      summary: Get a user by ID
+      tags:
+      - User Controller
+      x-accepts: '*/*'
+    put:
+      operationId: updateUserUsingPUT
+      parameters:
+      - description: User ID to update
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTOReq'
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDTORes'
+          description: Successfully updated a user
+      security:
+      - JWT:
+        - global
+      summary: Update a user by ID
+      tags:
+      - User Controller
+      x-contentType: application/json
+      x-accepts: '*/*'
+  /management/api/v1/users:
+    get:
+      operationId: getUsersUsingGET
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/UserDTORes'
+                type: array
+          description: Successfully retrieved all users
+      security:
+      - JWT:
+        - global
+      summary: Get all users
+      tags:
+      - User Management Controller
+      x-accepts: '*/*'
+    post:
+      operationId: registerNewUserUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupDTO'
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDTORes'
+          description: OK
+        "400":
+          description: Bad Request
+      security:
+      - JWT:
+        - global
+      summary: Create a new user
+      tags:
+      - User Management Controller
+      x-contentType: application/json
+      x-accepts: '*/*'
+  /management/api/v1/users/{id}:
+    delete:
+      operationId: deleteUserUsingDELETE
+      parameters:
+      - description: user ID to delete
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          description: OK
+        "204":
+          description: Successfully Deleted a user
+      security:
+      - JWT:
+        - global
+      summary: Delete a user by ID
+      tags:
+      - User Management Controller
+      x-accepts: application/json
+    get:
+      operationId: getUserUsingGET_1
+      parameters:
+      - description: user ID to consult
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDTORes'
+          description: Successfully retrieved a user
+      security:
+      - JWT:
+        - global
+      summary: Get a user by ID
+      tags:
+      - User Management Controller
+      x-accepts: '*/*'
+    put:
+      operationId: updateUserUsingPUT_1
+      parameters:
+      - description: user ID to update
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTOReq'
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDTORes'
+          description: Successfully updated a user
+      security:
+      - JWT:
+        - global
+      summary: Update a user by ID
+      tags:
+      - User Management Controller
+      x-contentType: application/json
+      x-accepts: '*/*'
+components:
+  schemas:
+    AddressDTO:
+      example:
+        zip: zip
+        city: city
+        street: street
+        id: 0
+        state: state
+        apartement: apartement
+      properties:
+        apartement:
+          type: string
+        city:
+          type: string
+        id:
+          format: int64
+          type: integer
+        state:
+          type: string
+        street:
+          type: string
+        zip:
+          type: string
+      title: AddressDTO
+      type: object
+    AddressModel:
+      properties:
+        apartement:
+          type: string
+        city:
+          type: string
+        id:
+          format: int64
+          type: integer
+        state:
+          type: string
+        street:
+          type: string
+        users:
+          items:
+            $ref: '#/components/schemas/UserModel'
+          type: array
+          uniqueItems: true
+        zip:
+          type: string
+      title: AddressModel
+      type: object
+    AuthDTO:
+      example:
+        password: password
+        username: username
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      title: AuthDTO
+      type: object
+    CollectionModelOfReservationModel:
+      description: Resources of ReservationModel
+      properties:
+        _embedded:
+          $ref: '#/components/schemas/EmbeddedCollectionOfReservationModel'
+        _links:
+          additionalProperties:
+            $ref: '#/components/schemas/Link'
+          description: Link collection
+          type: object
+      required:
+      - _embedded
+      - _links
+      title: CollectionModelOfReservationModel
+      type: object
+      xml:
+        attribute: false
+        name: entities
+        wrapped: false
+    CollectionModelOfUserModel:
+      description: Resources of UserModel
+      properties:
+        _embedded:
+          $ref: '#/components/schemas/EmbeddedCollectionOfUserModel'
+        _links:
+          additionalProperties:
+            $ref: '#/components/schemas/Link'
+          description: Link collection
+          type: object
+      required:
+      - _embedded
+      - _links
+      title: CollectionModelOfUserModel
+      type: object
+      xml:
+        attribute: false
+        name: entities
+        wrapped: false
+    CredentialModel:
+      properties:
+        created:
+          format: date
+          type: string
+        grantedAuthority:
+          type: string
+        id:
+          format: int64
+          type: integer
+        password:
+          type: string
+        updated:
+          format: date
+          type: string
+        user:
+          $ref: '#/components/schemas/UserModel'
+        username:
+          type: string
+      title: CredentialModel
+      type: object
+    EmbeddedCollectionOfReservationModel:
+      description: Embedded collection of ReservationModel
+      properties:
+        reservationModels:
+          description: Resource collection
+          items:
+            $ref: '#/components/schemas/ReservationModel'
+          type: array
+      required:
+      - reservationModels
+      title: EmbeddedCollectionOfReservationModel
+      type: object
+      xml:
+        name: content
+        wrapped: true
+    EmbeddedCollectionOfUserModel:
+      description: Embedded collection of UserModel
+      properties:
+        userModels:
+          description: Resource collection
+          items:
+            $ref: '#/components/schemas/UserModel'
+          type: array
+      required:
+      - userModels
+      title: EmbeddedCollectionOfUserModel
+      type: object
+      xml:
+        name: content
+        wrapped: true
+    EntityModelOfAddressModel:
+      properties:
+        apartement:
+          type: string
+        city:
+          type: string
+        id:
+          format: int64
+          type: integer
+        links:
+          $ref: '#/components/schemas/Links'
+        state:
+          type: string
+        street:
+          type: string
+        users:
+          items:
+            $ref: '#/components/schemas/UserModel'
+          type: array
+          uniqueItems: true
+        zip:
+          type: string
+      title: EntityModelOfAddressModel
+      type: object
+    EntityModelOfCredentialModel:
+      properties:
+        created:
+          format: date
+          type: string
+        grantedAuthority:
+          type: string
+        id:
+          format: int64
+          type: integer
+        links:
+          $ref: '#/components/schemas/Links'
+        password:
+          type: string
+        updated:
+          format: date
+          type: string
+        user:
+          $ref: '#/components/schemas/UserModel'
+        username:
+          type: string
+      title: EntityModelOfCredentialModel
+      type: object
+    EntityModelOfHaircutModel:
+      properties:
+        description:
+          type: string
+        estimatedTime:
+          type: string
+        id:
+          type: string
+        imageURL:
+          type: string
+        links:
+          $ref: '#/components/schemas/Links'
+        price:
+          format: int32
+          type: integer
+        reservationModel:
+          items:
+            $ref: '#/components/schemas/ReservationModel'
+          type: array
+          uniqueItems: true
+        title:
+          type: string
+      title: EntityModelOfHaircutModel
+      type: object
+    EntityModelOfLocationModel:
+      properties:
+        id:
+          format: int64
+          type: integer
+        latitude:
+          format: double
+          type: number
+        links:
+          $ref: '#/components/schemas/Links'
+        longitude:
+          format: double
+          type: number
+        reservationModel:
+          $ref: '#/components/schemas/ReservationModel'
+      title: EntityModelOfLocationModel
+      type: object
+    EntityModelOfReservationModel:
+      properties:
+        barber:
+          $ref: '#/components/schemas/UserModel'
+        client:
+          $ref: '#/components/schemas/UserModel'
+        haircut:
+          $ref: '#/components/schemas/HaircutModel'
+        id:
+          format: int64
+          type: integer
+        links:
+          $ref: '#/components/schemas/Links'
+        location:
+          $ref: '#/components/schemas/LocationModel'
+        reservationDate:
+          format: date
+          type: string
+        reservationTime:
+          $ref: '#/components/schemas/ReservationTimeModel'
+        status:
+          type: string
+      title: EntityModelOfReservationModel
+      type: object
+    EntityModelOfReservationTimeModel:
+      properties:
+        hours:
+          format: int32
+          type: integer
+        id:
+          format: int64
+          type: integer
+        links:
+          $ref: '#/components/schemas/Links'
+        minutes:
+          format: int32
+          type: integer
+        reservationModel:
+          items:
+            $ref: '#/components/schemas/ReservationModel'
+          type: array
+          uniqueItems: true
+      title: EntityModelOfReservationTimeModel
+      type: object
+    EntityModelOfUserModel:
+      properties:
+        address:
+          $ref: '#/components/schemas/AddressModel'
+        created:
+          format: date
+          type: string
+        credential:
+          $ref: '#/components/schemas/CredentialModel'
+        deleted:
+          type: boolean
+        dob:
+          format: date
+          type: string
+        email:
+          type: string
+        fname:
+          type: string
+        id:
+          format: int64
+          type: integer
+        imageURL:
+          type: string
+        links:
+          $ref: '#/components/schemas/Links'
+        lname:
+          type: string
+        password:
+          type: string
+        phone:
+          type: string
+        reservationModelBarber:
+          items:
+            $ref: '#/components/schemas/ReservationModel'
+          type: array
+          uniqueItems: true
+        reservationModelClient:
+          items:
+            $ref: '#/components/schemas/ReservationModel'
+          type: array
+          uniqueItems: true
+        role:
+          type: string
+        updated:
+          format: date
+          type: string
+      title: EntityModelOfUserModel
+      type: object
+    HaircutDTO:
+      example:
+        estimatedTime: estimatedTime
+        price: 0
+        imageURL: imageURL
+        description: description
+        id: id
+        title: title
+      properties:
+        description:
+          type: string
+        estimatedTime:
+          type: string
+        id:
+          type: string
+        imageURL:
+          type: string
+        price:
+          format: int32
+          type: integer
+        title:
+          type: string
+      title: HaircutDTO
+      type: object
+    HaircutModel:
+      properties:
+        description:
+          type: string
+        estimatedTime:
+          type: string
+        id:
+          type: string
+        imageURL:
+          type: string
+        price:
+          format: int32
+          type: integer
+        reservationModel:
+          items:
+            $ref: '#/components/schemas/ReservationModel'
+          type: array
+          uniqueItems: true
+        title:
+          type: string
+      title: HaircutModel
+      type: object
+    Link:
+      properties:
+        deprecation:
+          type: string
+        href:
+          type: string
+        hreflang:
+          type: string
+        media:
+          type: string
+        name:
+          type: string
+        profile:
+          type: string
+        rel:
+          title: LinkRelation
+          type: object
+        title:
+          type: string
+        type:
+          type: string
+      title: Link
+      type: object
+    LinkRelation:
+      title: LinkRelation
+      type: object
+    Links:
+      properties:
+        empty:
+          type: boolean
+      title: Links
+      type: object
+    LocationDTO:
+      example:
+        latitude: 5.962133916683182
+        id: 1
+        longitude: 5.637376656633329
+      properties:
+        id:
+          format: int64
+          type: integer
+        latitude:
+          format: double
+          type: number
+        longitude:
+          format: double
+          type: number
+      title: LocationDTO
+      type: object
+    LocationModel:
+      properties:
+        id:
+          format: int64
+          type: integer
+        latitude:
+          format: double
+          type: number
+        longitude:
+          format: double
+          type: number
+        reservationModel:
+          $ref: '#/components/schemas/ReservationModel'
+      title: LocationModel
+      type: object
+    LoginDTO:
+      example:
+        role: role
+        id: 0
+        email: email
+        token: token
+      properties:
+        email:
+          type: string
+        id:
+          format: int64
+          type: integer
+        role:
+          type: string
+        token:
+          type: string
+      title: LoginDTO
+      type: object
+    ReservationDTOReq:
+      example:
+        reservationTime:
+          hours: 2
+          minutes: 9
+          id: 7
+        client:
+          fname: fname
+          lname: lname
+          address:
+            zip: zip
+            city: city
+            street: street
+            id: 0
+            state: state
+            apartement: apartement
+          deleted: true
+          role: role
+          phone: phone
+          created: 2000-01-23
+          dob: 2000-01-23
+          imageURL: imageURL
+          id: 0
+          updated: 2000-01-23
+          email: email
+        location:
+          latitude: 5.962133916683182
+          id: 1
+          longitude: 5.637376656633329
+        barber:
+          fname: fname
+          lname: lname
+          address:
+            zip: zip
+            city: city
+            street: street
+            id: 0
+            state: state
+            apartement: apartement
+          deleted: true
+          role: role
+          phone: phone
+          created: 2000-01-23
+          dob: 2000-01-23
+          imageURL: imageURL
+          id: 0
+          updated: 2000-01-23
+          email: email
+        haircut:
+          estimatedTime: estimatedTime
+          price: 0
+          imageURL: imageURL
+          description: description
+          id: id
+          title: title
+        id: 6
+        reservationDate: 2000-01-23
+        status: status
+      properties:
+        barber:
+          $ref: '#/components/schemas/UserDTOReq'
+        client:
+          $ref: '#/components/schemas/UserDTOReq'
+        haircut:
+          $ref: '#/components/schemas/HaircutDTO'
+        id:
+          format: int64
+          type: integer
+        location:
+          $ref: '#/components/schemas/LocationDTO'
+        reservationDate:
+          format: date
+          type: string
+        reservationTime:
+          $ref: '#/components/schemas/ReservationTimeDTO'
+        status:
+          type: string
+      title: ReservationDTOReq
+      type: object
+    ReservationDTORes:
+      example:
+        reservationTime:
+          hours: 2
+          minutes: 9
+          id: 7
+        client:
+          fname: fname
+          address:
+            zip: zip
+            city: city
+            street: street
+            id: 0
+            state: state
+            apartement: apartement
+          role: role
+          created: 2000-01-23
+          fullName: fullName
+          lname: lname
+          deleted: true
+          phone: phone
+          dob: 2000-01-23
+          imageURL: imageURL
+          id: 0
+          updated: 2000-01-23
+          email: email
+        location:
+          latitude: 5.962133916683182
+          id: 1
+          longitude: 5.637376656633329
+        barber:
+          fname: fname
+          address:
+            zip: zip
+            city: city
+            street: street
+            id: 0
+            state: state
+            apartement: apartement
+          role: role
+          created: 2000-01-23
+          fullName: fullName
+          lname: lname
+          deleted: true
+          phone: phone
+          dob: 2000-01-23
+          imageURL: imageURL
+          id: 0
+          updated: 2000-01-23
+          email: email
+        haircut:
+          estimatedTime: estimatedTime
+          price: 0
+          imageURL: imageURL
+          description: description
+          id: id
+          title: title
+        id: 6
+        reservationDate: 2000-01-23
+        status: status
+      properties:
+        barber:
+          $ref: '#/components/schemas/UserDTORes'
+        client:
+          $ref: '#/components/schemas/UserDTORes'
+        haircut:
+          $ref: '#/components/schemas/HaircutDTO'
+        id:
+          format: int64
+          type: integer
+        location:
+          $ref: '#/components/schemas/LocationDTO'
+        reservationDate:
+          format: date
+          type: string
+        reservationTime:
+          $ref: '#/components/schemas/ReservationTimeDTO'
+        status:
+          type: string
+      title: ReservationDTORes
+      type: object
+    ReservationModel:
+      properties:
+        barber:
+          $ref: '#/components/schemas/UserModel'
+        client:
+          $ref: '#/components/schemas/UserModel'
+        haircut:
+          $ref: '#/components/schemas/HaircutModel'
+        id:
+          format: int64
+          type: integer
+        location:
+          $ref: '#/components/schemas/LocationModel'
+        reservationDate:
+          format: date
+          type: string
+        reservationTime:
+          $ref: '#/components/schemas/ReservationTimeModel'
+        status:
+          type: string
+      title: ReservationModel
+      type: object
+    ReservationTimeDTO:
+      example:
+        hours: 2
+        minutes: 9
+        id: 7
+      properties:
+        hours:
+          format: int32
+          type: integer
+        id:
+          format: int64
+          type: integer
+        minutes:
+          format: int32
+          type: integer
+      title: ReservationTimeDTO
+      type: object
+    ReservationTimeModel:
+      properties:
+        hours:
+          format: int32
+          type: integer
+        id:
+          format: int64
+          type: integer
+        minutes:
+          format: int32
+          type: integer
+        reservationModel:
+          items:
+            $ref: '#/components/schemas/ReservationModel'
+          type: array
+          uniqueItems: true
+      title: ReservationTimeModel
+      type: object
+    SignupDTO:
+      example:
+        zip: zip
+        fname: fname
+        role: role
+        city: city
+        lname: lname
+        password: password
+        phone: phone
+        dob: 2000-01-23
+        street: street
+        imageURL: imageURL
+        state: state
+        apartment: apartment
+        email: email
+      properties:
+        apartment:
+          type: string
+        city:
+          type: string
+        dob:
+          format: date
+          type: string
+        email:
+          type: string
+        fname:
+          type: string
+        imageURL:
+          type: string
+        lname:
+          type: string
+        password:
+          type: string
+        phone:
+          type: string
+        role:
+          type: string
+        state:
+          type: string
+        street:
+          type: string
+        zip:
+          type: string
+      title: SignupDTO
+      type: object
+    UserDTO:
+      example:
+        fname: fname
+        address:
+          zip: zip
+          city: city
+          street: street
+          id: 0
+          state: state
+          apartement: apartement
+        role: role
+        created: 2000-01-23
+        fullName: fullName
+        lname: lname
+        deleted: true
+        phone: phone
+        dob: 2000-01-23
+        imageURL: imageURL
+        id: 6
+        updated: 2000-01-23
+        email: email
+      properties:
+        address:
+          $ref: '#/components/schemas/AddressDTO'
+        created:
+          format: date
+          type: string
+        deleted:
+          type: boolean
+        dob:
+          format: date
+          type: string
+        email:
+          type: string
+        fname:
+          type: string
+        fullName:
+          type: string
+        id:
+          format: int64
+          type: integer
+        imageURL:
+          type: string
+        lname:
+          type: string
+        phone:
+          type: string
+        role:
+          type: string
+        updated:
+          format: date
+          type: string
+      title: UserDTO
+      type: object
+    UserDTOReq:
+      example:
+        fname: fname
+        lname: lname
+        address:
+          zip: zip
+          city: city
+          street: street
+          id: 0
+          state: state
+          apartement: apartement
+        deleted: true
+        role: role
+        phone: phone
+        created: 2000-01-23
+        dob: 2000-01-23
+        imageURL: imageURL
+        id: 0
+        updated: 2000-01-23
+        email: email
+      properties:
+        address:
+          $ref: '#/components/schemas/AddressDTO'
+        created:
+          format: date
+          type: string
+        deleted:
+          type: boolean
+        dob:
+          format: date
+          type: string
+        email:
+          type: string
+        fname:
+          type: string
+        id:
+          format: int64
+          type: integer
+        imageURL:
+          type: string
+        lname:
+          type: string
+        phone:
+          type: string
+        role:
+          type: string
+        updated:
+          format: date
+          type: string
+      title: UserDTOReq
+      type: object
+    UserDTORes:
+      example:
+        fname: fname
+        address:
+          zip: zip
+          city: city
+          street: street
+          id: 0
+          state: state
+          apartement: apartement
+        role: role
+        created: 2000-01-23
+        fullName: fullName
+        lname: lname
+        deleted: true
+        phone: phone
+        dob: 2000-01-23
+        imageURL: imageURL
+        id: 0
+        updated: 2000-01-23
+        email: email
+      properties:
+        address:
+          $ref: '#/components/schemas/AddressDTO'
+        created:
+          format: date
+          type: string
+        deleted:
+          type: boolean
+        dob:
+          format: date
+          type: string
+        email:
+          type: string
+        fname:
+          type: string
+        fullName:
+          type: string
+        id:
+          format: int64
+          type: integer
+        imageURL:
+          type: string
+        lname:
+          type: string
+        phone:
+          type: string
+        role:
+          type: string
+        updated:
+          format: date
+          type: string
+      title: UserDTORes
+      type: object
+    UserModel:
+      properties:
+        address:
+          $ref: '#/components/schemas/AddressModel'
+        created:
+          format: date
+          type: string
+        credential:
+          $ref: '#/components/schemas/CredentialModel'
+        deleted:
+          type: boolean
+        dob:
+          format: date
+          type: string
+        email:
+          type: string
+        fname:
+          type: string
+        id:
+          format: int64
+          type: integer
+        imageURL:
+          type: string
+        lname:
+          type: string
+        password:
+          type: string
+        phone:
+          type: string
+        reservationModelBarber:
+          items:
+            $ref: '#/components/schemas/ReservationModel'
+          type: array
+          uniqueItems: true
+        reservationModelClient:
+          items:
+            $ref: '#/components/schemas/ReservationModel'
+          type: array
+          uniqueItems: true
+        role:
+          type: string
+        updated:
+          format: date
+          type: string
+      title: UserModel
+      type: object
+  securitySchemes:
+    JWT:
+      in: header
+      name: JWT
+      type: apiKey
+

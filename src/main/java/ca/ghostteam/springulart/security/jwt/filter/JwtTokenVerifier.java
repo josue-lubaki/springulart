@@ -51,7 +51,8 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         // if the request is for login or register, skip the verification
         if(request.getRequestURI().matches("/auth/login")
-                || request.getRequestURI().matches("/auth/register")){
+                || request.getRequestURI().matches("/auth/register")
+                || request.getRequestURI().matches("/api/v1/haircuts")){
             filterChain.doFilter(request, response);
             return;
         }

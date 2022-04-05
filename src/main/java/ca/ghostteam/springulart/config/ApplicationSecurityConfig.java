@@ -58,7 +58,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] CLIENT_BARBER_ENDPOINTS = {
             "/api/v1/users/**",
-            "/api/v1/haircuts/**",
             "/api/v1/reservations/**"
     };
 
@@ -96,7 +95,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(PUBLIC_ENDPOINTS).permitAll()
-                // permitAll /api/v1/haircuts/** en mode GET
                 .antMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS_GET_METHOD).permitAll()
                 .antMatchers(CLIENT_BARBER_ENDPOINTS).hasAnyRole(
                         ApplicationUserRole.CLIENT.name(),
@@ -109,6 +107,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(new JwtTokenVerifier(jwtConfig,userDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtEntryPoint);
+
     }
 
     @Override
