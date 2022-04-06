@@ -53,15 +53,14 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         // if the request is for login or register, skip the verification
-        // regex not verify /auth and /api/v1/haircuts
-        Pattern pattern = Pattern.compile("/auth|/api/v1/haircuts");
+        // regex not verify /auth and /api/v1/haircuts and /api/v1/reservations
+        Pattern pattern = Pattern.compile("^(/auth|/api/v1/haircuts|/api/v1/users|/api/v1/reservations).*$");
 
-        if(request.getRequestURI().matches(pattern.pattern())){
+        if(pattern.matcher(request.getRequestURI()).matches() && request.getMethod().equals("GET")){
             filterChain.doFilter(request, response);
             return;
         }
 
-        log.info("Step 1");
         // retrieve Authorization :  Bearer yt3sg4su7...
         // extract token
         String token = extractJwtToken(request);
@@ -97,7 +96,6 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
             }
         }
 
-        log.info("Step 2");
         filterChain.doFilter(request, response);
     }
 

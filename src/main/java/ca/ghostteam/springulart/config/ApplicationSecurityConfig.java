@@ -39,7 +39,11 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] PUBLIC_ENDPOINTS_GET_METHOD = {
             "/api/v1/haircuts",
-            "/api/v1/haircuts/**"
+            "/api/v1/haircuts/**",
+            "/api/v1/users",
+            "/api/v1/users/**",
+            "/api/v1/reservations",
+            "/api/v1/reservations/**"
     };
 
     private static final String[] WEB_ENDPOINTS = {
@@ -84,6 +88,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http
                 .cors().and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

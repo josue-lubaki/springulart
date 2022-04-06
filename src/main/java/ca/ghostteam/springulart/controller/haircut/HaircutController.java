@@ -28,7 +28,7 @@ public class HaircutController {
 
     @ApiResponse(code = 200, message = "Successfully retrieved all haircuts")
     @ApiOperation(value = "Get all haircuts")
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<HaircutDTO> getHaircuts() {
         return haircutService.findAllHaircuts();
     }
