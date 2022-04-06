@@ -7,6 +7,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,6 +26,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -33,6 +35,7 @@ import java.util.stream.Collectors;
  * @since 2022-03-19
  */
 @Component
+@Slf4j
 public class JwtTokenVerifier extends OncePerRequestFilter {
 
     private final JwtConfig jwtConfig;
@@ -50,12 +53,15 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         // if the request is for login or register, skip the verification
-        if(request.getRequestURI().matches("/auth/login")
-                || request.getRequestURI().matches("/auth/register")){
+        // regex not verify /auth and /api/v1/haircuts
+        Pattern pattern = Pattern.compile("/auth|/api/v1/haircuts");
+
+        if(request.getRequestURI().matches(pattern.pattern())){
             filterChain.doFilter(request, response);
             return;
         }
 
+        log.info("Step 1");
         // retrieve Authorization :  Bearer yt3sg4su7...
         // extract token
         String token = extractJwtToken(request);
@@ -91,6 +97,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
             }
         }
 
+        log.info("Step 2");
         filterChain.doFilter(request, response);
     }
 

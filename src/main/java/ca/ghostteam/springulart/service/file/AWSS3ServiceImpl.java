@@ -108,7 +108,7 @@ public class AWSS3ServiceImpl implements FileService {
      * @return true if file is an image
      */
     private boolean validateExtension(String originalFilename) {
-        String[] extensions = {"jpg", "jpeg", "png", "svg"};
+        String[] extensions = {"jpg", "jpeg", "png", "svg", "webp", "gif"};
         for (String extension : extensions) {
             if (originalFilename.endsWith(extension)) {
                 return true;

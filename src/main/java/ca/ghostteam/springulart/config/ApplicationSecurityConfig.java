@@ -2,7 +2,6 @@ package ca.ghostteam.springulart.config;
 
 import ca.ghostteam.springulart.config.bean.JwtConfig;
 import ca.ghostteam.springulart.security.ApplicationUserRole;
-import ca.ghostteam.springulart.security.jwt.JwtAuthenticationEntryPoint;
 import ca.ghostteam.springulart.security.jwt.filter.JwtTokenVerifier;
 import ca.ghostteam.springulart.service.user.UserService;
 import org.springframework.context.annotation.Bean;
@@ -69,19 +68,16 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService userDetailsService;
     private final PasswordEncoder passwordEncoder;
-    private final JwtAuthenticationEntryPoint jwtEntryPoint;
     private final UserService userService;
     private final JwtConfig jwtConfig;
 
     public ApplicationSecurityConfig(UserService userDetailsService,
                                      PasswordEncoder passwordEncoder,
-                                     JwtAuthenticationEntryPoint jwtEntryPoint,
                                      UserService userService,
                                      JwtConfig jwtConfig
                                      ) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
-        this.jwtEntryPoint = jwtEntryPoint;
         this.userService = userService;
         this.jwtConfig = jwtConfig;
     }
@@ -90,8 +86,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .cors().and().csrf().disable()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
                 .antMatchers(PUBLIC_ENDPOINTS).permitAll()
@@ -102,11 +97,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 )
                 .antMatchers(ADMIN_ENDPOINTS).hasRole(ApplicationUserRole.ADMIN.name())
                 .anyRequest()
-                .authenticated()
-                .and()
-                .addFilterBefore(new JwtTokenVerifier(jwtConfig,userDetailsService), UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling()
-                .authenticationEntryPoint(jwtEntryPoint);
+                .authenticated();
+
+        http.addFilterBefore(new JwtTokenVerifier(jwtConfig, userDetailsService),
+                UsernamePasswordAuthenticationFilter.class);
 
     }
 
