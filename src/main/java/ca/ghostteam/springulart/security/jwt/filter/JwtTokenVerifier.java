@@ -17,6 +17,9 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -35,8 +38,9 @@ import java.util.stream.Collectors;
  * @since 2022-03-19
  */
 @Component
+@EnableWebMvc
 @Slf4j
-public class JwtTokenVerifier extends OncePerRequestFilter {
+public class JwtTokenVerifier extends OncePerRequestFilter implements WebMvcConfigurer {
 
     private final JwtConfig jwtConfig;
     private final UserService userDetailsService;
@@ -46,6 +50,11 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
                             UserService userDetailsService) {
         this.jwtConfig = jwtConfig;
         this.userDetailsService = userDetailsService;
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**");
     }
 
     @Override
