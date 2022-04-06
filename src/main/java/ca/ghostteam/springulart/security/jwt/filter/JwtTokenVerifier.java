@@ -17,9 +17,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -38,9 +36,8 @@ import java.util.stream.Collectors;
  * @since 2022-03-19
  */
 @Component
-@EnableWebMvc
 @Slf4j
-public class JwtTokenVerifier extends OncePerRequestFilter implements WebMvcConfigurer {
+public class JwtTokenVerifier extends OncePerRequestFilter {
 
     private final JwtConfig jwtConfig;
     private final UserService userDetailsService;
@@ -53,19 +50,18 @@ public class JwtTokenVerifier extends OncePerRequestFilter implements WebMvcConf
     }
 
     @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**");
-    }
-
-    @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
+
+        configureRequestAndResponseForCors(request, response);
+
         // if the request is for login or register, skip the verification
         // regex not verify /auth and /api/v1/haircuts and /api/v1/reservations
         Pattern pattern = Pattern.compile("^(/auth|/api/v1/haircuts|/api/v1/users|/api/v1/reservations).*$");
 
-        if(pattern.matcher(request.getRequestURI()).matches() && request.getMethod().equals("GET")){
+        if((pattern.matcher(request.getRequestURI()).matches() && request.getMethod().equals("GET"))
+                || (request.getRequestURI().matches("^(/auth)") && request.getMethod().equals("POST"))){
             filterChain.doFilter(request, response);
             return;
         }
@@ -106,6 +102,25 @@ public class JwtTokenVerifier extends OncePerRequestFilter implements WebMvcConf
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    /**
+     * Method to configure the request and response for CORS
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     * */
+    private void configureRequestAndResponseForCors(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("WebConfig; " + request.getRequestURI());
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization," +
+                "X-Requested-With,observe,ResponseType");
+        response.setHeader("Access-Control-Max-Age", "3600");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Expose-Headers", "Authorization");
+        response.addHeader("Access-Control-Expose-Headers", "responseType");
+        response.addHeader("Access-Control-Expose-Headers", "observe");
+        System.out.println("Request Method: " + request.getMethod());
     }
 
     /**

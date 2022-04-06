@@ -36,6 +36,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
             "/auth/login",
             "/auth/register",
             "/auth/reset-password",
+            "/swagger.yaml",
     };
 
     private static final String[] PUBLIC_ENDPOINTS_GET_METHOD = {
@@ -44,7 +45,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/v1/users",
             "/api/v1/users/**",
             "/api/v1/reservations",
-            "/api/v1/reservations/**"
+            "/api/v1/reservations/**",
+            "/swagger.yaml",
     };
 
     private static final String[] WEB_ENDPOINTS = {
