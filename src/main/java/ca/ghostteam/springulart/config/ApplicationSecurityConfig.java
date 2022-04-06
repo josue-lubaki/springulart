@@ -2,6 +2,7 @@ package ca.ghostteam.springulart.config;
 
 import ca.ghostteam.springulart.config.bean.JwtConfig;
 import ca.ghostteam.springulart.security.ApplicationUserRole;
+import ca.ghostteam.springulart.security.jwt.JwtAuthenticationEntryPoint;
 import ca.ghostteam.springulart.security.jwt.filter.JwtTokenVerifier;
 import ca.ghostteam.springulart.service.user.UserService;
 import org.springframework.context.annotation.Bean;
@@ -72,16 +73,19 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService userDetailsService;
     private final PasswordEncoder passwordEncoder;
+    private final JwtAuthenticationEntryPoint jwtEntryPoint;
     private final UserService userService;
     private final JwtConfig jwtConfig;
 
     public ApplicationSecurityConfig(UserService userDetailsService,
                                      PasswordEncoder passwordEncoder,
+                                     JwtAuthenticationEntryPoint jwtEntryPoint,
                                      UserService userService,
                                      JwtConfig jwtConfig
-                                     ) {
+    ) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
+        this.jwtEntryPoint = jwtEntryPoint;
         this.userService = userService;
         this.jwtConfig = jwtConfig;
     }
@@ -91,6 +95,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .cors().and().csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(jwtEntryPoint)
+                .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
