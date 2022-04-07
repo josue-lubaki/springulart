@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.controller.user;
+package ca.ghostteam.springulart.tools;
 
 import ca.ghostteam.springulart.config.bean.JwtConfig;
 import ca.ghostteam.springulart.dto.*;
@@ -6,6 +6,7 @@ import ca.ghostteam.springulart.security.ApplicationUserRole;
 import ca.ghostteam.springulart.service.user.UserService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,7 +14,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,15 +32,15 @@ import java.util.stream.Collectors;
  * @since 2022-04-04
  */
 @Component
-public class UtilsUserController {
+public class UtilsUser {
 
     private final UserService userService;
     private final JwtConfig jwtConfig;
     private final AuthenticationManager authenticationManager;
 
-    public UtilsUserController(UserService userService,
-                               JwtConfig jwtConfig,
-                               AuthenticationManager authenticationManager) {
+    public UtilsUser(UserService userService,
+                     JwtConfig jwtConfig,
+                     AuthenticationManager authenticationManager) {
         this.userService = userService;
         this.jwtConfig = jwtConfig;
         this.authenticationManager = authenticationManager;

@@ -4,6 +4,7 @@ import ca.ghostteam.springulart.dto.LocationDTO;
 import ca.ghostteam.springulart.model.LocationModel;
 import ca.ghostteam.springulart.repository.LocationRepository;
 import ca.ghostteam.springulart.service.location.LocationService;
+import ca.ghostteam.springulart.tools.UtilsLocation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +19,11 @@ import java.util.Optional;
 public class LocationServiceImpl implements LocationService {
 
     private final LocationRepository locationRepository;
-    private final UtilsLocationService utils;
+    private final UtilsLocation utils;
 
     @Autowired
     public LocationServiceImpl(LocationRepository locationRepository,
-                               UtilsLocationService utils) {
+                               UtilsLocation utils) {
         this.locationRepository = locationRepository;
         this.utils = utils;
     }

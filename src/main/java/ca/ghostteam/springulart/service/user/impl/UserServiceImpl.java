@@ -10,6 +10,7 @@ import ca.ghostteam.springulart.service.address.AddressService;
 import ca.ghostteam.springulart.service.credential.CredentialService;
 import ca.ghostteam.springulart.service.mail.MailService;
 import ca.ghostteam.springulart.service.user.UserService;
+import ca.ghostteam.springulart.tools.UtilsUserConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /**
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
     private final CredentialService credentialService;
     private final MailService mailService;
     private final FileService fileService;
-    private final UtilsUserService utilsUserService;
+    private final UtilsUserConverter utilsUserConverter;
 
     @Autowired
     public UserServiceImpl(
@@ -47,14 +47,14 @@ public class UserServiceImpl implements UserService {
             CredentialService credentialService,
             MailService mailService,
             FileService fileService,
-            UtilsUserService utilsUserService) {
+            UtilsUserConverter utilsUserConverter) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.addressService = addressService;
         this.credentialService = credentialService;
         this.mailService = mailService;
         this.fileService = fileService;
-        this.utilsUserService = utilsUserService;
+        this.utilsUserConverter = utilsUserConverter;
     }
 
 
@@ -62,22 +62,18 @@ public class UserServiceImpl implements UserService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository
                 .findUserModelByEmail(username)
-                .map(utilsUserService::converterUserModelToUserDetailsDTO)
+                .map(utilsUserConverter::converterUserModelToUserDetailsDTO)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("Username %s not found", username)));
     }
 
     @Override
     public Optional<UserDTO> updateUser(Long id, UserDTO userDTO) {
         UserModel oldUserModel = this.userRepository.findById(id).get();
-        // update information
-        oldUserModel.setFname(userDTO.getFname());
-        oldUserModel.setLname(userDTO.getLname());
-        oldUserModel.setPhone(userDTO.getPhone());
-        oldUserModel.setImageURL(userDTO.getImageURL());
-        oldUserModel.setDob(userDTO.getDob());
+        updatePersonalInfo(oldUserModel, userDTO);
+        updateAddressUser(oldUserModel, userDTO);
 
         return Optional.of(
-                utilsUserService.converterUserModelToUserDTO(
+                utilsUserConverter.converterUserModelToUserDTO(
                         this.userRepository.save(oldUserModel)
                 )
         );
@@ -86,7 +82,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<UserDTO> findUserByEmail(String email) {
         return Optional.of(
-                utilsUserService.converterUserModelToUserDTO(
+                utilsUserConverter.converterUserModelToUserDTO(
                         this.userRepository.findUserModelByEmail(email).get()
                 )
         );
@@ -103,16 +99,16 @@ public class UserServiceImpl implements UserService {
         return userRepository
                 .findAll()
                 .stream()
-                .map(utilsUserService::converterUserModelToUserDTO)
+                .map(utilsUserConverter::converterUserModelToUserDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     public Optional<UserDTO> saveUser(SignupDTO signupDTO) {
         // created user
-        UserModel user = utilsUserService.extractUserModelToSignUp(signupDTO);
-        CredentialModel credentialModel = utilsUserService.extractCredentialModel(signupDTO);
-        AddressModel addressModel = utilsUserService.extractAddressModel(signupDTO);
+        UserModel user = utilsUserConverter.extractUserModelToSignUp(signupDTO);
+        CredentialModel credentialModel = utilsUserConverter.extractCredentialModel(signupDTO);
+        AddressModel addressModel = utilsUserConverter.extractAddressModel(signupDTO);
 
         AddressDTO addressSaved = addressService.saveAddressModel(addressModel).get();
 
@@ -122,12 +118,12 @@ public class UserServiceImpl implements UserService {
         credentialModel.setUser(user);
         // extract CredentialModel and save it, and set id_user into UserModel Object
         CredentialDTO credentialSaved = credentialService.saveCredential(credentialModel).get();
-        CredentialModel credentiaModelSaved = utilsUserService.converterCredentialDtoToCredentialModel(credentialSaved);
+        CredentialModel credentiaModelSaved = utilsUserConverter.converterCredentialDtoToCredentialModel(credentialSaved);
 
         user.setCredential(credentiaModelSaved);
         UserModel userModelSaved = userRepository.save(user);
 
-        UserDTO userDTO = utilsUserService.converterUserModelToUserDTO(userModelSaved);
+        UserDTO userDTO = utilsUserConverter.converterUserModelToUserDTO(userModelSaved);
         userDTO.getAddress().setId(addressSaved.getId());
 
         // send email
@@ -140,7 +136,7 @@ public class UserServiceImpl implements UserService {
     public Optional<UserDTO> findUserById(Long id) {
         return this.userRepository
                 .findById(id)
-                .map(utilsUserService::converterUserModelToUserDTO);
+                .map(utilsUserConverter::converterUserModelToUserDTO);
     }
 
     @Override
@@ -155,5 +151,46 @@ public class UserServiceImpl implements UserService {
         String imageURL = this.userRepository.findById(id).get().getImageURL();
         this.userRepository.deleteById(id);
         this.fileService.deleteImage(imageURL);
+    }
+
+    /**
+     * Method to update the address information of the user
+     * @param oldUserModel UserModel to update
+     * @param userDTO UserDTO to update
+     * */
+    private void updateAddressUser(UserModel oldUserModel, UserDTO userDTO) {
+        // update address
+        if(userDTO.getAddress() != null) {
+            // get old address of user
+            AddressModel oldAddressModel = oldUserModel.getAddress();
+            if (oldAddressModel.getApartement() != null)
+                oldAddressModel.setApartement(userDTO.getAddress().getApartement());
+            if (oldAddressModel.getCity() != null)
+                oldAddressModel.setCity(userDTO.getAddress().getCity());
+            if (oldAddressModel.getState() != null)
+                oldAddressModel.setState(userDTO.getAddress().getState());
+            if (oldAddressModel.getStreet() != null)
+                oldAddressModel.setStreet(userDTO.getAddress().getStreet());
+            if (oldAddressModel.getZip() != null)
+                oldAddressModel.setZip(userDTO.getAddress().getZip());
+            // set new address
+            oldUserModel.setAddress(oldAddressModel);
+        }
+    }
+
+    /**
+     * Update personal info of user
+     * @param oldUserModel old user model to update
+     * @param userDTO new user data
+     */
+    private void updatePersonalInfo(UserModel oldUserModel, UserDTO userDTO) {
+        // update information
+        if(userDTO.getFname() != null)
+            oldUserModel.setFname(userDTO.getFname());
+        if(userDTO.getLname() != null)
+            oldUserModel.setLname(userDTO.getLname());
+        if(userDTO.getPhone() != null)
+            oldUserModel.setPhone(userDTO.getPhone());
+
     }
 }

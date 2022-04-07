@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.service.user.impl;
+package ca.ghostteam.springulart.tools;
 
 import ca.ghostteam.springulart.dto.*;
 import ca.ghostteam.springulart.model.AddressModel;
@@ -15,11 +15,11 @@ import java.time.LocalDate;
  * @since 2022-04-04
  */
 @Component
-public class UtilsUserService {
+public class UtilsUserConverter {
 
     private final PasswordEncoder passwordEncoder;
 
-    public UtilsUserService(PasswordEncoder passwordEncoder) {
+    public UtilsUserConverter(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -78,7 +78,6 @@ public class UtilsUserService {
     public UserModel extractUserModelToSignUp(SignupDTO signupDTO) {
         // create userModel
         UserModel userModel = new UserModel();
-        //userModel.setId(signupDTO.getId());
         userModel.setEmail(signupDTO.getEmail());
         userModel.setFname(signupDTO.getFname());
         userModel.setLname(signupDTO.getLname());

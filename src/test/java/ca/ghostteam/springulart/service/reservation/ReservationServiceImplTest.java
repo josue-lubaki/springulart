@@ -26,7 +26,7 @@ import ca.ghostteam.springulart.repository.ReservationRepository;
 import ca.ghostteam.springulart.service.haircut.HaircutService;
 import ca.ghostteam.springulart.service.location.LocationService;
 import ca.ghostteam.springulart.service.reservation.impl.ReservationServiceImpl;
-import ca.ghostteam.springulart.service.reservation.impl.UtilsReservationService;
+import ca.ghostteam.springulart.tools.UtilsReservation;
 import ca.ghostteam.springulart.service.reservationtime.ReservationTimeService;
 import ca.ghostteam.springulart.service.user.UserService;
 
@@ -65,7 +65,7 @@ class ReservationServiceImplTest {
     private UserService userService;
 
     @MockBean
-    private UtilsReservationService utilsReservationService;
+    private UtilsReservation utilsReservation;
 
     @Test
     void testFindAll() {
@@ -147,7 +147,7 @@ class ReservationServiceImplTest {
         reservationDTO.setReservationDate(LocalDate.ofEpochDay(1L));
         reservationDTO.setReservationTime(reservationTimeDTO);
         reservationDTO.setStatus("Status");
-        when(this.utilsReservationService.converterModelToDTO(any())).thenReturn(reservationDTO);
+        when(this.utilsReservation.converterModelToDTO(any())).thenReturn(reservationDTO);
 
         AddressModel addressModel = new AddressModel();
         addressModel.setApartement("Apartement");
@@ -357,7 +357,7 @@ class ReservationServiceImplTest {
         Optional<ReservationModel> ofResult = Optional.of(reservationModel1);
         when(this.reservationRepository.findById(any())).thenReturn(ofResult);
         assertTrue(this.reservationServiceImpl.findById(123L).isPresent());
-        verify(this.utilsReservationService).converterModelToDTO(any());
+        verify(this.utilsReservation).converterModelToDTO(any());
         verify(this.reservationRepository).findById(any());
     }
 
@@ -467,12 +467,12 @@ class ReservationServiceImplTest {
         reservationTimeModel.setId(123L);
         reservationTimeModel.setMinutes(1);
         reservationTimeModel.setReservationModel(new ArrayList<>());
-        when(this.utilsReservationService.converterLocationDtoToLocationModel(any()))
+        when(this.utilsReservation.converterLocationDtoToLocationModel(any()))
                 .thenThrow(new IllegalStateException("Non Traitée"));
-        when(this.utilsReservationService.converterReservationTimeDtoToReservationTimeModel(any()))
+        when(this.utilsReservation.converterReservationTimeDtoToReservationTimeModel(any()))
                 .thenReturn(reservationTimeModel);
-        when(this.utilsReservationService.converterHaircutDtoToHaircutModel(any())).thenReturn(haircutModel);
-        when(this.utilsReservationService.converterEntityDtoTOEntityModel(any())).thenReturn(userModel2);
+        when(this.utilsReservation.converterHaircutDtoToHaircutModel(any())).thenReturn(haircutModel);
+        when(this.utilsReservation.converterEntityDtoTOEntityModel(any())).thenReturn(userModel2);
 
         AddressDTO addressDTO = new AddressDTO();
         addressDTO.setApartement("Apartement");
@@ -586,10 +586,10 @@ class ReservationServiceImplTest {
         reservationDTO.setReservationTime(reservationTimeDTO1);
         reservationDTO.setStatus("Status");
         assertThrows(IllegalStateException.class, () -> this.reservationServiceImpl.save(reservationDTO));
-        verify(this.utilsReservationService).converterHaircutDtoToHaircutModel(any());
-        verify(this.utilsReservationService).converterLocationDtoToLocationModel(any());
-        verify(this.utilsReservationService).converterReservationTimeDtoToReservationTimeModel(any());
-        verify(this.utilsReservationService).converterEntityDtoTOEntityModel(any());
+        verify(this.utilsReservation).converterHaircutDtoToHaircutModel(any());
+        verify(this.utilsReservation).converterLocationDtoToLocationModel(any());
+        verify(this.utilsReservation).converterReservationTimeDtoToReservationTimeModel(any());
+        verify(this.utilsReservation).converterEntityDtoTOEntityModel(any());
         verify(this.userService).existsUserByEmail(any());
         verify(this.userService).findUserByEmail(any());
         verify(this.reservationTimeService).save(any());

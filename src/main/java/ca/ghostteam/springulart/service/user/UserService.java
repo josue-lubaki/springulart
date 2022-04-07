@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * @author Josue Lubaki
@@ -20,7 +19,7 @@ public interface UserService extends UserDetailsService {
     Optional<UserDTO> findUserById(Long id);
     boolean existsUserByEmail(String email);
     void deleteUserById(Long id);
-    Optional<UserDTO> updateUser(Long id,UserDTO userDTO) throws Exception;
+    Optional<UserDTO> updateUser(Long id, UserDTO userDTO) throws Exception;
     Optional<UserDTO> findUserByEmail(String email);
 
     @Async

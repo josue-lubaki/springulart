@@ -22,7 +22,7 @@ import java.util.HashSet;
 import java.util.Optional;
 
 import ca.ghostteam.springulart.service.location.impl.LocationServiceImpl;
-import ca.ghostteam.springulart.service.location.impl.UtilsLocationService;
+import ca.ghostteam.springulart.tools.UtilsLocation;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@ class LocationServiceImplTest {
     private LocationServiceImpl locationServiceImpl;
 
     @MockBean
-    private UtilsLocationService utilsLocationService;
+    private UtilsLocation utilsLocation;
 
     @Test
     void testFindById() {
@@ -48,7 +48,7 @@ class LocationServiceImplTest {
         locationDTO.setId(123L);
         locationDTO.setLatitude(10.0d);
         locationDTO.setLongitude(10.0d);
-        when(this.utilsLocationService.converterModelToDTO(any())).thenReturn(locationDTO);
+        when(this.utilsLocation.converterModelToDTO(any())).thenReturn(locationDTO);
 
         AddressModel addressModel = new AddressModel();
         addressModel.setApartement("Apartement");
@@ -171,7 +171,7 @@ class LocationServiceImplTest {
         Optional<LocationModel> ofResult = Optional.of(locationModel1);
         when(this.locationRepository.findById(any())).thenReturn(ofResult);
         assertTrue(this.locationServiceImpl.findById(123L).isPresent());
-        verify(this.utilsLocationService).converterModelToDTO(any());
+        verify(this.utilsLocation).converterModelToDTO(any());
         verify(this.locationRepository).findById(any());
     }
 
@@ -393,8 +393,8 @@ class LocationServiceImplTest {
         locationModel2.setLatitude(10.0d);
         locationModel2.setLongitude(10.0d);
         locationModel2.setReservationModel(reservationModel1);
-        when(this.utilsLocationService.converterModelToDTO(any())).thenReturn(locationDTO);
-        when(this.utilsLocationService.converterDtoToModel(any())).thenReturn(locationModel2);
+        when(this.utilsLocation.converterModelToDTO(any())).thenReturn(locationDTO);
+        when(this.utilsLocation.converterDtoToModel(any())).thenReturn(locationModel2);
 
         AddressModel addressModel2 = new AddressModel();
         addressModel2.setApartement("Apartement");
@@ -614,8 +614,8 @@ class LocationServiceImplTest {
         locationDTO1.setLatitude(10.0d);
         locationDTO1.setLongitude(10.0d);
         assertTrue(this.locationServiceImpl.save(locationDTO1).isPresent());
-        verify(this.utilsLocationService).converterModelToDTO(any());
-        verify(this.utilsLocationService).converterDtoToModel(any());
+        verify(this.utilsLocation).converterModelToDTO(any());
+        verify(this.utilsLocation).converterDtoToModel(any());
         verify(this.locationRepository).save(any());
     }
 
@@ -625,7 +625,7 @@ class LocationServiceImplTest {
         locationDTO.setId(123L);
         locationDTO.setLatitude(10.0d);
         locationDTO.setLongitude(10.0d);
-        when(this.utilsLocationService.converterModelToDTO(any())).thenReturn(locationDTO);
+        when(this.utilsLocation.converterModelToDTO(any())).thenReturn(locationDTO);
 
         AddressModel addressModel = new AddressModel();
         addressModel.setApartement("Apartement");
@@ -754,7 +754,7 @@ class LocationServiceImplTest {
         locationDTO1.setLatitude(10.0d);
         locationDTO1.setLongitude(10.0d);
         assertTrue(this.locationServiceImpl.update(123L, locationDTO1).isPresent());
-        verify(this.utilsLocationService).converterModelToDTO(any());
+        verify(this.utilsLocation).converterModelToDTO(any());
         verify(this.locationRepository).findById(any());
         verify(this.locationRepository).updateLocationById(any(), any(), any());
     }

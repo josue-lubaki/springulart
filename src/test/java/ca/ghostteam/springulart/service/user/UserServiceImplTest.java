@@ -13,13 +13,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ca.ghostteam.springulart.dto.AddressDTO;
-import ca.ghostteam.springulart.dto.SignupDTO;
-import ca.ghostteam.springulart.dto.UserDTO;
-import ca.ghostteam.springulart.dto.UserDetailsDTO;
+import ca.ghostteam.springulart.dto.*;
 import ca.ghostteam.springulart.model.AddressModel;
 import ca.ghostteam.springulart.model.CredentialModel;
-import ca.ghostteam.springulart.model.ReservationModel;
 import ca.ghostteam.springulart.model.UserModel;
 import ca.ghostteam.springulart.repository.UserRepository;
 import ca.ghostteam.springulart.service.file.FileService;
@@ -33,7 +29,7 @@ import java.util.HashSet;
 import java.util.Optional;
 
 import ca.ghostteam.springulart.service.user.impl.UserServiceImpl;
-import ca.ghostteam.springulart.service.user.impl.UtilsUserService;
+import ca.ghostteam.springulart.tools.UtilsUserConverter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +64,7 @@ class UserServiceImplTest {
     private UserServiceImpl userServiceImpl;
 
     @MockBean(name = "Utils-UserService")
-    private UtilsUserService utilsUserService;
+    private UtilsUserConverter utilsUserConverter;
 
     @Test
     void testLoadUserByUsername() throws UsernameNotFoundException {
@@ -211,7 +207,7 @@ class UserServiceImplTest {
         userDetailsDTO.setCredentials(credentialModel1);
         userDetailsDTO.setToken("ABC123");
         userDetailsDTO.setUserModel(userModel3);
-        when(this.utilsUserService.converterUserModelToUserDetailsDTO(any())).thenReturn(userDetailsDTO);
+        when(this.utilsUserConverter.converterUserModelToUserDetailsDTO(any())).thenReturn(userDetailsDTO);
 
         AddressModel addressModel3 = new AddressModel();
         addressModel3.setApartement("Apartement");
@@ -287,7 +283,7 @@ class UserServiceImplTest {
         Optional<UserModel> ofResult = Optional.of(userModel5);
         when(this.userRepository.findUserModelByEmail(any())).thenReturn(ofResult);
         assertSame(userDetailsDTO, this.userServiceImpl.loadUserByUsername("janedoe"));
-        verify(this.utilsUserService).converterUserModelToUserDetailsDTO(any());
+        verify(this.utilsUserConverter).converterUserModelToUserDetailsDTO(any());
         verify(this.userRepository).findUserModelByEmail(any());
     }
 
@@ -314,7 +310,7 @@ class UserServiceImplTest {
         userDTO.setPhone("4105551212");
         userDTO.setRole("Role");
         userDTO.setUpdated(LocalDate.ofEpochDay(1L));
-        when(this.utilsUserService.converterUserModelToUserDTO(any())).thenReturn(userDTO);
+        when(this.utilsUserConverter.converterUserModelToUserDTO(any())).thenReturn(userDTO);
 
         AddressModel addressModel = new AddressModel();
         addressModel.setApartement("Apartement");
@@ -503,7 +499,7 @@ class UserServiceImplTest {
         userDTO1.setRole("Role");
         userDTO1.setUpdated(LocalDate.ofEpochDay(1L));
         assertTrue(this.userServiceImpl.updateUser(123L, userDTO1).isPresent());
-        verify(this.utilsUserService).converterUserModelToUserDTO(any());
+        verify(this.utilsUserConverter).converterUserModelToUserDTO(any());
         verify(this.userRepository).save(any());
         verify(this.userRepository).findById(any());
     }
@@ -531,7 +527,7 @@ class UserServiceImplTest {
         userDTO.setPhone("4105551212");
         userDTO.setRole("Role");
         userDTO.setUpdated(LocalDate.ofEpochDay(1L));
-        when(this.utilsUserService.converterUserModelToUserDTO(any())).thenReturn(userDTO);
+        when(this.utilsUserConverter.converterUserModelToUserDTO(any())).thenReturn(userDTO);
 
         AddressModel addressModel = new AddressModel();
         addressModel.setApartement("Apartement");
@@ -657,7 +653,7 @@ class UserServiceImplTest {
         userDTO.setPhone("4105551212");
         userDTO.setRole("Role");
         userDTO.setUpdated(LocalDate.ofEpochDay(1L));
-        when(this.utilsUserService.converterUserModelToUserDTO(any())).thenReturn(userDTO);
+        when(this.utilsUserConverter.converterUserModelToUserDTO(any())).thenReturn(userDTO);
 
         AddressModel addressModel = new AddressModel();
         addressModel.setApartement("Apartement");
@@ -733,13 +729,13 @@ class UserServiceImplTest {
         Optional<UserModel> ofResult = Optional.of(userModel1);
         when(this.userRepository.findUserModelByEmail(any())).thenReturn(ofResult);
         assertTrue(this.userServiceImpl.findUserByEmail("jane.doe@example.org").isPresent());
-        verify(this.utilsUserService).converterUserModelToUserDTO(any());
+        verify(this.utilsUserConverter).converterUserModelToUserDTO(any());
         verify(this.userRepository).findUserModelByEmail(any());
     }
 
     @Test
     void testFindUserByEmail2() {
-        when(this.utilsUserService.converterUserModelToUserDTO(any())).thenThrow(new UsernameNotFoundException("Msg"));
+        when(this.utilsUserConverter.converterUserModelToUserDTO(any())).thenThrow(new UsernameNotFoundException("Msg"));
 
         AddressModel addressModel = new AddressModel();
         addressModel.setApartement("Apartement");
@@ -815,7 +811,7 @@ class UserServiceImplTest {
         Optional<UserModel> ofResult = Optional.of(userModel1);
         when(this.userRepository.findUserModelByEmail(any())).thenReturn(ofResult);
         assertThrows(UsernameNotFoundException.class, () -> this.userServiceImpl.findUserByEmail("jane.doe@example.org"));
-        verify(this.utilsUserService).converterUserModelToUserDTO(any());
+        verify(this.utilsUserConverter).converterUserModelToUserDTO(any());
         verify(this.userRepository).findUserModelByEmail(any());
     }
 
@@ -1026,9 +1022,9 @@ class UserServiceImplTest {
         userModel4.setReservationModelClient(new ArrayList<>());
         userModel4.setRole("Role");
         userModel4.setUpdated(LocalDate.ofEpochDay(1L));
-        when(this.utilsUserService.extractAddressModel(any())).thenReturn(addressModel);
-        when(this.utilsUserService.extractCredentialModel(any())).thenReturn(credentialModel2);
-        when(this.utilsUserService.extractUserModelToSignUp(any())).thenReturn(userModel4);
+        when(this.utilsUserConverter.extractAddressModel(any())).thenReturn(addressModel);
+        when(this.utilsUserConverter.extractCredentialModel(any())).thenReturn(credentialModel2);
+        when(this.utilsUserConverter.extractUserModelToSignUp(any())).thenReturn(userModel4);
         when(this.credentialService.saveCredential(any()))
                 .thenThrow(new UsernameNotFoundException("Msg"));
 
@@ -1057,9 +1053,9 @@ class UserServiceImplTest {
         signupDTO.setStreet("Street");
         signupDTO.setZip("21654");
         assertThrows(UsernameNotFoundException.class, () -> this.userServiceImpl.saveUser(signupDTO));
-        verify(this.utilsUserService).extractAddressModel(any());
-        verify(this.utilsUserService).extractCredentialModel(any());
-        verify(this.utilsUserService).extractUserModelToSignUp(any());
+        verify(this.utilsUserConverter).extractAddressModel(any());
+        verify(this.utilsUserConverter).extractCredentialModel(any());
+        verify(this.utilsUserConverter).extractUserModelToSignUp(any());
         verify(this.credentialService).saveCredential(any());
         verify(this.addressService).saveAddressModel(any());
     }
@@ -1251,9 +1247,9 @@ class UserServiceImplTest {
         userModel4.setReservationModelClient(new ArrayList<>());
         userModel4.setRole("Role");
         userModel4.setUpdated(LocalDate.ofEpochDay(1L));
-        when(this.utilsUserService.extractAddressModel(any())).thenReturn(addressModel);
-        when(this.utilsUserService.extractCredentialModel(any())).thenReturn(credentialModel2);
-        when(this.utilsUserService.extractUserModelToSignUp(any())).thenReturn(userModel4);
+        when(this.utilsUserConverter.extractAddressModel(any())).thenReturn(addressModel);
+        when(this.utilsUserConverter.extractCredentialModel(any())).thenReturn(credentialModel2);
+        when(this.utilsUserConverter.extractUserModelToSignUp(any())).thenReturn(userModel4);
         when(this.credentialService.saveCredential(any()))
                 .thenThrow(new UsernameNotFoundException("Msg"));
 
@@ -1282,9 +1278,9 @@ class UserServiceImplTest {
         signupDTO.setStreet("Street");
         signupDTO.setZip("21654");
         assertThrows(UsernameNotFoundException.class, () -> this.userServiceImpl.saveUser(signupDTO));
-        verify(this.utilsUserService).extractAddressModel(any());
-        verify(this.utilsUserService).extractCredentialModel(any());
-        verify(this.utilsUserService).extractUserModelToSignUp(any());
+        verify(this.utilsUserConverter).extractAddressModel(any());
+        verify(this.utilsUserConverter).extractCredentialModel(any());
+        verify(this.utilsUserConverter).extractUserModelToSignUp(any());
         verify(credentialModel2).setCreated(any());
         verify(credentialModel2).setGrantedAuthority(any());
         verify(credentialModel2).setId(any());
@@ -1319,7 +1315,7 @@ class UserServiceImplTest {
         userDTO.setPhone("4105551212");
         userDTO.setRole("Role");
         userDTO.setUpdated(LocalDate.ofEpochDay(1L));
-        when(this.utilsUserService.converterUserModelToUserDTO(any())).thenReturn(userDTO);
+        when(this.utilsUserConverter.converterUserModelToUserDTO(any())).thenReturn(userDTO);
 
         AddressModel addressModel = new AddressModel();
         addressModel.setApartement("Apartement");
@@ -1395,7 +1391,7 @@ class UserServiceImplTest {
         Optional<UserModel> ofResult = Optional.of(userModel1);
         when(this.userRepository.findById(any())).thenReturn(ofResult);
         assertTrue(this.userServiceImpl.findUserById(123L).isPresent());
-        verify(this.utilsUserService).converterUserModelToUserDTO(any());
+        verify(this.utilsUserConverter).converterUserModelToUserDTO(any());
         verify(this.userRepository).findById(any());
     }
 

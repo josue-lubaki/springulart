@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.service.location.impl;
+package ca.ghostteam.springulart.tools;
 
 import ca.ghostteam.springulart.dto.LocationDTO;
 import ca.ghostteam.springulart.model.LocationModel;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * @since 2022-04-04
  */
 @Component
-public class UtilsLocationService {
+public class UtilsLocation {
 
     /**
      * Method to convert LocationModel to LocationDTO

@@ -35,7 +35,7 @@ public class HaircutController {
 
     @ApiResponse(code = 200, message = "Successfully retrieved haircut")
     @ApiOperation(value = "Get haircut by id", response = HaircutDTO.class)
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public HaircutDTO getHaircut(@PathVariable("id") String id) {
         return haircutService
                 .findHaircutById(id)
