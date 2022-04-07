@@ -13,6 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -138,14 +142,18 @@ public class ReservationServiceImpl implements ReservationService {
         reservationTimeDTO.setId(reservationModelToUpdate.getReservationTime().getId());
         reservationTimeService.update(id, reservationTimeDTO).get();
 
+
         LocationDTO locationDTO = reservation.getLocation();
         locationDTO.setId(reservationModelToUpdate.getLocation().getId());
         locationService.update(id, locationDTO).get();
 
+        // update reservationDate
+        reservationModelToUpdate.setReservationDate(reservation.getReservationDate());
+        reservationRepository.update(id, reservation.getReservationDate());
+
         // retrieve again reservation with new values
         reservationModelToUpdate = utils.converterModelToDTO(
-                reservationRepository
-                .findById(id)
+                reservationRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException(String.format("Reservation with ID %s cannot found", id))
                 )
         );
