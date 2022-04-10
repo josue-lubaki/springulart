@@ -140,6 +140,19 @@ public class ReservationServiceImpl implements ReservationService {
         // Modify reservationTime and Location of reservation
         ReservationTimeDTO reservationTimeDTO = reservation.getReservationTime();
         reservationTimeDTO.setId(reservationModelToUpdate.getReservationTime().getId());
+
+        UserModel barberModel = null;
+        // set barber if exists
+        if(Objects.nonNull(reservation.getBarber())) {
+            reservationModelToUpdate.setBarber(reservation.getBarber());
+
+            // change status of reservation
+            reservation.setStatus(StatusReservation.ACCEPTED.getEtat());
+
+            // convert UserModel to UserDTO
+            barberModel = utils.converterEntityDtoTOEntityModel(reservation.getBarber());
+
+        }
         reservationTimeService.update(id, reservationTimeDTO).get();
 
 
@@ -149,7 +162,7 @@ public class ReservationServiceImpl implements ReservationService {
 
         // update reservationDate
         reservationModelToUpdate.setReservationDate(reservation.getReservationDate());
-        reservationRepository.update(id, reservation.getReservationDate());
+        reservationRepository.update(id, reservation.getReservationDate(), barberModel, reservation.getStatus());
 
         // retrieve again reservation with new values
         reservationModelToUpdate = utils.converterModelToDTO(
