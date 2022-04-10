@@ -1,19 +1,28 @@
 package ca.ghostteam.springulart.controller.user;
 
+import ca.ghostteam.springulart.config.bean.JwtConfig;
 import ca.ghostteam.springulart.dto.*;
 import ca.ghostteam.springulart.service.file.FileService;
 import ca.ghostteam.springulart.service.mail.MailService;
 import ca.ghostteam.springulart.service.user.UserService;
 import ca.ghostteam.springulart.tools.UtilsUser;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -25,20 +34,23 @@ import java.util.*;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UtilsUser utils;
+    private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final MailService mailService;
     private final FileService awss3ServiceImpl;
+    private final JwtConfig jwtConfig;
 
     public AuthController(
-            UtilsUser utils,
+            AuthenticationManager authenticationManager,
             UserService userService,
             MailService mailService,
-            FileService awss3ServiceImpl) {
-        this.utils = utils;
+            FileService awss3ServiceImpl,
+            JwtConfig jwtConfig) {
+        this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.mailService = mailService;
         this.awss3ServiceImpl = awss3ServiceImpl;
+        this.jwtConfig = jwtConfig;
     }
 
     @ApiResponses(value = {
@@ -50,19 +62,19 @@ public class AuthController {
     public ResponseEntity<LoginDTO> authenticateUser(@RequestBody AuthDTO authDTO) throws BadCredentialsException {
 
         // attempt authentication when user provides username and password
-        UserDetailsDTO userDetailsDTO = (UserDetailsDTO) utils.authenticate(authDTO).getPrincipal();
+        UserDetailsDTO userDetailsDTO = (UserDetailsDTO) authenticate(authDTO).getPrincipal();
 
         // get username of user
         String username = authDTO.getUsername();
 
         // get Role of user
-        String userRole = utils.getUserRole(username);
+        String userRole = getUserRole(username);
 
         // get All authorization of user
         Map<String, Object> authorities = UtilsUser.getAllUserPermissions(userRole);
 
         // create Token
-        String token = utils.createJwtToken(username, authorities);
+        String token = createJwtToken(username, authorities);
 
         // set token to userDetailsDTO
         userDetailsDTO.setToken(token);
@@ -132,5 +144,52 @@ public class AuthController {
         response.put("message", "your temporary password has been sent to " + email);
         response.put("status", "success");
         return ResponseEntity.ok( response );
+    }
+
+    /**
+     * method that allows to retrieve the role of a user from Authentication
+     * @param username : username of user
+     * @return String, default value is ROLE_CLIENT
+     * */
+    private String getUserRole(String username){
+        // retrieve role of user
+        return userService.loadUserByUsername(username).getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .map(SimpleGrantedAuthority::new)
+                .map(SimpleGrantedAuthority::getAuthority)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException(String.format("User %s has no role", username)));
+    }
+
+    /**
+     * Method to create JWT Token
+     * @param username username of user
+     * @param authorities Map<String, Object> authorities
+     * @return String
+     * */
+    private String createJwtToken(String username, Map<String, Object> authorities) {
+        return JWT.create()
+                .withSubject(username)
+                .withIssuedAt(new Date())
+                .withIssuer(jwtConfig.getApplicationName())
+                .withPayload(authorities)
+                .withExpiresAt(java.sql.Date.valueOf(LocalDate.now().plusDays(1)))
+                .sign(Algorithm.HMAC256(jwtConfig.getSecretKey()));
+    }
+
+    /**
+     * Method to authenticate user and return an Authentication object
+     * @param authDTO : AuthDTO object with username and password
+     * @return Authentication
+     * @throws BadCredentialsException : if username or password is incorrect
+     * */
+    private Authentication authenticate(AuthDTO authDTO) {
+        return authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        authDTO.getUsername().toLowerCase().trim(),
+                        authDTO.getPassword()
+                )
+        );
     }
 }
