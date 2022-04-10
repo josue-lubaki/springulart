@@ -1,35 +1,16 @@
 package ca.ghostteam.springulart.service.user;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyBoolean;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import ca.ghostteam.springulart.dto.*;
 import ca.ghostteam.springulart.model.AddressModel;
 import ca.ghostteam.springulart.model.CredentialModel;
 import ca.ghostteam.springulart.model.UserModel;
 import ca.ghostteam.springulart.repository.UserRepository;
-import ca.ghostteam.springulart.service.file.FileService;
 import ca.ghostteam.springulart.service.address.AddressService;
 import ca.ghostteam.springulart.service.credential.CredentialService;
+import ca.ghostteam.springulart.service.file.FileService;
 import ca.ghostteam.springulart.service.mail.MailService;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Optional;
-
 import ca.ghostteam.springulart.service.user.impl.UserServiceImpl;
-import ca.ghostteam.springulart.tools.UtilsUserConverter;
+import ca.ghostteam.springulart.tools.UtilsUser;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +19,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ContextConfiguration(classes = {UserServiceImpl.class})
 @ExtendWith(SpringExtension.class)
@@ -63,8 +52,8 @@ class UserServiceImplTest {
     @Autowired
     private UserServiceImpl userServiceImpl;
 
-    @MockBean(name = "Utils-UserService")
-    private UtilsUserConverter utilsUserConverter;
+    @MockBean
+    private UtilsUser utilsUser;
 
     @Test
     void testLoadUserByUsername() throws UsernameNotFoundException {
@@ -207,7 +196,7 @@ class UserServiceImplTest {
         userDetailsDTO.setCredentials(credentialModel1);
         userDetailsDTO.setToken("ABC123");
         userDetailsDTO.setUserModel(userModel3);
-        when(this.utilsUserConverter.converterUserModelToUserDetailsDTO(any())).thenReturn(userDetailsDTO);
+        when(this.utilsUser.converterUserModelToUserDetailsDTO(any())).thenReturn(userDetailsDTO);
 
         AddressModel addressModel3 = new AddressModel();
         addressModel3.setApartement("Apartement");
@@ -283,7 +272,7 @@ class UserServiceImplTest {
         Optional<UserModel> ofResult = Optional.of(userModel5);
         when(this.userRepository.findUserModelByEmail(any())).thenReturn(ofResult);
         assertSame(userDetailsDTO, this.userServiceImpl.loadUserByUsername("janedoe"));
-        verify(this.utilsUserConverter).converterUserModelToUserDetailsDTO(any());
+        verify(this.utilsUser).converterUserModelToUserDetailsDTO(any());
         verify(this.userRepository).findUserModelByEmail(any());
     }
 
@@ -310,7 +299,7 @@ class UserServiceImplTest {
         userDTO.setPhone("4105551212");
         userDTO.setRole("Role");
         userDTO.setUpdated(LocalDate.ofEpochDay(1L));
-        when(this.utilsUserConverter.converterUserModelToUserDTO(any())).thenReturn(userDTO);
+        when(this.utilsUser.converterUserModelToUserDTO(any())).thenReturn(userDTO);
 
         AddressModel addressModel = new AddressModel();
         addressModel.setApartement("Apartement");
@@ -492,7 +481,7 @@ class UserServiceImplTest {
         userDTO1.setPhone("4105551212");
         userDTO1.setUpdated(LocalDate.ofEpochDay(1L));
         assertTrue(this.userServiceImpl.updateUser(123L, userDTO1).isPresent());
-        verify(this.utilsUserConverter).converterUserModelToUserDTO(any());
+        verify(this.utilsUser).converterUserModelToUserDTO(any());
         verify(this.userRepository).save(any());
         verify(this.userRepository).findById(any());
     }
@@ -520,7 +509,7 @@ class UserServiceImplTest {
         userDTO.setPhone("4105551212");
         userDTO.setRole("Role");
         userDTO.setUpdated(LocalDate.ofEpochDay(1L));
-        when(this.utilsUserConverter.converterUserModelToUserDTO(any())).thenReturn(userDTO);
+        when(this.utilsUser.converterUserModelToUserDTO(any())).thenReturn(userDTO);
 
         AddressModel addressModel = new AddressModel();
         addressModel.setApartement("Apartement");
@@ -639,7 +628,7 @@ class UserServiceImplTest {
         userDTO.setPhone("4105551212");
         userDTO.setRole("Role");
         userDTO.setUpdated(LocalDate.ofEpochDay(1L));
-        when(this.utilsUserConverter.converterUserModelToUserDTO(any())).thenReturn(userDTO);
+        when(this.utilsUser.converterUserModelToUserDTO(any())).thenReturn(userDTO);
 
         AddressModel addressModel = new AddressModel();
         addressModel.setApartement("Apartement");
@@ -715,13 +704,13 @@ class UserServiceImplTest {
         Optional<UserModel> ofResult = Optional.of(userModel1);
         when(this.userRepository.findUserModelByEmail(any())).thenReturn(ofResult);
         assertTrue(this.userServiceImpl.findUserByEmail("jane.doe@example.org").isPresent());
-        verify(this.utilsUserConverter).converterUserModelToUserDTO(any());
+        verify(this.utilsUser).converterUserModelToUserDTO(any());
         verify(this.userRepository).findUserModelByEmail(any());
     }
 
     @Test
     void testFindUserByEmail2() {
-        when(this.utilsUserConverter.converterUserModelToUserDTO(any())).thenThrow(new UsernameNotFoundException("Msg"));
+        when(this.utilsUser.converterUserModelToUserDTO(any())).thenThrow(new UsernameNotFoundException("Msg"));
 
         AddressModel addressModel = new AddressModel();
         addressModel.setApartement("Apartement");
@@ -797,7 +786,7 @@ class UserServiceImplTest {
         Optional<UserModel> ofResult = Optional.of(userModel1);
         when(this.userRepository.findUserModelByEmail(any())).thenReturn(ofResult);
         assertThrows(UsernameNotFoundException.class, () -> this.userServiceImpl.findUserByEmail("jane.doe@example.org"));
-        verify(this.utilsUserConverter).converterUserModelToUserDTO(any());
+        verify(this.utilsUser).converterUserModelToUserDTO(any());
         verify(this.userRepository).findUserModelByEmail(any());
     }
 
@@ -1008,9 +997,9 @@ class UserServiceImplTest {
         userModel4.setReservationModelClient(new ArrayList<>());
         userModel4.setRole("Role");
         userModel4.setUpdated(LocalDate.ofEpochDay(1L));
-        when(this.utilsUserConverter.extractAddressModel(any())).thenReturn(addressModel);
-        when(this.utilsUserConverter.extractCredentialModel(any())).thenReturn(credentialModel2);
-        when(this.utilsUserConverter.extractUserModelToSignUp(any())).thenReturn(userModel4);
+        when(this.utilsUser.extractAddressModel(any())).thenReturn(addressModel);
+        when(this.utilsUser.extractCredentialModel(any())).thenReturn(credentialModel2);
+        when(this.utilsUser.extractUserModelToSignUp(any())).thenReturn(userModel4);
         when(this.credentialService.saveCredential(any()))
                 .thenThrow(new UsernameNotFoundException("Msg"));
 
@@ -1039,9 +1028,9 @@ class UserServiceImplTest {
         signupDTO.setStreet("Street");
         signupDTO.setZip("21654");
         assertThrows(UsernameNotFoundException.class, () -> this.userServiceImpl.saveUser(signupDTO));
-        verify(this.utilsUserConverter).extractAddressModel(any());
-        verify(this.utilsUserConverter).extractCredentialModel(any());
-        verify(this.utilsUserConverter).extractUserModelToSignUp(any());
+        verify(this.utilsUser).extractAddressModel(any());
+        verify(this.utilsUser).extractCredentialModel(any());
+        verify(this.utilsUser).extractUserModelToSignUp(any());
         verify(this.credentialService).saveCredential(any());
         verify(this.addressService).saveAddressModel(any());
     }
@@ -1233,9 +1222,9 @@ class UserServiceImplTest {
         userModel4.setReservationModelClient(new ArrayList<>());
         userModel4.setRole("Role");
         userModel4.setUpdated(LocalDate.ofEpochDay(1L));
-        when(this.utilsUserConverter.extractAddressModel(any())).thenReturn(addressModel);
-        when(this.utilsUserConverter.extractCredentialModel(any())).thenReturn(credentialModel2);
-        when(this.utilsUserConverter.extractUserModelToSignUp(any())).thenReturn(userModel4);
+        when(this.utilsUser.extractAddressModel(any())).thenReturn(addressModel);
+        when(this.utilsUser.extractCredentialModel(any())).thenReturn(credentialModel2);
+        when(this.utilsUser.extractUserModelToSignUp(any())).thenReturn(userModel4);
         when(this.credentialService.saveCredential(any()))
                 .thenThrow(new UsernameNotFoundException("Msg"));
 
@@ -1264,9 +1253,9 @@ class UserServiceImplTest {
         signupDTO.setStreet("Street");
         signupDTO.setZip("21654");
         assertThrows(UsernameNotFoundException.class, () -> this.userServiceImpl.saveUser(signupDTO));
-        verify(this.utilsUserConverter).extractAddressModel(any());
-        verify(this.utilsUserConverter).extractCredentialModel(any());
-        verify(this.utilsUserConverter).extractUserModelToSignUp(any());
+        verify(this.utilsUser).extractAddressModel(any());
+        verify(this.utilsUser).extractCredentialModel(any());
+        verify(this.utilsUser).extractUserModelToSignUp(any());
         verify(credentialModel2).setCreated(any());
         verify(credentialModel2).setGrantedAuthority(any());
         verify(credentialModel2).setId(any());
@@ -1301,7 +1290,7 @@ class UserServiceImplTest {
         userDTO.setPhone("4105551212");
         userDTO.setRole("Role");
         userDTO.setUpdated(LocalDate.ofEpochDay(1L));
-        when(this.utilsUserConverter.converterUserModelToUserDTO(any())).thenReturn(userDTO);
+        when(this.utilsUser.converterUserModelToUserDTO(any())).thenReturn(userDTO);
 
         AddressModel addressModel = new AddressModel();
         addressModel.setApartement("Apartement");
@@ -1377,7 +1366,7 @@ class UserServiceImplTest {
         Optional<UserModel> ofResult = Optional.of(userModel1);
         when(this.userRepository.findById(any())).thenReturn(ofResult);
         assertTrue(this.userServiceImpl.findUserById(123L).isPresent());
-        verify(this.utilsUserConverter).converterUserModelToUserDTO(any());
+        verify(this.utilsUser).converterUserModelToUserDTO(any());
         verify(this.userRepository).findById(any());
     }
 

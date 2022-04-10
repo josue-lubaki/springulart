@@ -54,7 +54,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter implements WebMvcConf
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
+        registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS");
         // permit all origins
         //registry.addMapping("/**").allowedOrigins("*");
     }
@@ -74,7 +74,8 @@ public class JwtTokenVerifier extends OncePerRequestFilter implements WebMvcConf
                 && ((request.getMethod().equalsIgnoreCase("POST"))
                 || (request.getMethod().equalsIgnoreCase("DELETE"))
                 || (request.getMethod().equalsIgnoreCase("PUT"))
-                || (request.getMethod().equalsIgnoreCase("GET"))))
+                || (request.getMethod().equalsIgnoreCase("GET"))
+                || (request.getMethod().equalsIgnoreCase("PATCH"))))
               {
 
             // if the request is for login or register, skip the verification

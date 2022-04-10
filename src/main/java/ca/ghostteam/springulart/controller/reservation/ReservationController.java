@@ -2,6 +2,7 @@ package ca.ghostteam.springulart.controller.reservation;
 
 import ca.ghostteam.springulart.config.bean.JwtConfig;
 import ca.ghostteam.springulart.dto.ReservationDTO;
+import ca.ghostteam.springulart.dto.StatusReservation;
 import ca.ghostteam.springulart.dto.UserDTO;
 import ca.ghostteam.springulart.dto.UserDetailsDTO;
 import ca.ghostteam.springulart.security.jwt.filter.JwtTokenVerifier;
@@ -101,7 +102,7 @@ public class ReservationController {
     @ApiOperation(value = "Accept a reservation")
     @PatchMapping("accept/{id}")
     @PreAuthorize("hasRole('ROLE_BARBER')")
-    public ReservationDTO acceptReservation(@PathVariable("id") Long id, @RequestBody ReservationDTO reservation){
+        public ReservationDTO acceptReservation(@PathVariable("id") Long id, @RequestBody ReservationDTO reservation){
         // get headers informations
         UserDetailsDTO userDetails = getUserDetailsDTOForUserSentRequest();
         long idUserWhoSentRequest = userDetails.getCredentials().getId(); // id User
@@ -112,10 +113,6 @@ public class ReservationController {
         // update reservation -> set barber
         Optional<UserDTO> barber = this.userService.findUserById(idUserWhoSentRequest);
         reservation.setBarber(barber.get());
-
-        // modify status
-        if(reservation.getStatus().matches("Non Traitée"))
-            reservation.setStatus("Acceptée");
 
         return this.reservationService
                 .update(id, reservation)
@@ -142,8 +139,12 @@ public class ReservationController {
 
         // retrieve the owner reservation
         long idOwnerReservation = reservationDTO.getClient().getId();
+        long idBarberReservation = -1;
+        if(reservationDTO.getBarber() != null)
+            idBarberReservation = reservationDTO.getBarber().getId();
 
         boolean isOwnerReservation = idOwnerReservation == idUserWhoSentRequest;
+        boolean isBarberReservation = idBarberReservation == idUserWhoSentRequest;
 
         // retrieve claims "authorities" from payload of token
         List<Map> authorities = decodeJWTToken.getClaims().get("authorities").asList(Map.class);
@@ -152,7 +153,7 @@ public class ReservationController {
                 .collect(Collectors.toSet());
 
         // Check if the user has the required authorization for this request and if user is the owner of reservation
-        return !grantedAuthorities.contains(new SimpleGrantedAuthority("reservation:write")) || !isOwnerReservation;
+        return (!grantedAuthorities.contains(new SimpleGrantedAuthority("reservation:write")) && !isOwnerReservation) || !isBarberReservation;
     }
 
     /**

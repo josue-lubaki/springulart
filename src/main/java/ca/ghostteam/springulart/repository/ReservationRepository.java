@@ -2,6 +2,7 @@ package ca.ghostteam.springulart.repository;
 
 import ca.ghostteam.springulart.dto.ReservationDTO;
 import ca.ghostteam.springulart.model.ReservationModel;
+import ca.ghostteam.springulart.model.UserModel;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -48,8 +49,8 @@ public interface ReservationRepository extends CrudRepository<ReservationModel, 
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE ReservationModel AS r SET r.reservationDate =:reservationDate WHERE r.id = :id")
-    void update(@Param("id") Long id,@Param("reservationDate") LocalDate reservationDate);
+    @Query(value = "UPDATE ReservationModel AS r SET r.reservationDate =:reservationDate, r.barber =:barber, r.status =:status WHERE r.id = :id")
+    void update(@Param("id") Long id, @Param("reservationDate") LocalDate reservationDate, @Param("barber") UserModel barber, @Param("status") String status);
 
     // flush query
     @Modifying(flushAutomatically = true)

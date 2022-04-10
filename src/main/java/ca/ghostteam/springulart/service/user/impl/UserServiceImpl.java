@@ -5,15 +5,14 @@ import ca.ghostteam.springulart.model.AddressModel;
 import ca.ghostteam.springulart.model.CredentialModel;
 import ca.ghostteam.springulart.model.UserModel;
 import ca.ghostteam.springulart.repository.UserRepository;
-import ca.ghostteam.springulart.service.file.FileService;
 import ca.ghostteam.springulart.service.address.AddressService;
 import ca.ghostteam.springulart.service.credential.CredentialService;
+import ca.ghostteam.springulart.service.file.FileService;
 import ca.ghostteam.springulart.service.mail.MailService;
 import ca.ghostteam.springulart.service.user.UserService;
-import ca.ghostteam.springulart.tools.UtilsUserConverter;
+import ca.ghostteam.springulart.tools.UtilsUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,7 +40,7 @@ public class UserServiceImpl implements UserService {
     private final CredentialService credentialService;
     private final MailService mailService;
     private final FileService fileService;
-    private final UtilsUserConverter utils;
+    private final UtilsUser utils;
 
     @Autowired
     public UserServiceImpl(
@@ -51,7 +50,7 @@ public class UserServiceImpl implements UserService {
             CredentialService credentialService,
             MailService mailService,
             FileService fileService,
-            UtilsUserConverter utils) {
+            UtilsUser utils) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.addressService = addressService;
@@ -192,22 +191,21 @@ public class UserServiceImpl implements UserService {
      * */
     private void updateAddressUser(UserModel oldUserModel, UserUpdateDTO userUpdateDTO) {
         // update address
-//        if(userDTO.getAddress() != null) {
-            // get old address of user
-            AddressModel oldAddressModel = oldUserModel.getAddress();
-            if (oldAddressModel.getApartement() != null)
-                oldAddressModel.setApartement(userUpdateDTO.getApartement());
-            if (oldAddressModel.getCity() != null)
-                oldAddressModel.setCity(userUpdateDTO.getCity());
-            if (oldAddressModel.getState() != null)
-                oldAddressModel.setState(userUpdateDTO.getState());
-            if (oldAddressModel.getStreet() != null)
-                oldAddressModel.setStreet(userUpdateDTO.getStreet());
-            if (oldAddressModel.getZip() != null)
-                oldAddressModel.setZip(userUpdateDTO.getZip());
-            // set new address
-            oldUserModel.setAddress(oldAddressModel);
-        // }
+        AddressModel oldAddressModel = oldUserModel.getAddress();
+        if (oldAddressModel.getApartement() != null)
+            oldAddressModel.setApartement(userUpdateDTO.getApartement());
+        if (oldAddressModel.getCity() != null)
+            oldAddressModel.setCity(userUpdateDTO.getCity());
+        if (oldAddressModel.getState() != null)
+            oldAddressModel.setState(userUpdateDTO.getState());
+        if (oldAddressModel.getStreet() != null)
+            oldAddressModel.setStreet(userUpdateDTO.getStreet());
+        if (oldAddressModel.getZip() != null)
+            oldAddressModel.setZip(userUpdateDTO.getZip());
+
+        // set new address
+        oldUserModel.setAddress(oldAddressModel);
+
     }
 
     /**
