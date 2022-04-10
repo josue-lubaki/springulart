@@ -86,7 +86,7 @@ public class AuthController {
             throw new IllegalStateException("User already exists");
 
         // check role of user, if null, put ROLE_CLIENT as default
-        if (registerDTO.getRole() == null)
+        if (registerDTO.getRole() == null || registerDTO.getRole().isEmpty())
             registerDTO.setRole("ROLE_CLIENT");
 
         // retrieve imageURL property from signupDTO

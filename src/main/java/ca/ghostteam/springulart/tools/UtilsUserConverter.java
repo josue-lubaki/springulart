@@ -61,7 +61,7 @@ public class UtilsUserConverter {
     public AddressModel extractAddressModel(SignupDTO signupDTO) {
         AddressModel addressModel = new AddressModel();
         addressModel.setId(null);
-        addressModel.setApartement(signupDTO.getApartment());
+        addressModel.setApartement(signupDTO.getApartement());
         addressModel.setStreet(signupDTO.getStreet());
         addressModel.setZip(signupDTO.getZip());
         addressModel.setCity(signupDTO.getCity());

@@ -1039,7 +1039,7 @@ class UserServiceImplTest {
         when(this.addressService.saveAddressModel(any())).thenReturn(ofResult);
 
         SignupDTO signupDTO = new SignupDTO();
-        signupDTO.setApartment("Apartment");
+        signupDTO.setApartement("Apartment");
         signupDTO.setCity("Oxford");
         signupDTO.setDob(LocalDate.ofEpochDay(1L));
         signupDTO.setEmail("jane.doe@example.org");
@@ -1264,7 +1264,7 @@ class UserServiceImplTest {
         when(this.addressService.saveAddressModel(any())).thenReturn(ofResult);
 
         SignupDTO signupDTO = new SignupDTO();
-        signupDTO.setApartment("Apartment");
+        signupDTO.setApartement("Apartment");
         signupDTO.setCity("Oxford");
         signupDTO.setDob(LocalDate.ofEpochDay(1L));
         signupDTO.setEmail("jane.doe@example.org");

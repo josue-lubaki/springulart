@@ -6,7 +6,6 @@ import ca.ghostteam.springulart.security.ApplicationUserRole;
 import ca.ghostteam.springulart.service.user.UserService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,13 +13,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,16 +47,17 @@ public class UtilsUser {
      * @return SignupDTO object with user information to be registered
      */
     public static SignupDTO convertRegisterDTOtoSignupDTO(RegisterDTO registerDTO) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E MMM dd uuuu"); // Sun Apr 20 2020
         SignupDTO signupDTO = new SignupDTO();
         signupDTO.setFname(registerDTO.getFname());
         signupDTO.setLname(registerDTO.getLname());
         signupDTO.setEmail(registerDTO.getEmail());
         signupDTO.setPassword(registerDTO.getPassword());
-        signupDTO.setDob(LocalDate.parse(registerDTO.getDob()));
+        signupDTO.setDob(LocalDate.parse(registerDTO.getDob(), formatter));
         signupDTO.setRole(registerDTO.getRole());
 
         // set address information
-        signupDTO.setApartment(registerDTO.getApartment());
+        signupDTO.setApartement(registerDTO.getApartement());
         signupDTO.setStreet(registerDTO.getStreet());
         signupDTO.setCity(registerDTO.getCity());
         signupDTO.setState(registerDTO.getState());

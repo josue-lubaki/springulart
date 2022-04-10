@@ -55,6 +55,8 @@ public class JwtTokenVerifier extends OncePerRequestFilter implements WebMvcConf
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
+        // permit all origins
+        //registry.addMapping("/**").allowedOrigins("*");
     }
 
     @Override
@@ -68,23 +70,22 @@ public class JwtTokenVerifier extends OncePerRequestFilter implements WebMvcConf
         configureRequestAndResponseForCors(request, response, token);
 
         // check any other method other than OPTIONS
-        if (!(request.getMethod().equalsIgnoreCase("OPTIONS")))
-//                && ((request.getMethod().equalsIgnoreCase("POST"))
-//                || (request.getMethod().equalsIgnoreCase("DELETE"))
-//                || (request.getMethod().equalsIgnoreCase("PUT"))
-//                || (request.getMethod().equalsIgnoreCase("GET"))))
+        if (!(request.getMethod().equalsIgnoreCase("OPTIONS"))
+                && ((request.getMethod().equalsIgnoreCase("POST"))
+                || (request.getMethod().equalsIgnoreCase("DELETE"))
+                || (request.getMethod().equalsIgnoreCase("PUT"))
+                || (request.getMethod().equalsIgnoreCase("GET"))))
               {
 
             // if the request is for login or register, skip the verification
             // regex not verify /auth and /api/v1/haircuts and /api/v1/reservations
-            Pattern pattern = Pattern.compile("^(/auth|/api/v1/haircuts|/api/v1/users|/api/v1/reservations).*$");
+              Pattern pattern = Pattern.compile("^(/auth|/api/v1/haircuts|/api/v1/users|/api/v1/reservations).*$");
 
             if((pattern.matcher(request.getRequestURI()).matches() && request.getMethod().equals("GET"))
                     || (request.getRequestURI().matches("^(/auth)") && request.getMethod().equals("POST"))){
                 filterChain.doFilter(request, response);
                 return;
             }
-
 
             if(token != null) {
                 try {
