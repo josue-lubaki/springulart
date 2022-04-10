@@ -3,6 +3,7 @@ package ca.ghostteam.springulart.controller.user;
 import ca.ghostteam.springulart.dto.RegisterDTO;
 import ca.ghostteam.springulart.dto.SignupDTO;
 import ca.ghostteam.springulart.dto.UserDTO;
+import ca.ghostteam.springulart.dto.UserUpdateDTO;
 import ca.ghostteam.springulart.service.file.FileService;
 import ca.ghostteam.springulart.service.user.UserService;
 import ca.ghostteam.springulart.tools.UtilsUser;
@@ -73,7 +74,7 @@ public class UserManagementController {
         // retrieve imageURL property from signupDTO
         MultipartFile imageURL = registerDTO.getImageURL();
         // upload image to AWS S3
-        String imageURLString = awss3ServiceImpl.uploadImage(imageURL);
+        String imageURLString = awss3ServiceImpl.uploadImage(imageURL, "users");
 
         // create SignupDTO
         SignupDTO signupDTO = UtilsUser.convertRegisterDTOtoSignupDTO(registerDTO);
@@ -97,10 +98,10 @@ public class UserManagementController {
     @ApiResponse(code = 200, message = "Successfully updated a user")
     @ApiOperation(value = "Update a user by ID")
     @PutMapping(path = "{userId}")
-    public UserDTO updateUser(@PathVariable("userId") Long userId, @RequestBody UserDTO userDTO) throws Exception {
+    public UserDTO updateUser(@PathVariable("userId") Long userId, @ModelAttribute UserUpdateDTO userUpdateDTO) throws Exception {
 
         return this.userService
-                .updateUser(userId, userDTO)
+                .updateUser(userId, userUpdateDTO)
                 .orElseThrow(() -> new IllegalStateException(String.format("User with ID %s cannot found", userId)));
 
     }

@@ -3,6 +3,7 @@ package ca.ghostteam.springulart.controller.user;
 import ca.ghostteam.springulart.config.bean.JwtConfig;
 import ca.ghostteam.springulart.dto.UserDTO;
 import ca.ghostteam.springulart.dto.UserDetailsDTO;
+import ca.ghostteam.springulart.dto.UserUpdateDTO;
 import ca.ghostteam.springulart.security.jwt.filter.JwtTokenVerifier;
 import ca.ghostteam.springulart.service.user.UserService;
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -68,13 +69,13 @@ public class UserController {
     @ApiOperation(value = "Update a user by ID")
     @PutMapping(path = "{id}")
     @PreAuthorize("hasAuthority('client:write')")
-    public UserDTO updateUser(@PathVariable("id") Long userId, @RequestBody UserDTO userDTO) throws Exception {
+    public UserDTO updateUser(@PathVariable("id") Long userId, @ModelAttribute UserUpdateDTO userUpdateDTO) throws Exception {
         // check if user has permission to do that
         if(dontDoThisOperation(userId))
             throw new IllegalStateException("You are not authorized to update user with ID " + userId);
 
         return this.userService
-                .updateUser(userId, userDTO)
+                .updateUser(userId, userUpdateDTO)
                 .orElseThrow(() -> new IllegalStateException(String.format("user with ID %s cannot found", userId)));
 
     }

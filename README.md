@@ -1,6 +1,6 @@
 # Springulart
 
-** Application Backend du site www.angulart.xyz
+** Application Backend du site https://angulart.xyz | https://angulart-1c532.firebaseapp.com/
 
 ## dependencies
 - spring-boot-starter-security

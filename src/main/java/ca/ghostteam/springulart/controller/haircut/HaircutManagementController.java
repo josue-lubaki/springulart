@@ -71,7 +71,7 @@ public class HaircutManagementController {
         // Retrieve imageURL from haircutCreateDTO
         MultipartFile image = haircutCreateDTO.getImageURL();
         // upload image to S3
-        String imageURL = this.awss3ServiceImpl.uploadImage(image);
+        String imageURL = this.awss3ServiceImpl.uploadImage(image, "haircuts");
 
         // Convert haircutCreateDTO to HaircutDTO
         HaircutDTO haircutDTO = converterHaircutCreateDtoToHaircutDTO(haircutCreateDTO, imageURL);
@@ -117,7 +117,7 @@ public class HaircutManagementController {
         String imageName = imageURL.substring(imageURL.lastIndexOf("/") + 1);
 
         // delete image from S3
-        this.awss3ServiceImpl.deleteImage(imageName);
+        this.awss3ServiceImpl.deleteImage(imageName, "haircuts");
 
         this.haircutService.deleteHaircut(id);
     }

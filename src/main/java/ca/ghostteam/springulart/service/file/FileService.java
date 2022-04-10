@@ -9,8 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
  * @since 2022-04-02
  */
 public interface FileService {
-    String uploadImage(MultipartFile file);
+    String uploadImage(MultipartFile file, String folder);
 
     @Transactional
-    void deleteImage(String fileName);
+    void deleteImage(String fileName, String folder);
 }

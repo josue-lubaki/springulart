@@ -485,18 +485,11 @@ class UserServiceImplTest {
         addressDTO1.setStreet("Street");
         addressDTO1.setZip("21654");
 
-        UserDTO userDTO1 = new UserDTO();
-        userDTO1.setAddress(addressDTO1);
-        userDTO1.setCreated(LocalDate.ofEpochDay(1L));
-        userDTO1.setDeleted(true);
-        userDTO1.setDob(LocalDate.ofEpochDay(1L));
-        userDTO1.setEmail("jane.doe@example.org");
+        UserUpdateDTO userDTO1 = new UserUpdateDTO();
         userDTO1.setFname("Fname");
         userDTO1.setId(123L);
-        userDTO1.setImageURL("https://example.org/example");
         userDTO1.setLname("Lname");
         userDTO1.setPhone("4105551212");
-        userDTO1.setRole("Role");
         userDTO1.setUpdated(LocalDate.ofEpochDay(1L));
         assertTrue(this.userServiceImpl.updateUser(123L, userDTO1).isPresent());
         verify(this.utilsUserConverter).converterUserModelToUserDTO(any());
@@ -612,18 +605,11 @@ class UserServiceImplTest {
         addressDTO1.setStreet("Street");
         addressDTO1.setZip("21654");
 
-        UserDTO userDTO1 = new UserDTO();
-        userDTO1.setAddress(addressDTO1);
-        userDTO1.setCreated(LocalDate.ofEpochDay(1L));
-        userDTO1.setDeleted(true);
-        userDTO1.setDob(LocalDate.ofEpochDay(1L));
-        userDTO1.setEmail("jane.doe@example.org");
+        UserUpdateDTO userDTO1 = new UserUpdateDTO();
         userDTO1.setFname("Fname");
         userDTO1.setId(123L);
-        userDTO1.setImageURL("https://example.org/example");
         userDTO1.setLname("Lname");
         userDTO1.setPhone("4105551212");
-        userDTO1.setRole("Role");
         userDTO1.setUpdated(LocalDate.ofEpochDay(1L));
         assertThrows(UsernameNotFoundException.class, () -> this.userServiceImpl.updateUser(123L, userDTO1));
         verify(this.userRepository).save(any());
@@ -1492,11 +1478,11 @@ class UserServiceImplTest {
         Optional<UserModel> ofResult = Optional.of(userModel1);
         doNothing().when(this.userRepository).deleteById(any());
         when(this.userRepository.findById(any())).thenReturn(ofResult);
-        doNothing().when(this.fileService).deleteImage(any());
+        doNothing().when(this.fileService).deleteImage(any(), any());
         this.userServiceImpl.deleteUserById(123L);
         verify(this.userRepository).findById(any());
         verify(this.userRepository).deleteById(any());
-        verify(this.fileService).deleteImage(any());
+        verify(this.fileService).deleteImage(any(), any());
     }
 
     @Test
@@ -1575,11 +1561,11 @@ class UserServiceImplTest {
         Optional<UserModel> ofResult = Optional.of(userModel1);
         doNothing().when(this.userRepository).deleteById(any());
         when(this.userRepository.findById(any())).thenReturn(ofResult);
-        doThrow(new UsernameNotFoundException("Msg")).when(this.fileService).deleteImage(any());
+        doThrow(new UsernameNotFoundException("Msg")).when(this.fileService).deleteImage(any(), any());
         assertThrows(UsernameNotFoundException.class, () -> this.userServiceImpl.deleteUserById(123L));
         verify(this.userRepository).findById(any());
         verify(this.userRepository).deleteById(any());
-        verify(this.fileService).deleteImage(any());
+        verify(this.fileService).deleteImage(any(), any());
     }
 
     @Test
@@ -1674,7 +1660,7 @@ class UserServiceImplTest {
         Optional<UserModel> ofResult = Optional.of(userModel1);
         doNothing().when(this.userRepository).deleteById(any());
         when(this.userRepository.findById(any())).thenReturn(ofResult);
-        doNothing().when(this.fileService).deleteImage(any());
+        doNothing().when(this.fileService).deleteImage(any(), any());
         this.userServiceImpl.deleteUserById(123L);
         verify(this.userRepository).findById(any());
         verify(this.userRepository).deleteById(any());
@@ -1695,7 +1681,7 @@ class UserServiceImplTest {
         verify(userModel1).setReservationModelClient(any());
         verify(userModel1).setRole(any());
         verify(userModel1).setUpdated(any());
-        verify(this.fileService).deleteImage(any());
+        verify(this.fileService).deleteImage(any(), any());
     }
 }
 
