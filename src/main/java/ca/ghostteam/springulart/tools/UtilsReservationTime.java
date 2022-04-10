@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.service.reservationtime.impl;
+package ca.ghostteam.springulart.tools;
 
 import ca.ghostteam.springulart.dto.ReservationTimeDTO;
 import ca.ghostteam.springulart.model.ReservationTimeModel;

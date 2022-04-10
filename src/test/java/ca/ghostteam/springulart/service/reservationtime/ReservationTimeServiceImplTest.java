@@ -11,11 +11,10 @@ import ca.ghostteam.springulart.model.ReservationTimeModel;
 import ca.ghostteam.springulart.repository.ReservationTimeRepository;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Optional;
 
 import ca.ghostteam.springulart.service.reservationtime.impl.ReservationTimeServiceImpl;
-import ca.ghostteam.springulart.service.reservationtime.impl.UtilsReservationTime;
+import ca.ghostteam.springulart.tools.UtilsReservationTime;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

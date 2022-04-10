@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.service.reservation.impl;
+package ca.ghostteam.springulart.tools;
 
 import ca.ghostteam.springulart.dto.*;
 import ca.ghostteam.springulart.model.*;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * @since 2022-04-04
  */
 @Component
-public class UtilsReservationService {
+public class UtilsReservation {
 
     /**
      * Method to convert a LocationDTO to a LocationModel

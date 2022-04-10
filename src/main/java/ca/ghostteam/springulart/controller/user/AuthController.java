@@ -1,10 +1,10 @@
 package ca.ghostteam.springulart.controller.user;
 
 import ca.ghostteam.springulart.dto.*;
-import ca.ghostteam.springulart.service.file.AWSS3ServiceImpl;
 import ca.ghostteam.springulart.service.file.FileService;
 import ca.ghostteam.springulart.service.mail.MailService;
 import ca.ghostteam.springulart.service.user.UserService;
+import ca.ghostteam.springulart.tools.UtilsUser;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -25,13 +25,13 @@ import java.util.*;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UtilsUserController utils;
+    private final UtilsUser utils;
     private final UserService userService;
     private final MailService mailService;
     private final FileService awss3ServiceImpl;
 
     public AuthController(
-            UtilsUserController utils,
+            UtilsUser utils,
             UserService userService,
             MailService mailService,
             FileService awss3ServiceImpl) {
@@ -59,7 +59,7 @@ public class AuthController {
         String userRole = utils.getUserRole(username);
 
         // get All authorization of user
-        Map<String, Object> authorities = UtilsUserController.getAllUserPermissions(userRole);
+        Map<String, Object> authorities = UtilsUser.getAllUserPermissions(userRole);
 
         // create Token
         String token = utils.createJwtToken(username, authorities);
@@ -68,7 +68,7 @@ public class AuthController {
         userDetailsDTO.setToken(token);
 
         // convert userDetailsDTO to LoginDTO
-        LoginDTO loginDTO = UtilsUserController.convertUserDetailsDTOtoLoginDTO(userDetailsDTO);
+        LoginDTO loginDTO = UtilsUser.convertUserDetailsDTOtoLoginDTO(userDetailsDTO);
         return ResponseEntity.ok(loginDTO);
     }
 
@@ -86,7 +86,7 @@ public class AuthController {
             throw new IllegalStateException("User already exists");
 
         // check role of user, if null, put ROLE_CLIENT as default
-        if (registerDTO.getRole() == null)
+        if (registerDTO.getRole() == null || registerDTO.getRole().isEmpty())
             registerDTO.setRole("ROLE_CLIENT");
 
         // retrieve imageURL property from signupDTO
@@ -95,7 +95,7 @@ public class AuthController {
         String imageURLString = awss3ServiceImpl.uploadImage(imageURL);
 
         // create SignupDTO
-        SignupDTO signupDTO = UtilsUserController.convertRegisterDTOtoSignupDTO(registerDTO);
+        SignupDTO signupDTO = UtilsUser.convertRegisterDTOtoSignupDTO(registerDTO);
 
         // set imageURL property to signupDTO
         signupDTO.setImageURL(imageURLString);

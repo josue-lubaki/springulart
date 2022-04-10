@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.controller.user;
+package ca.ghostteam.springulart.tools;
 
 import ca.ghostteam.springulart.config.bean.JwtConfig;
 import ca.ghostteam.springulart.dto.*;
@@ -15,6 +15,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,15 +27,15 @@ import java.util.stream.Collectors;
  * @since 2022-04-04
  */
 @Component
-public class UtilsUserController {
+public class UtilsUser {
 
     private final UserService userService;
     private final JwtConfig jwtConfig;
     private final AuthenticationManager authenticationManager;
 
-    public UtilsUserController(UserService userService,
-                               JwtConfig jwtConfig,
-                               AuthenticationManager authenticationManager) {
+    public UtilsUser(UserService userService,
+                     JwtConfig jwtConfig,
+                     AuthenticationManager authenticationManager) {
         this.userService = userService;
         this.jwtConfig = jwtConfig;
         this.authenticationManager = authenticationManager;
@@ -46,16 +47,17 @@ public class UtilsUserController {
      * @return SignupDTO object with user information to be registered
      */
     public static SignupDTO convertRegisterDTOtoSignupDTO(RegisterDTO registerDTO) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E MMM dd uuuu"); // Sun Apr 20 2020
         SignupDTO signupDTO = new SignupDTO();
         signupDTO.setFname(registerDTO.getFname());
         signupDTO.setLname(registerDTO.getLname());
         signupDTO.setEmail(registerDTO.getEmail());
         signupDTO.setPassword(registerDTO.getPassword());
-        signupDTO.setDob(LocalDate.parse(registerDTO.getDob()));
+        signupDTO.setDob(LocalDate.parse(registerDTO.getDob(), formatter));
         signupDTO.setRole(registerDTO.getRole());
 
         // set address information
-        signupDTO.setApartment(registerDTO.getApartment());
+        signupDTO.setApartement(registerDTO.getApartement());
         signupDTO.setStreet(registerDTO.getStreet());
         signupDTO.setCity(registerDTO.getCity());
         signupDTO.setState(registerDTO.getState());

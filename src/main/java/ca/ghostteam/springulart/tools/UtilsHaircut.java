@@ -1,4 +1,4 @@
-package ca.ghostteam.springulart.service.haircut.impl;
+package ca.ghostteam.springulart.tools;
 
 import ca.ghostteam.springulart.dto.HaircutDTO;
 import ca.ghostteam.springulart.model.HaircutModel;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * @since 2022-04-04
  */
 @Component
-public class UtilsHaircutService {
+public class UtilsHaircut {
 
     /**
      * Method to convert a haircutDTO to a haircutModel

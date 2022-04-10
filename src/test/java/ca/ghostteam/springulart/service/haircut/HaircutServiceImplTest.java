@@ -13,12 +13,11 @@ import ca.ghostteam.springulart.model.HaircutModel;
 import ca.ghostteam.springulart.repository.HaircutRepository;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Optional;
 
 import ca.ghostteam.springulart.service.haircut.impl.HaircutServiceImpl;
 
-import ca.ghostteam.springulart.service.haircut.impl.UtilsHaircutService;
+import ca.ghostteam.springulart.tools.UtilsHaircut;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +35,7 @@ class HaircutServiceImplTest {
     private HaircutServiceImpl haircutServiceImpl;
 
     @MockBean
-    private UtilsHaircutService utilsHaircutService;
+    private UtilsHaircut utilsHaircut;
 
     @Test
     void testFindAllHaircuts() {
@@ -54,7 +53,7 @@ class HaircutServiceImplTest {
         haircutDTO.setImageURL("https://example.org/example");
         haircutDTO.setPrice(1);
         haircutDTO.setTitle("Dr");
-        when(this.utilsHaircutService.converterHaircutModelToHaircutDto(any())).thenReturn(haircutDTO);
+        when(this.utilsHaircut.converterHaircutModelToHaircutDto(any())).thenReturn(haircutDTO);
 
         HaircutModel haircutModel = new HaircutModel();
         haircutModel.setDescription("The characteristics of someone or something");
@@ -67,7 +66,7 @@ class HaircutServiceImplTest {
         Optional<HaircutModel> ofResult = Optional.of(haircutModel);
         when(this.haircutRepository.findById(any())).thenReturn(ofResult);
         assertTrue(this.haircutServiceImpl.findHaircutById("42").isPresent());
-        verify(this.utilsHaircutService).converterHaircutModelToHaircutDto(any());
+        verify(this.utilsHaircut).converterHaircutModelToHaircutDto(any());
         verify(this.haircutRepository).findById(any());
     }
 
@@ -89,8 +88,8 @@ class HaircutServiceImplTest {
         haircutModel.setPrice(1);
         haircutModel.setReservationModel(new ArrayList<>());
         haircutModel.setTitle("Dr");
-        when(this.utilsHaircutService.converterHaircutModelToHaircutDto(any())).thenReturn(haircutDTO);
-        when(this.utilsHaircutService.converterHaircutDtoToHaircutModel(any())).thenReturn(haircutModel);
+        when(this.utilsHaircut.converterHaircutModelToHaircutDto(any())).thenReturn(haircutDTO);
+        when(this.utilsHaircut.converterHaircutDtoToHaircutModel(any())).thenReturn(haircutModel);
 
         HaircutModel haircutModel1 = new HaircutModel();
         haircutModel1.setDescription("The characteristics of someone or something");
@@ -110,8 +109,8 @@ class HaircutServiceImplTest {
         haircutDTO1.setPrice(1);
         haircutDTO1.setTitle("Dr");
         assertTrue(this.haircutServiceImpl.saveHaircut(haircutDTO1).isPresent());
-        verify(this.utilsHaircutService).converterHaircutModelToHaircutDto(any());
-        verify(this.utilsHaircutService).converterHaircutDtoToHaircutModel(any());
+        verify(this.utilsHaircut).converterHaircutModelToHaircutDto(any());
+        verify(this.utilsHaircut).converterHaircutDtoToHaircutModel(any());
         verify(this.haircutRepository).save(any());
     }
 
@@ -133,8 +132,8 @@ class HaircutServiceImplTest {
         haircutModel.setPrice(1);
         haircutModel.setReservationModel(new ArrayList<>());
         haircutModel.setTitle("Dr");
-        when(this.utilsHaircutService.converterHaircutModelToHaircutDto(any())).thenReturn(haircutDTO);
-        when(this.utilsHaircutService.converterHaircutDtoToHaircutModel(any())).thenReturn(haircutModel);
+        when(this.utilsHaircut.converterHaircutModelToHaircutDto(any())).thenReturn(haircutDTO);
+        when(this.utilsHaircut.converterHaircutDtoToHaircutModel(any())).thenReturn(haircutModel);
 
         HaircutModel haircutModel1 = new HaircutModel();
         haircutModel1.setDescription("The characteristics of someone or something");
@@ -165,8 +164,8 @@ class HaircutServiceImplTest {
         haircutDTO1.setPrice(1);
         haircutDTO1.setTitle("Dr");
         assertTrue(this.haircutServiceImpl.updateHaircut("42", haircutDTO1).isPresent());
-        verify(this.utilsHaircutService, atLeast(1)).converterHaircutModelToHaircutDto(any());
-        verify(this.utilsHaircutService).converterHaircutDtoToHaircutModel(any());
+        verify(this.utilsHaircut, atLeast(1)).converterHaircutModelToHaircutDto(any());
+        verify(this.utilsHaircut).converterHaircutDtoToHaircutModel(any());
         verify(this.haircutRepository).save(any());
         verify(this.haircutRepository).findById(any());
     }

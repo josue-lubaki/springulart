@@ -1,8 +1,8 @@
 package ca.ghostteam.springulart.security.jwt.filter;
 
 import ca.ghostteam.springulart.config.bean.JwtConfig;
-import ca.ghostteam.springulart.service.user.UserService;
 import ca.ghostteam.springulart.dto.UserDetailsDTO;
+import ca.ghostteam.springulart.service.user.UserService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -17,7 +17,9 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -36,8 +38,9 @@ import java.util.stream.Collectors;
  * @since 2022-03-19
  */
 @Component
+@EnableWebMvc
 @Slf4j
-public class JwtTokenVerifier extends OncePerRequestFilter {
+public class JwtTokenVerifier extends OncePerRequestFilter implements WebMvcConfigurer {
 
     private final JwtConfig jwtConfig;
     private final UserService userDetailsService;
@@ -50,58 +53,84 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
     }
 
     @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
+        // permit all origins
+        //registry.addMapping("/**").allowedOrigins("*");
+    }
+
+    @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
 
-        configureRequestAndResponseForCors(request, response);
-
-        // if the request is for login or register, skip the verification
-        // regex not verify /auth and /api/v1/haircuts and /api/v1/reservations
-        Pattern pattern = Pattern.compile("^(/auth|/api/v1/haircuts|/api/v1/users|/api/v1/reservations).*$");
-
-        if((pattern.matcher(request.getRequestURI()).matches() && request.getMethod().equals("GET"))
-                || (request.getRequestURI().matches("^(/auth)") && request.getMethod().equals("POST"))){
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         // retrieve Authorization :  Bearer yt3sg4su7...
         // extract token
         String token = extractJwtToken(request);
+        configureRequestAndResponseForCors(request, response, token);
 
-        if(token != null) {
-            try {
-                DecodedJWT decodeJWTToken = decodeJWT(token, jwtConfig.getSecretKey());
+        // check any other method other than OPTIONS
+        if (!(request.getMethod().equalsIgnoreCase("OPTIONS"))
+                && ((request.getMethod().equalsIgnoreCase("POST"))
+                || (request.getMethod().equalsIgnoreCase("DELETE"))
+                || (request.getMethod().equalsIgnoreCase("PUT"))
+                || (request.getMethod().equalsIgnoreCase("GET"))))
+              {
 
-                // Decode a token
-                String username = decodeJWTToken.getSubject();
-                UserDetailsDTO userDetails = (UserDetailsDTO) userDetailsService.loadUserByUsername(username);
+            // if the request is for login or register, skip the verification
+            // regex not verify /auth and /api/v1/haircuts and /api/v1/reservations
+              Pattern pattern = Pattern.compile("^(/auth|/api/v1/haircuts|/api/v1/users|/api/v1/reservations).*$");
 
-                // retrieve claims "authorities" from payload of token
-                List<Map> authorities = decodeJWTToken.getClaims().get("authorities").asList(Map.class);
-                Set<SimpleGrantedAuthority> grantedAuthorities = authorities.stream()
-                        .map(authority -> new SimpleGrantedAuthority(authority.get("authority").toString()))
-                        .collect(Collectors.toSet());
-
-                // create UsernamePasswordAuthenticationToken and give it the permissions
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        userDetails.getCredentials(),
-                        grantedAuthorities
-                );
-
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                // set authentication on context Application
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            } catch (Exception e) {
-                throw new IllegalStateException(String.format("Token %s cannot be trusted", token));
+            if((pattern.matcher(request.getRequestURI()).matches() && request.getMethod().equals("GET"))
+                    || (request.getRequestURI().matches("^(/auth)") && request.getMethod().equals("POST"))){
+                filterChain.doFilter(request, response);
+                return;
             }
-        }
 
-        filterChain.doFilter(request, response);
+            if(token != null) {
+                try {
+                    DecodedJWT decodeJWTToken = decodeJWT(token, jwtConfig.getSecretKey());
+
+                    // Decode a token
+                    String username = decodeJWTToken.getSubject();
+                    UserDetailsDTO userDetails = (UserDetailsDTO) userDetailsService.loadUserByUsername(username);
+
+                    // retrieve claims "authorities" from payload of token
+                    List<Map> authorities = decodeJWTToken.getClaims().get("authorities").asList(Map.class);
+                    Set<SimpleGrantedAuthority> grantedAuthorities = authorities.stream()
+                            .map(authority -> new SimpleGrantedAuthority(authority.get("authority").toString()))
+                            .collect(Collectors.toSet());
+
+                    // create UsernamePasswordAuthenticationToken and give it the permissions
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            userDetails.getCredentials(),
+                            grantedAuthorities
+                    );
+
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                    // set authentication on context Application
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                } catch (Exception e) {
+                    throw new IllegalStateException(String.format("Token %s cannot be trusted", token));
+                }
+            }
+
+            filterChain.doFilter(request, response);
+        }
+        else {
+            System.out.println("Pre-flight");
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Access-Control-Allow-Methods", "POST,GET,DELETE,PUT");
+            response.setHeader("Access-Control-Max-Age", "3600");
+            response.setHeader("Access-Control-Allow-Headers", "Access-Control-Expose-Headers"+"Authorization, content-type," +
+                    "USERID"+"ROLE"+
+                    "access-control-request-headers,access-control-request-method,accept,origin,authorization,x-requested-with,responseType,observe");
+            response.setStatus(HttpServletResponse.SC_OK);
+            filterChain.doFilter(request, response);
+        }
     }
 
     /**
@@ -109,7 +138,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      * */
-    private void configureRequestAndResponseForCors(HttpServletRequest request, HttpServletResponse response) {
+    private void configureRequestAndResponseForCors(HttpServletRequest request, HttpServletResponse response, String token) {
         System.out.println("WebConfig; " + request.getRequestURI());
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
@@ -117,7 +146,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
                 "X-Requested-With,observe,ResponseType");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Credentials", "true");
-        response.setHeader("Access-Control-Expose-Headers", "Authorization");
+        response.setHeader("Access-Control-Expose-Headers", "Authorization Bearer " + token);
         response.addHeader("Access-Control-Expose-Headers", "responseType");
         response.addHeader("Access-Control-Expose-Headers", "observe");
         System.out.println("Request Method: " + request.getMethod());
