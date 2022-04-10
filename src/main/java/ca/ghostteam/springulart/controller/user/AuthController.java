@@ -92,7 +92,7 @@ public class AuthController {
         // retrieve imageURL property from signupDTO
         MultipartFile imageURL = registerDTO.getImageURL();
         // upload image to AWS S3
-        String imageURLString = awss3ServiceImpl.uploadImage(imageURL);
+        String imageURLString = awss3ServiceImpl.uploadImage(imageURL, "users");
 
         // create SignupDTO
         SignupDTO signupDTO = UtilsUser.convertRegisterDTOtoSignupDTO(registerDTO);

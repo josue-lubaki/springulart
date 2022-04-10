@@ -33,7 +33,7 @@ public class AWSS3ServiceImpl implements FileService {
     }
 
     @Override
-    public String uploadImage(MultipartFile file) {
+    public String uploadImage(MultipartFile file, String folder) {
         // Check if file is empty
         if (file.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "File is empty");
@@ -56,6 +56,7 @@ public class AWSS3ServiceImpl implements FileService {
 
         // create unique fileName for file
         fileName = UUID.randomUUID() + "." + extension;
+        String key = folder + "/" + fileName;
 
         // create metadata for file and set content type
         ObjectMetadata metadata = new ObjectMetadata();
@@ -64,21 +65,21 @@ public class AWSS3ServiceImpl implements FileService {
 
         try{
             // upload file to S3
-            awsS3Client.putObject(bucketName, fileName, file.getInputStream(), metadata);
+            awsS3Client.putObject(bucketName, key, file.getInputStream(), metadata);
         }
         catch (IOException e){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error uploading file to S3");
         }
 
         // set permissions to public
-        awsS3Client.setObjectAcl(bucketName, fileName, CannedAccessControlList.PublicRead);
+        awsS3Client.setObjectAcl(bucketName, key, CannedAccessControlList.PublicRead);
 
         // return url to file
-        return awsS3Client.getResourceUrl(bucketName, fileName);
+        return awsS3Client.getResourceUrl(bucketName, key);
     }
 
     @Override
-    public void deleteImage(String imageURL) {
+    public void deleteImage(String imageURL, String folder) {
         // check if file name hasText
         if (!StringUtils.hasText(imageURL)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "File name is empty");
@@ -86,9 +87,10 @@ public class AWSS3ServiceImpl implements FileService {
 
         // extract file name from url
         String fileName = imageURL.substring(imageURL.lastIndexOf("/") + 1);
+        String key = folder + "/" + fileName;
 
         // delete file from S3
-        awsS3Client.deleteObject(bucketName, fileName);
+        awsS3Client.deleteObject(bucketName, key);
     }
 
     /**
