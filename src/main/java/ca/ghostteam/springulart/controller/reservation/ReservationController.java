@@ -139,8 +139,12 @@ public class ReservationController {
 
         // retrieve the owner reservation
         long idOwnerReservation = reservationDTO.getClient().getId();
+        long idBarberReservation = -1;
+        if(reservationDTO.getBarber() != null)
+            idBarberReservation = reservationDTO.getBarber().getId();
 
         boolean isOwnerReservation = idOwnerReservation == idUserWhoSentRequest;
+        boolean isBarberReservation = idBarberReservation == idUserWhoSentRequest;
 
         // retrieve claims "authorities" from payload of token
         List<Map> authorities = decodeJWTToken.getClaims().get("authorities").asList(Map.class);
@@ -149,7 +153,7 @@ public class ReservationController {
                 .collect(Collectors.toSet());
 
         // Check if the user has the required authorization for this request and if user is the owner of reservation
-        return !grantedAuthorities.contains(new SimpleGrantedAuthority("reservation:write")) || !isOwnerReservation;
+        return (!grantedAuthorities.contains(new SimpleGrantedAuthority("reservation:write")) && !isOwnerReservation) || !isBarberReservation;
     }
 
     /**

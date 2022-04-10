@@ -153,6 +153,7 @@ public class ReservationServiceImpl implements ReservationService {
             barberModel = utils.converterEntityDtoTOEntityModel(reservation.getBarber());
 
         }
+
         reservationTimeService.update(id, reservationTimeDTO).get();
 
 
