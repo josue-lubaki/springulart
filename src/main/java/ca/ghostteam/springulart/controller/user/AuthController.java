@@ -59,10 +59,16 @@ public class AuthController {
     })
     @ApiOperation(value = "Login", notes = "Login to the application")
     @PostMapping(value = "/login",  produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<LoginDTO> authenticateUser(@RequestBody AuthDTO authDTO) throws BadCredentialsException {
-
-        // attempt authentication when user provides username and password
-        UserDetailsDTO userDetailsDTO = (UserDetailsDTO) authenticate(authDTO).getPrincipal();
+    public ResponseEntity<LoginDTO> authenticateUser(@RequestBody AuthDTO authDTO) {
+        UserDetailsDTO userDetailsDTO;
+        try {
+            // attempt authentication when user provides username and password
+            userDetailsDTO = (UserDetailsDTO) authenticate(authDTO).getPrincipal();
+        } catch (BadCredentialsException e) {
+            LoginDTO loginDTO = new LoginDTO();
+            loginDTO.setStatus("error");
+            return ResponseEntity.ok(loginDTO);
+        }
 
         // get username of user
         String username = authDTO.getUsername();
@@ -81,6 +87,9 @@ public class AuthController {
 
         // convert userDetailsDTO to LoginDTO
         LoginDTO loginDTO = UtilsUser.convertUserDetailsDTOtoLoginDTO(userDetailsDTO);
+
+        // set status to OK
+        loginDTO.setStatus("success");
         return ResponseEntity.ok(loginDTO);
     }
 
