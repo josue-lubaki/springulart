@@ -2,7 +2,6 @@ package ca.ghostteam.springulart.controller.reservation;
 
 import ca.ghostteam.springulart.config.bean.JwtConfig;
 import ca.ghostteam.springulart.dto.ReservationDTO;
-import ca.ghostteam.springulart.dto.StatusReservation;
 import ca.ghostteam.springulart.dto.UserDTO;
 import ca.ghostteam.springulart.dto.UserDetailsDTO;
 import ca.ghostteam.springulart.security.jwt.filter.JwtTokenVerifier;
@@ -79,7 +78,7 @@ public class ReservationController {
     @PutMapping("/{id}")
     public ReservationDTO updateReservation(@PathVariable("id") Long id, @RequestBody ReservationDTO reservation){
         // check if user has permission to do that
-        if(dontDoThisOperation(id))
+        if(!canUpdateReservation(id))
             throw new IllegalStateException("You are not authorized to update reservation with ID " + id);
 
         return this.reservationService
@@ -92,7 +91,7 @@ public class ReservationController {
     @DeleteMapping("/{id}")
     public void deleteReservation(@PathVariable("id") Long id){
         // check if user has permission to do that
-        if(dontDoThisOperation(id))
+        if(!canDeleteReservation(id))
             throw new IllegalStateException("You are not authorized to delete reservation with ID " + id);
 
         this.reservationService.deleteReservationById(id);
@@ -121,10 +120,43 @@ public class ReservationController {
 
     /**
      * Method that checks if the present user can perform this operation by checking these permissions from their token
-     * @param id reservationId to modify or delete
+     * @param id reservationId to delete
      * @return boolean
      * */
-    private boolean dontDoThisOperation(Long  id) {
+    private boolean canDeleteReservation(Long  id) {
+        // get headers informations
+        String token = jwtTokenVerifier.extractJwtToken(request);
+        DecodedJWT decodeJWTToken = jwtTokenVerifier.decodeJWT(token, jwtConfig.getSecretKey());
+
+        // Decode a token
+        String username = decodeJWTToken.getSubject();
+        UserDetailsDTO userDetails = (UserDetailsDTO) userService.loadUserByUsername(username);
+        long idUserWhoSentRequest = userDetails.getCredentials().getId(); // id User
+
+        // check if the user has this reservation
+        ReservationDTO reservationDTO = this.reservationService.findById(id).get();
+
+        // retrieve the owner reservation
+        long idOwnerReservation = reservationDTO.getClient().getId();
+
+        boolean isOwnerReservation = idOwnerReservation == idUserWhoSentRequest;
+
+        // retrieve claims "authorities" from payload of token
+        List<Map> authorities = decodeJWTToken.getClaims().get("authorities").asList(Map.class);
+        Set<SimpleGrantedAuthority> grantedAuthorities = authorities.stream()
+                .map(authority -> new SimpleGrantedAuthority(authority.get("authority").toString()))
+                .collect(Collectors.toSet());
+
+        // Check if the user has the required authorization for this request and if user is the owner of reservation
+        return grantedAuthorities.contains(new SimpleGrantedAuthority("reservation:write")) && isOwnerReservation;
+    }
+
+    /**
+     * Method that checks if the present user can perform this operation by checking these permissions from their token
+     * @param id reservationId to modify
+     * @return boolean
+     * */
+    private boolean canUpdateReservation(Long id){
         // get headers informations
         String token = jwtTokenVerifier.extractJwtToken(request);
         DecodedJWT decodeJWTToken = jwtTokenVerifier.decodeJWT(token, jwtConfig.getSecretKey());
@@ -153,26 +185,26 @@ public class ReservationController {
                 .collect(Collectors.toSet());
 
         // Check if the user has the required authorization for this request and if user is the owner of reservation
-        return (!grantedAuthorities.contains(new SimpleGrantedAuthority("reservation:write")) && !isOwnerReservation) || !isBarberReservation;
+        return (grantedAuthorities.contains(new SimpleGrantedAuthority("reservation:write")) && isOwnerReservation) || isBarberReservation;
     }
-
-    /**
-     * Method that returns ID of the user who sent the request
-     * @return Long
-     **/
-    private Long getIdUserCurrent(){
-        UserDetailsDTO userDetails = getUserDetailsDTOForUserSentRequest();
-        return userDetails.getCredentials().getId();
-    }
-
-    /**
-     * Method to extract the Role of user sent request
-     * @return String
-     * */
-    private String getRoleUserSentRequest() {
-        UserDetailsDTO userDetails = getUserDetailsDTOForUserSentRequest();
-        return userDetails.getCredentials().getGrantedAuthority();
-    }
+//
+//    /**
+//     * Method that returns ID of the user who sent the request
+//     * @return Long
+//     **/
+//    private Long getIdUserCurrent(){
+//        UserDetailsDTO userDetails = getUserDetailsDTOForUserSentRequest();
+//        return userDetails.getCredentials().getId();
+//    }
+//
+//    /**
+//     * Method to extract the Role of user sent request
+//     * @return String
+//     * */
+//    private String getRoleUserSentRequest() {
+//        UserDetailsDTO userDetails = getUserDetailsDTOForUserSentRequest();
+//        return userDetails.getCredentials().getGrantedAuthority();
+//    }
 
     /**
      * Method to extract the UserDetailsDTO of user sent request
