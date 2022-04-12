@@ -82,6 +82,7 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         }
 
+        updatePasswordCredential(oldUserModel, userUpdatedDTO);
         updatePersonalInfo(oldUserModel, userUpdatedDTO);
         updateAddressUser(oldUserModel, userUpdatedDTO);
 
@@ -90,6 +91,13 @@ public class UserServiceImpl implements UserService {
                         this.userRepository.save(oldUserModel)
                 )
         );
+    }
+
+    private void updatePasswordCredential(UserModel oldUserModel, UserUpdateDTO userUpdatedDTO) {
+        if (Objects.nonNull(userUpdatedDTO.getPassword()) && !userUpdatedDTO.getPassword().isEmpty()) {
+            this.updatePassword(oldUserModel.getEmail(), userUpdatedDTO.getPassword());
+            this.credentialService.updatePassword(oldUserModel.getEmail(), userUpdatedDTO.getPassword());
+        }
     }
 
     /**

@@ -3,8 +3,8 @@ package ca.ghostteam.springulart.service.credential;
 import ca.ghostteam.springulart.dto.CredentialDTO;
 import ca.ghostteam.springulart.model.CredentialModel;
 import ca.ghostteam.springulart.repository.CredentialRepository;
-import ca.ghostteam.springulart.service.credential.CredentialService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,10 +18,13 @@ import java.util.Optional;
 public class CredentialServiceImpl implements CredentialService {
 
     private final CredentialRepository credentialRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public CredentialServiceImpl(CredentialRepository credentialRepository) {
+    public CredentialServiceImpl(CredentialRepository credentialRepository,
+                                 PasswordEncoder passwordEncoder) {
         this.credentialRepository = credentialRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -38,6 +41,13 @@ public class CredentialServiceImpl implements CredentialService {
                 this.credentialRepository
                 .save(credential)
         ));
+    }
+
+    @Override
+    public void updatePassword(String username, String password) {
+        CredentialModel credential = credentialRepository.findCredentialByUsername(username);
+        credential.setPassword(passwordEncoder.encode(password));
+        credentialRepository.updatePassword(username, credential.getPassword());
     }
 
     /**
