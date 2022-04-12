@@ -1,10 +1,7 @@
 package ca.ghostteam.springulart.service.mail;
 
 import ca.ghostteam.springulart.dto.UserDTO;
-import ca.ghostteam.springulart.model.ReservationTimeModel;
 import org.springframework.scheduling.annotation.Async;
-
-import java.time.LocalDate;
 
 /**
  * @author Josue Lubaki
@@ -20,5 +17,8 @@ public interface MailService {
     void welcomeMessage(String email, String fullname);
 
     @Async
-    void modificationReservation(String emailBarber, String fullNameBarber, String fullNameClient, String newDateReservation, String newTimeReservation);
+    void notificationModificationReservation(String emailBarber, String fullNameBarber, String fullNameClient, String newDateReservation, String newTimeReservation);
+
+    @Async
+    void notificationDeletedReservation(String emailBarber, String fullNameBarber, String fullNameClient, String newDateReservation, String newTimeReservation);
 }

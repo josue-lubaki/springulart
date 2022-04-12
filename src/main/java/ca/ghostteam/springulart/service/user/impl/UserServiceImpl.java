@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
@@ -73,7 +74,10 @@ public class UserServiceImpl implements UserService {
     public Optional<UserDTO> updateUser(Long id, UserUpdateDTO userUpdatedDTO) {
         UserModel oldUserModel = this.userRepository.findById(id).get();
         try {
-            oldUserModel.setImageURL(updateImageUser(oldUserModel, userUpdatedDTO).get());
+            // verify if image of user is changed
+            if (!Objects.equals(userUpdatedDTO.getImageURL(),oldUserModel.getImageURL())) {
+                oldUserModel.setImageURL(updateImageUser(oldUserModel, userUpdatedDTO).get());
+            }
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -101,7 +105,16 @@ public class UserServiceImpl implements UserService {
             this.fileService.deleteImage(oldUserModel.getImageURL(), "users");
 
             // save the new image
-            String imageURL = this.fileService.uploadImage(userUpdateDTO.getImageURL(), "users");
+            String imageURL;
+            // verify if image instanceof String
+            if (userUpdateDTO.getImageURL().getClass().equals(String.class)) {
+                imageURL = (String) userUpdateDTO.getImageURL();
+                return CompletableFuture.completedFuture(imageURL);
+            }
+            else {
+                MultipartFile imageURLFile = (MultipartFile) userUpdateDTO.getImageURL();
+                imageURL = this.fileService.uploadImage(imageURLFile, "users");
+            }
 
             // Update the imageURL
             return CompletableFuture.completedFuture(imageURL);
