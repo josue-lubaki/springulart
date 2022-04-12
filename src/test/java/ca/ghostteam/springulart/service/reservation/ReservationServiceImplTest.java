@@ -682,20 +682,6 @@ class ReservationServiceImplTest {
     }
 
     @Test
-    void testDeleteReservationById() {
-        doNothing().when(this.reservationRepository).deleteById(any());
-        this.reservationServiceImpl.deleteReservationById(123L);
-        verify(this.reservationRepository).deleteById(any());
-    }
-
-    @Test
-    void testDeleteReservationById2() {
-        doThrow(new IllegalStateException("foo")).when(this.reservationRepository).deleteById(any());
-        assertThrows(IllegalStateException.class, () -> this.reservationServiceImpl.deleteReservationById(123L));
-        verify(this.reservationRepository).deleteById(any());
-    }
-
-    @Test
     void testCount() {
         when(this.reservationRepository.findAll()).thenReturn(new ArrayList<>());
         assertEquals(0L, this.reservationServiceImpl.count());
