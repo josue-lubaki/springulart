@@ -5,6 +5,7 @@ import ca.ghostteam.springulart.model.*;
 import ca.ghostteam.springulart.repository.ReservationRepository;
 import ca.ghostteam.springulart.service.haircut.HaircutService;
 import ca.ghostteam.springulart.service.location.LocationService;
+import ca.ghostteam.springulart.service.mail.MailService;
 import ca.ghostteam.springulart.service.reservation.ReservationService;
 import ca.ghostteam.springulart.service.reservationtime.ReservationTimeService;
 import ca.ghostteam.springulart.service.user.UserService;
@@ -13,10 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,6 +31,7 @@ public class ReservationServiceImpl implements ReservationService {
     private final ReservationTimeService reservationTimeService;
     private final LocationService locationService;
     private final UtilsReservation utils;
+    private final MailService mailService;
 
     @Autowired
     public ReservationServiceImpl(ReservationRepository reservationRepository,
@@ -41,13 +39,15 @@ public class ReservationServiceImpl implements ReservationService {
                                   HaircutService haircutService,
                                   ReservationTimeService reservationTimeService,
                                   LocationService locationService,
-                                  UtilsReservation utils) {
+                                  UtilsReservation utils,
+                                  MailService mailService) {
         this.reservationRepository = reservationRepository;
         this.userService = userService;
         this.haircutService = haircutService;
         this.reservationTimeService = reservationTimeService;
         this.locationService = locationService;
         this.utils = utils;
+        this.mailService = mailService;
     }
 
     @Override
@@ -136,6 +136,18 @@ public class ReservationServiceImpl implements ReservationService {
                     () -> new IllegalStateException(String.format("Reservation with ID %s cannot found", id))
                 )
         );
+
+        // check if hour and minutes of ReservationTime is changed
+        if(reservationModelToUpdate.getBarber() != null && (!Objects.equals(reservation.getReservationTime().getHours(), reservationModelToUpdate.getReservationTime().getHours()) ||
+                !Objects.equals(reservation.getReservationTime().getMinutes(), reservationModelToUpdate.getReservationTime().getMinutes()))) {
+            // send Mail modification Reservation
+            String fullNameBarber = reservationModelToUpdate.getBarber().getFullName();
+            String fullNameClient = reservationModelToUpdate.getClient().getFullName();
+            String emailBarber = reservationModelToUpdate.getBarber().getEmail();
+            String timeReservation = reservationModelToUpdate.getReservationTime().toString();
+            String dateReservation = String.valueOf(reservationModelToUpdate.getReservationDate());
+            mailService.modificationReservation(emailBarber, fullNameBarber, fullNameClient, dateReservation, timeReservation);
+        }
 
         // Modify reservationTime and Location of reservation
         ReservationTimeDTO reservationTimeDTO = reservation.getReservationTime();

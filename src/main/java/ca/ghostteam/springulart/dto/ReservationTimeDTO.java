@@ -12,4 +12,10 @@ public class ReservationTimeDTO {
     private long id;
     private Integer hours;
     private Integer minutes;
+
+    @Override
+    public String toString() {
+        return hours + ":" + (minutes < 10 ? "0" + minutes : minutes);
+    }
+
 }
