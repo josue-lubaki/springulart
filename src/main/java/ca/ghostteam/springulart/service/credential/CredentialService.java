@@ -13,4 +13,6 @@ import java.util.Optional;
 public interface CredentialService {
     Optional<CredentialDTO> findCredentialUserById(Long id);
     Optional<CredentialDTO> saveCredential(CredentialModel credential);
+
+    void updatePassword(String username, String password);
 }

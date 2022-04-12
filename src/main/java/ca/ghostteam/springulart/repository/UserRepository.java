@@ -4,6 +4,7 @@ import ca.ghostteam.springulart.model.UserModel;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
@@ -34,6 +35,6 @@ public interface UserRepository extends CrudRepository<UserModel, Long> {
 
     @Transactional
     @Modifying
-    @Query( "UPDATE UserModel u SET u.password = ?2 WHERE u.email = ?1")
-    void updatePassword(String email, String password);
+    @Query( "UPDATE UserModel u SET u.password = :password WHERE u.email = :email")
+    void updatePassword(@Param("email") String email, @Param("password") String password);
 }
