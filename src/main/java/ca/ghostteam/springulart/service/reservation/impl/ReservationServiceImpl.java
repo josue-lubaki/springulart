@@ -109,13 +109,13 @@ public class ReservationServiceImpl implements ReservationService {
         reservationModelToSave.setLocation(location);
 
         // set foreign keys values
-        reservationTime.setReservationModel(Arrays.asList(reservationModelToSave));
+        reservationTime.setReservationModel(Collections.singletonList(reservationModelToSave));
         location.setReservationModel(reservationModelToSave);
-        haircutModel.setReservationModel(Arrays.asList(reservationModelToSave));
-        userModel.setReservationModelClient(Arrays.asList(reservationModelToSave));
+        haircutModel.setReservationModel(Collections.singletonList(reservationModelToSave));
+        userModel.setReservationModelClient(Collections.singletonList(reservationModelToSave));
 
         if (Objects.nonNull(barber)) {
-            barber.setReservationModelBarber(Arrays.asList(reservationModelToSave));
+            barber.setReservationModelBarber(Collections.singletonList(reservationModelToSave));
         }
 
         ReservationModel reservationModelSaved = reservationRepository.save(reservationModelToSave);

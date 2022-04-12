@@ -25,6 +25,7 @@ import ca.ghostteam.springulart.model.UserModel;
 import ca.ghostteam.springulart.repository.ReservationRepository;
 import ca.ghostteam.springulart.service.haircut.HaircutService;
 import ca.ghostteam.springulart.service.location.LocationService;
+import ca.ghostteam.springulart.service.mail.MailService;
 import ca.ghostteam.springulart.service.reservation.impl.ReservationServiceImpl;
 import ca.ghostteam.springulart.tools.UtilsReservation;
 import ca.ghostteam.springulart.service.reservationtime.ReservationTimeService;
@@ -66,6 +67,9 @@ class ReservationServiceImplTest {
 
     @MockBean
     private UtilsReservation utilsReservation;
+
+    @MockBean
+    private MailService mailService;
 
     @Test
     void testFindAll() {
