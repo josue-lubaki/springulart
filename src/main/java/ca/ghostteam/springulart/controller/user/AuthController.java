@@ -72,8 +72,6 @@ public class AuthController {
 
         // get username of user
         String username = authDTO.getUsername();
-
-        // get Role of user
         String userRole = getUserRole(username);
 
         // get All authorization of user

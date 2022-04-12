@@ -1,6 +1,7 @@
 package ca.ghostteam.springulart.service.mail;
 
 import ca.ghostteam.springulart.dto.UserDTO;
+import ca.ghostteam.springulart.model.ReservationTimeModel;
 import ca.ghostteam.springulart.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +14,7 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.time.LocalDate;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -37,7 +39,6 @@ public class MailServiceImpl implements MailService {
         this.templateEngine = templateEngine;
     }
 
-    @Async
     @Override
     public void resetPassword(UserDTO user, String temporaryPassword) {
         // get the full name of the user
@@ -68,6 +69,28 @@ public class MailServiceImpl implements MailService {
         sendPlainTextMessage(email, "Bienvenue sur angulart", content);
     }
 
+    @Override
+    public void modificationReservation(String emailBarber,
+                                        String fullNameBarber,
+                                        String fullNameClient,
+                                        String newDateReservation,
+                                        String newTimeReservation) {
+
+        // create the context for the template
+        Context context = getContext();
+        context.setVariable("fullnameBarber", String.format("%s", fullNameBarber));
+        context.setVariable("fullnameClient", String.format("%s", fullNameClient));
+        context.setVariable("dateReservation", String.format("%s", newDateReservation));
+        context.setVariable("timeReservation", String.format("%s", newTimeReservation.toString()));
+
+        // set content of message
+        String content = templateEngine.process("emails/modify-reservation", context);
+
+        // send message
+        sendPlainTextMessage(emailBarber, "Modification d'une réservation", content);
+    }
+
+
     /**
      * Method to send a plain text message
      * @param to the email address of the recipient
@@ -78,6 +101,7 @@ public class MailServiceImpl implements MailService {
      * @param content the content of the message (e.g. "Your temporary password is: 12345")
      * @catch MessagingException if the message cannot be sent
      * */
+    @Async
     private void sendPlainTextMessage(String to, String subject, String content) {
         try{
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();

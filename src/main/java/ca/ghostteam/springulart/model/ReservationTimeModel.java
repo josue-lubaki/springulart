@@ -10,7 +10,6 @@ import java.util.Set;
 
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
 @Entity
 @Table(name = "reservation_time_model")
@@ -35,5 +34,10 @@ public class ReservationTimeModel {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return hours + ":" + (minutes < 10 ? "0" + minutes : minutes);
     }
 }
