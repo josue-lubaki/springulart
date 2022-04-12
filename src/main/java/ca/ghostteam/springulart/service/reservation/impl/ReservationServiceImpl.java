@@ -146,7 +146,7 @@ public class ReservationServiceImpl implements ReservationService {
             String emailBarber = reservationModelToUpdate.getBarber().getEmail();
             String timeReservation = reservationModelToUpdate.getReservationTime().toString();
             String dateReservation = String.valueOf(reservationModelToUpdate.getReservationDate());
-            mailService.modificationReservation(emailBarber, fullNameBarber, fullNameClient, dateReservation, timeReservation);
+            mailService.notificationModificationReservation(emailBarber, fullNameBarber, fullNameClient, dateReservation, timeReservation);
         }
 
         // Modify reservationTime and Location of reservation
@@ -191,6 +191,23 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public void deleteReservationById(Long id) {
+        // get reservation
+        ReservationDTO reservationModelToUpdate = utils.converterModelToDTO(
+                reservationRepository
+                .findById(id)
+                .orElseThrow(() -> new IllegalStateException(String.format("Reservation with ID %s cannot found", id)))
+        );
+
+        // send Mail deleted Reservation to Barber if exists
+        if(Objects.nonNull(reservationModelToUpdate.getBarber())) {
+            String fullNameBarber = reservationModelToUpdate.getBarber().getFullName();
+            String fullNameClient = reservationModelToUpdate.getClient().getFullName();
+            String emailBarber = reservationModelToUpdate.getBarber().getEmail();
+            String timeReservation = reservationModelToUpdate.getReservationTime().toString();
+            String dateReservation = String.valueOf(reservationModelToUpdate.getReservationDate());
+            mailService.notificationDeletedReservation(emailBarber, fullNameBarber, fullNameClient, dateReservation, timeReservation);
+        }
+
         reservationRepository.deleteById(id);
     }
 

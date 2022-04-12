@@ -16,7 +16,7 @@ public class UserUpdateDTO implements Serializable {
     private Long id;
     private String fname;
     private String lname;
-    private MultipartFile imageURL;
+    private Object imageURL;
     private String phone;
     private String street;
     private String apartement;

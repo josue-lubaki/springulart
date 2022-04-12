@@ -69,40 +69,75 @@ public class MailServiceImpl implements MailService {
         sendPlainTextMessage(email, "Bienvenue sur angulart", content);
     }
 
+    /**
+     * Method to send a message to barber when a client modify his reservation
+     * @param emailBarber the email of the barber
+     * @param fullNameBarber the full name of the barber
+     * @param fullNameClient the full name of the client
+     * @param newDateReservation the date of the reservation (yyyy-MM-dd)
+     * @param newTimeReservation the time of the reservation (HH:mm)
+     * */
     @Override
-    public void modificationReservation(String emailBarber,
-                                        String fullNameBarber,
-                                        String fullNameClient,
-                                        String newDateReservation,
-                                        String newTimeReservation) {
+    public void notificationModificationReservation(String emailBarber,
+                                                    String fullNameBarber,
+                                                    String fullNameClient,
+                                                    String newDateReservation,
+                                                    String newTimeReservation) {
 
         // create the context for the template
         Context context = getContext();
-        context.setVariable("fullnameBarber", String.format("%s", fullNameBarber));
-        context.setVariable("fullnameClient", String.format("%s", fullNameClient));
+        context.setVariable("fullNameBarber", String.format("%s", fullNameBarber));
+        context.setVariable("fullNameClient", String.format("%s", fullNameClient));
         context.setVariable("dateReservation", String.format("%s", newDateReservation));
-        context.setVariable("timeReservation", String.format("%s", newTimeReservation.toString()));
+        context.setVariable("timeReservation", String.format("%s", newTimeReservation));
 
         // set content of message
-        String content = templateEngine.process("emails/modify-reservation", context);
+        String content = templateEngine.process("emails/modify-reservation-barber", context);
 
         // send message
         sendPlainTextMessage(emailBarber, "Modification d'une réservation", content);
     }
 
+    /**
+     * Method to send a message to barber when a client cancels a reservation
+     * @param emailBarber the email of the barber
+     * @param fullNameBarber the full name of the barber
+     * @param fullNameClient the full name of the client
+     * @param newDateReservation the date of the reservation (yyyy-MM-dd)
+     * @param newTimeReservation the time of the reservation (HH:mm)
+     * */
+    @Override
+    public void notificationDeletedReservation(String emailBarber,
+                                               String fullNameBarber,
+                                               String fullNameClient,
+                                               String newDateReservation,
+                                               String newTimeReservation) {
+
+        // create the context for the template
+        Context context = getContext();
+        context.setVariable("fullNameBarber", String.format("%s", fullNameBarber));
+        context.setVariable("fullNameClient", String.format("%s", fullNameClient));
+        context.setVariable("dateReservation", String.format("%s", newDateReservation));
+        context.setVariable("timeReservation", String.format("%s", newTimeReservation));
+
+        // set content of message
+        String content = templateEngine.process("emails/delete-reservation-barber", context);
+
+        // send message
+        sendPlainTextMessage(emailBarber, "Suppression d'une réservation", content);
+    }
+
 
     /**
      * Method to send a plain text message
-     * @param to the email address of the recipient
-     *           of the message
-     *           (e.g. "josuelubaki@gmail.com")
+     * @param to the email address of the recipient of the message (e.g. "josuelubaki@gmail.com")
      * @param subject the subject of the message
      *                (e.g. "Réinitialisation de mot de passe")
      * @param content the content of the message (e.g. "Your temporary password is: 12345")
      * @catch MessagingException if the message cannot be sent
      * */
     @Async
-    private void sendPlainTextMessage(String to, String subject, String content) {
+    public void sendPlainTextMessage(String to, String subject, String content) {
         try{
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
