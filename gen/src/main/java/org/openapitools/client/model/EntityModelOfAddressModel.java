@@ -34,9 +34,9 @@ import org.openapitools.client.model.UserModel;
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2022-04-04T16:51:53.605532400-04:00[America/New_York]")
 public class EntityModelOfAddressModel {
-  public static final String SERIALIZED_NAME_APARTEMENT = "apartement";
-  @SerializedName(SERIALIZED_NAME_APARTEMENT)
-  private String apartement;
+  public static final String SERIALIZED_NAME_apartment = "apartment";
+  @SerializedName(SERIALIZED_NAME_apartment)
+  private String apartment;
 
   public static final String SERIALIZED_NAME_CITY = "city";
   @SerializedName(SERIALIZED_NAME_CITY)
@@ -67,26 +67,26 @@ public class EntityModelOfAddressModel {
   private String zip;
 
 
-  public EntityModelOfAddressModel apartement(String apartement) {
+  public EntityModelOfAddressModel apartment(String apartment) {
     
-    this.apartement = apartement;
+    this.apartment = apartment;
     return this;
   }
 
    /**
-   * Get apartement
-   * @return apartement
+   * Get apartment
+   * @return apartment
   **/
   @javax.annotation.Nullable
   @ApiModelProperty(value = "")
 
-  public String getApartement() {
-    return apartement;
+  public String getapartment() {
+    return apartment;
   }
 
 
-  public void setApartement(String apartement) {
-    this.apartement = apartement;
+  public void setapartment(String apartment) {
+    this.apartment = apartment;
   }
 
 
@@ -268,7 +268,7 @@ public class EntityModelOfAddressModel {
       return false;
     }
     EntityModelOfAddressModel entityModelOfAddressModel = (EntityModelOfAddressModel) o;
-    return Objects.equals(this.apartement, entityModelOfAddressModel.apartement) &&
+    return Objects.equals(this.apartment, entityModelOfAddressModel.apartment) &&
         Objects.equals(this.city, entityModelOfAddressModel.city) &&
         Objects.equals(this.id, entityModelOfAddressModel.id) &&
         Objects.equals(this.links, entityModelOfAddressModel.links) &&
@@ -280,7 +280,7 @@ public class EntityModelOfAddressModel {
 
   @Override
   public int hashCode() {
-    return Objects.hash(apartement, city, id, links, state, street, users, zip);
+    return Objects.hash(apartment, city, id, links, state, street, users, zip);
   }
 
 
@@ -288,7 +288,7 @@ public class EntityModelOfAddressModel {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class EntityModelOfAddressModel {\n");
-    sb.append("    apartement: ").append(toIndentedString(apartement)).append("\n");
+    sb.append("    apartment: ").append(toIndentedString(apartment)).append("\n");
     sb.append("    city: ").append(toIndentedString(city)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    links: ").append(toIndentedString(links)).append("\n");

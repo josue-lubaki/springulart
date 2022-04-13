@@ -43,7 +43,7 @@ class CredentialServiceImplTest {
     @Test
     void testFindCredentialUserById() {
         AddressModel addressModel = new AddressModel();
-        addressModel.setApartement("Apartement");
+        addressModel.setApartment("apartment");
         addressModel.setCity("Oxford");
         addressModel.setId(123L);
         addressModel.setState("MD");
@@ -122,7 +122,7 @@ class CredentialServiceImplTest {
     @Test
     void testFindCredentialUserById2() {
         AddressModel addressModel = new AddressModel();
-        addressModel.setApartement("Apartement");
+        addressModel.setApartment("apartment");
         addressModel.setCity("Oxford");
         addressModel.setId(123L);
         addressModel.setState("MD");
@@ -226,7 +226,7 @@ class CredentialServiceImplTest {
     @Test
     void testSaveCredential() {
         AddressModel addressModel = new AddressModel();
-        addressModel.setApartement("Apartement");
+        addressModel.setApartment("apartment");
         addressModel.setCity("Oxford");
         addressModel.setId(123L);
         addressModel.setState("MD");
@@ -235,7 +235,7 @@ class CredentialServiceImplTest {
         addressModel.setZip("21654");
 
         AddressModel addressModel1 = new AddressModel();
-        addressModel1.setApartement("Apartement");
+        addressModel1.setApartment("apartment");
         addressModel1.setCity("Oxford");
         addressModel1.setId(123L);
         addressModel1.setState("MD");
@@ -308,7 +308,7 @@ class CredentialServiceImplTest {
         when(this.credentialRepository.save(any())).thenReturn(credentialModel2);
 
         AddressModel addressModel2 = new AddressModel();
-        addressModel2.setApartement("Apartement");
+        addressModel2.setApartment("apartment");
         addressModel2.setCity("Oxford");
         addressModel2.setId(123L);
         addressModel2.setState("MD");
@@ -384,7 +384,7 @@ class CredentialServiceImplTest {
     @Test
     void testSaveCredential2() {
         AddressModel addressModel = new AddressModel();
-        addressModel.setApartement("Apartement");
+        addressModel.setApartment("apartment");
         addressModel.setCity("Oxford");
         addressModel.setId(123L);
         addressModel.setState("MD");
@@ -393,7 +393,7 @@ class CredentialServiceImplTest {
         addressModel.setZip("21654");
 
         AddressModel addressModel1 = new AddressModel();
-        addressModel1.setApartement("Apartement");
+        addressModel1.setApartment("apartment");
         addressModel1.setCity("Oxford");
         addressModel1.setId(123L);
         addressModel1.setState("MD");
@@ -478,7 +478,7 @@ class CredentialServiceImplTest {
         when(this.credentialRepository.save(any())).thenReturn(credentialModel2);
 
         AddressModel addressModel2 = new AddressModel();
-        addressModel2.setApartement("Apartement");
+        addressModel2.setApartment("apartment");
         addressModel2.setCity("Oxford");
         addressModel2.setId(123L);
         addressModel2.setState("MD");

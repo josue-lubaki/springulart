@@ -21,7 +21,7 @@ public class UtilsAddressService {
     public AddressModel converterAddressDtoToAddressModel(AddressDTO addressDTO){
         AddressModel address = new AddressModel();
         address.setId(addressDTO.getId());
-        address.setApartement(addressDTO.getApartement());
+        address.setApartment(addressDTO.getApartment());
         address.setStreet(addressDTO.getStreet());
         address.setState(addressDTO.getState());
         address.setCity(addressDTO.getCity());
@@ -38,7 +38,7 @@ public class UtilsAddressService {
     public AddressDTO converterAddressModelToAddressDTO(AddressModel addressModel){
         AddressDTO address = new AddressDTO();
         address.setId(addressModel.getId());
-        address.setApartement(addressModel.getApartement());
+        address.setApartment(addressModel.getApartment());
         address.setStreet(addressModel.getStreet());
         address.setState(addressModel.getState());
         address.setCity(addressModel.getCity());

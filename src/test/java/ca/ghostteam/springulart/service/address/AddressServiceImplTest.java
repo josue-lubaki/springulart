@@ -36,7 +36,7 @@ class AddressServiceImplTest {
     @Test
     void testFindAddressUserById() {
         AddressDTO addressDTO = new AddressDTO();
-        addressDTO.setApartement("Apartement");
+        addressDTO.setApartment("apartment");
         addressDTO.setCity("Oxford");
         addressDTO.setId(123L);
         addressDTO.setState("MD");
@@ -45,7 +45,7 @@ class AddressServiceImplTest {
         when(this.utilsAddressService.converterAddressModelToAddressDTO(any())).thenReturn(addressDTO);
 
         AddressModel addressModel = new AddressModel();
-        addressModel.setApartement("Apartement");
+        addressModel.setApartment("apartment");
         addressModel.setCity("Oxford");
         addressModel.setId(123L);
         addressModel.setState("MD");
@@ -62,7 +62,7 @@ class AddressServiceImplTest {
     @Test
     void testFindAddressModelUserById() {
         AddressModel addressModel = new AddressModel();
-        addressModel.setApartement("Apartement");
+        addressModel.setApartment("apartment");
         addressModel.setCity("Oxford");
         addressModel.setId(123L);
         addressModel.setState("MD");
@@ -78,7 +78,7 @@ class AddressServiceImplTest {
     @Test
     void testSaveAddress() {
         AddressDTO addressDTO = new AddressDTO();
-        addressDTO.setApartement("Apartement");
+        addressDTO.setApartment("apartment");
         addressDTO.setCity("Oxford");
         addressDTO.setId(123L);
         addressDTO.setState("MD");
@@ -87,7 +87,7 @@ class AddressServiceImplTest {
         when(this.utilsAddressService.converterAddressModelToAddressDTO(any())).thenReturn(addressDTO);
 
         AddressModel addressModel = new AddressModel();
-        addressModel.setApartement("Apartement");
+        addressModel.setApartment("apartment");
         addressModel.setCity("Oxford");
         addressModel.setId(123L);
         addressModel.setState("MD");
@@ -97,7 +97,7 @@ class AddressServiceImplTest {
         when(this.addressRepository.save(any())).thenReturn(addressModel);
 
         AddressModel addressModel1 = new AddressModel();
-        addressModel1.setApartement("Apartement");
+        addressModel1.setApartment("apartment");
         addressModel1.setCity("Oxford");
         addressModel1.setId(123L);
         addressModel1.setState("MD");
@@ -112,7 +112,7 @@ class AddressServiceImplTest {
     @Test
     void testSaveAddressModel() {
         AddressDTO addressDTO = new AddressDTO();
-        addressDTO.setApartement("Apartement");
+        addressDTO.setApartment("apartment");
         addressDTO.setCity("Oxford");
         addressDTO.setId(123L);
         addressDTO.setState("MD");
@@ -121,7 +121,7 @@ class AddressServiceImplTest {
         when(this.utilsAddressService.converterAddressModelToAddressDTO(any())).thenReturn(addressDTO);
 
         AddressModel addressModel = new AddressModel();
-        addressModel.setApartement("Apartement");
+        addressModel.setApartment("apartment");
         addressModel.setCity("Oxford");
         addressModel.setId(123L);
         addressModel.setState("MD");
@@ -131,7 +131,7 @@ class AddressServiceImplTest {
         when(this.addressRepository.save(any())).thenReturn(addressModel);
 
         AddressModel addressModel1 = new AddressModel();
-        addressModel1.setApartement("Apartement");
+        addressModel1.setApartment("apartment");
         addressModel1.setCity("Oxford");
         addressModel1.setId(123L);
         addressModel1.setState("MD");

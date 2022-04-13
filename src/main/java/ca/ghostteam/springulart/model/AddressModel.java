@@ -17,7 +17,7 @@ public class AddressModel {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String street;
-    private String apartement;
+    private String apartment;
     private String zip;
     private String city;
     private String state;

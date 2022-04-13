@@ -213,8 +213,8 @@ public class UserServiceImpl implements UserService {
     private void updateAddressUser(UserModel oldUserModel, UserUpdateDTO userUpdateDTO) {
         // update address
         AddressModel oldAddressModel = oldUserModel.getAddress();
-        if (oldAddressModel.getApartement() != null)
-            oldAddressModel.setApartement(userUpdateDTO.getApartement());
+        if (oldAddressModel.getApartment() != null)
+            oldAddressModel.setApartment(userUpdateDTO.getApartment());
         if (oldAddressModel.getCity() != null)
             oldAddressModel.setCity(userUpdateDTO.getCity());
         if (oldAddressModel.getState() != null)
