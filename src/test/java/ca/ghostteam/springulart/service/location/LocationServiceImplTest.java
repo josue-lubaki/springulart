@@ -51,7 +51,7 @@ class LocationServiceImplTest {
         when(this.utilsLocation.converterModelToDTO(any())).thenReturn(locationDTO);
 
         AddressModel addressModel = new AddressModel();
-        addressModel.setApartement("Apartement");
+        addressModel.setApartment("apartment");
         addressModel.setCity("Oxford");
         addressModel.setId(123L);
         addressModel.setState("MD");
@@ -87,7 +87,7 @@ class LocationServiceImplTest {
         userModel.setUpdated(LocalDate.ofEpochDay(1L));
 
         AddressModel addressModel1 = new AddressModel();
-        addressModel1.setApartement("Apartement");
+        addressModel1.setApartment("apartment");
         addressModel1.setCity("Oxford");
         addressModel1.setId(123L);
         addressModel1.setState("MD");
@@ -183,7 +183,7 @@ class LocationServiceImplTest {
         locationDTO.setLongitude(10.0d);
 
         AddressModel addressModel = new AddressModel();
-        addressModel.setApartement("Apartement");
+        addressModel.setApartment("apartment");
         addressModel.setCity("Oxford");
         addressModel.setId(123L);
         addressModel.setState("MD");
@@ -237,7 +237,7 @@ class LocationServiceImplTest {
         userModel1.setUpdated(LocalDate.ofEpochDay(1L));
 
         AddressModel addressModel1 = new AddressModel();
-        addressModel1.setApartement("Apartement");
+        addressModel1.setApartment("apartment");
         addressModel1.setCity("Oxford");
         addressModel1.setId(123L);
         addressModel1.setState("MD");
@@ -397,7 +397,7 @@ class LocationServiceImplTest {
         when(this.utilsLocation.converterDtoToModel(any())).thenReturn(locationModel2);
 
         AddressModel addressModel2 = new AddressModel();
-        addressModel2.setApartement("Apartement");
+        addressModel2.setApartment("apartment");
         addressModel2.setCity("Oxford");
         addressModel2.setId(123L);
         addressModel2.setState("MD");
@@ -451,7 +451,7 @@ class LocationServiceImplTest {
         userModel7.setUpdated(LocalDate.ofEpochDay(1L));
 
         AddressModel addressModel3 = new AddressModel();
-        addressModel3.setApartement("Apartement");
+        addressModel3.setApartment("apartment");
         addressModel3.setCity("Oxford");
         addressModel3.setId(123L);
         addressModel3.setState("MD");
@@ -628,7 +628,7 @@ class LocationServiceImplTest {
         when(this.utilsLocation.converterModelToDTO(any())).thenReturn(locationDTO);
 
         AddressModel addressModel = new AddressModel();
-        addressModel.setApartement("Apartement");
+        addressModel.setApartment("apartment");
         addressModel.setCity("Oxford");
         addressModel.setId(123L);
         addressModel.setState("MD");
@@ -664,7 +664,7 @@ class LocationServiceImplTest {
         userModel.setUpdated(LocalDate.ofEpochDay(1L));
 
         AddressModel addressModel1 = new AddressModel();
-        addressModel1.setApartement("Apartement");
+        addressModel1.setApartment("apartment");
         addressModel1.setCity("Oxford");
         addressModel1.setId(123L);
         addressModel1.setState("MD");

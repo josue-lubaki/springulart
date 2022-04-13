@@ -21,7 +21,7 @@ public class RegisterDTO implements Serializable {
     private String phone;
     private String role;
     private String street;
-    private String apartement;
+    private String apartment;
     private String zip;
     private String city;
     private String state;

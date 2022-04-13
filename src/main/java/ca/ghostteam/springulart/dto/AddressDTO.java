@@ -11,7 +11,7 @@ import lombok.Data;
 public class AddressDTO {
     private Long id;
     private String street;
-    private String apartement;
+    private String apartment;
     private String zip;
     private String city;
     private String state;
