@@ -38,9 +38,9 @@ import java.util.stream.Collectors;
  * @since 2022-03-19
  */
 @Component
-@EnableWebMvc
+//@EnableWebMvc
 @Slf4j
-public class JwtTokenVerifier extends OncePerRequestFilter implements WebMvcConfigurer {
+public class JwtTokenVerifier extends OncePerRequestFilter{
 
     private final JwtConfig jwtConfig;
     private final UserService userDetailsService;
@@ -52,12 +52,12 @@ public class JwtTokenVerifier extends OncePerRequestFilter implements WebMvcConf
         this.userDetailsService = userDetailsService;
     }
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS");
-        // permit all origins
-        //registry.addMapping("/**").allowedOrigins("*");
-    }
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS");
+//        // permit all origins
+//        //registry.addMapping("/**").allowedOrigins("*");
+//    }
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
