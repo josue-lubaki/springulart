@@ -54,9 +54,8 @@ public class JwtTokenVerifier extends OncePerRequestFilter implements WebMvcConf
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS");
-        // permit all origins
-        //registry.addMapping("/**").allowedOrigins("*");
+        registry.addMapping("/**")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS");
     }
 
     @Override
