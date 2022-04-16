@@ -113,13 +113,11 @@ public class HaircutManagementController {
                         () -> new NoSuchElementException(String.format("Haircut with id %s not found", id))
                 ).getImageURL();
 
-        if(imageURL != null) {
-            // get name of image from imageURL
-            String imageName = imageURL.substring(imageURL.lastIndexOf("/") + 1);
+        // get name of image from imageURL
+        String imageName = imageURL.substring(imageURL.lastIndexOf("/") + 1);
 
-            // delete image from S3
-            this.awss3ServiceImpl.deleteImage(imageName, "haircuts");
-        }
+        // delete image from S3
+        this.awss3ServiceImpl.deleteImage(imageName, "haircuts");
 
         this.haircutService.deleteHaircut(id);
     }

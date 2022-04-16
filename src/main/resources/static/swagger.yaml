@@ -789,7 +789,7 @@ components:
       title: AddressDTO
       type: object
       properties:
-        apartment:
+        apartement:
           type: string
         city:
           type: string
@@ -806,7 +806,7 @@ components:
       title: AddressModel
       type: object
       properties:
-        apartment:
+        apartement:
           type: string
         city:
           type: string
@@ -925,7 +925,7 @@ components:
       title: EntityModelOfAddressModel
       type: object
       properties:
-        apartment:
+        apartement:
           type: string
         city:
           type: string

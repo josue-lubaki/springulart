@@ -20,7 +20,7 @@ public class UserUpdateDTO implements Serializable {
     private String password;
     private String phone;
     private String street;
-    private String apartment;
+    private String apartement;
     private String zip;
     private String city;
     private String state;

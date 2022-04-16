@@ -58,7 +58,7 @@ class UserServiceImplTest {
     @Test
     void testLoadUserByUsername() throws UsernameNotFoundException {
         AddressModel addressModel = new AddressModel();
-        addressModel.setApartment("apartment");
+        addressModel.setApartement("Apartement");
         addressModel.setCity("Oxford");
         addressModel.setId(123L);
         addressModel.setState("MD");
@@ -121,7 +121,7 @@ class UserServiceImplTest {
         credentialModel1.setUsername("janedoe");
 
         AddressModel addressModel1 = new AddressModel();
-        addressModel1.setApartment("apartment");
+        addressModel1.setApartement("Apartement");
         addressModel1.setCity("Oxford");
         addressModel1.setId(123L);
         addressModel1.setState("MD");
@@ -130,7 +130,7 @@ class UserServiceImplTest {
         addressModel1.setZip("21654");
 
         AddressModel addressModel2 = new AddressModel();
-        addressModel2.setApartment("apartment");
+        addressModel2.setApartement("Apartement");
         addressModel2.setCity("Oxford");
         addressModel2.setId(123L);
         addressModel2.setState("MD");
@@ -199,7 +199,7 @@ class UserServiceImplTest {
         when(this.utilsUser.converterUserModelToUserDetailsDTO(any())).thenReturn(userDetailsDTO);
 
         AddressModel addressModel3 = new AddressModel();
-        addressModel3.setApartment("apartment");
+        addressModel3.setApartement("Apartement");
         addressModel3.setCity("Oxford");
         addressModel3.setId(123L);
         addressModel3.setState("MD");
@@ -208,7 +208,7 @@ class UserServiceImplTest {
         addressModel3.setZip("21654");
 
         AddressModel addressModel4 = new AddressModel();
-        addressModel4.setApartment("apartment");
+        addressModel4.setApartement("Apartement");
         addressModel4.setCity("Oxford");
         addressModel4.setId(123L);
         addressModel4.setState("MD");
@@ -279,7 +279,7 @@ class UserServiceImplTest {
     @Test
     void testUpdateUser() {
         AddressDTO addressDTO = new AddressDTO();
-        addressDTO.setApartment("apartment");
+        addressDTO.setApartement("Apartement");
         addressDTO.setCity("Oxford");
         addressDTO.setId(123L);
         addressDTO.setState("MD");
@@ -302,7 +302,7 @@ class UserServiceImplTest {
         when(this.utilsUser.converterUserModelToUserDTO(any())).thenReturn(userDTO);
 
         AddressModel addressModel = new AddressModel();
-        addressModel.setApartment("apartment");
+        addressModel.setApartement("Apartement");
         addressModel.setCity("Oxford");
         addressModel.setId(123L);
         addressModel.setState("MD");
@@ -311,7 +311,7 @@ class UserServiceImplTest {
         addressModel.setZip("21654");
 
         AddressModel addressModel1 = new AddressModel();
-        addressModel1.setApartment("apartment");
+        addressModel1.setApartement("Apartement");
         addressModel1.setCity("Oxford");
         addressModel1.setId(123L);
         addressModel1.setState("MD");
@@ -375,7 +375,7 @@ class UserServiceImplTest {
         Optional<UserModel> ofResult = Optional.of(userModel1);
 
         AddressModel addressModel2 = new AddressModel();
-        addressModel2.setApartment("apartment");
+        addressModel2.setApartement("Apartement");
         addressModel2.setCity("Oxford");
         addressModel2.setId(123L);
         addressModel2.setState("MD");
@@ -384,7 +384,7 @@ class UserServiceImplTest {
         addressModel2.setZip("21654");
 
         AddressModel addressModel3 = new AddressModel();
-        addressModel3.setApartment("apartment");
+        addressModel3.setApartement("Apartement");
         addressModel3.setCity("Oxford");
         addressModel3.setId(123L);
         addressModel3.setState("MD");
@@ -467,7 +467,7 @@ class UserServiceImplTest {
         when(this.userRepository.findById(any())).thenReturn(ofResult);
 
         AddressDTO addressDTO1 = new AddressDTO();
-        addressDTO1.setApartment("apartment");
+        addressDTO1.setApartement("Apartement");
         addressDTO1.setCity("Oxford");
         addressDTO1.setId(123L);
         addressDTO1.setState("MD");
@@ -489,7 +489,7 @@ class UserServiceImplTest {
     @Test
     void testUpdateUser2() {
         AddressDTO addressDTO = new AddressDTO();
-        addressDTO.setApartment("apartment");
+        addressDTO.setApartement("Apartement");
         addressDTO.setCity("Oxford");
         addressDTO.setId(123L);
         addressDTO.setState("MD");
@@ -512,7 +512,7 @@ class UserServiceImplTest {
         when(this.utilsUser.converterUserModelToUserDTO(any())).thenReturn(userDTO);
 
         AddressModel addressModel = new AddressModel();
-        addressModel.setApartment("apartment");
+        addressModel.setApartement("Apartement");
         addressModel.setCity("Oxford");
         addressModel.setId(123L);
         addressModel.setState("MD");
@@ -521,7 +521,7 @@ class UserServiceImplTest {
         addressModel.setZip("21654");
 
         AddressModel addressModel1 = new AddressModel();
-        addressModel1.setApartment("apartment");
+        addressModel1.setApartement("Apartement");
         addressModel1.setCity("Oxford");
         addressModel1.setId(123L);
         addressModel1.setState("MD");
@@ -587,7 +587,7 @@ class UserServiceImplTest {
         when(this.userRepository.findById(any())).thenReturn(ofResult);
 
         AddressDTO addressDTO1 = new AddressDTO();
-        addressDTO1.setApartment("apartment");
+        addressDTO1.setApartement("Apartement");
         addressDTO1.setCity("Oxford");
         addressDTO1.setId(123L);
         addressDTO1.setState("MD");
@@ -608,7 +608,7 @@ class UserServiceImplTest {
     @Test
     void testFindUserByEmail() {
         AddressDTO addressDTO = new AddressDTO();
-        addressDTO.setApartment("apartment");
+        addressDTO.setApartement("Apartement");
         addressDTO.setCity("Oxford");
         addressDTO.setId(123L);
         addressDTO.setState("MD");
@@ -631,7 +631,7 @@ class UserServiceImplTest {
         when(this.utilsUser.converterUserModelToUserDTO(any())).thenReturn(userDTO);
 
         AddressModel addressModel = new AddressModel();
-        addressModel.setApartment("apartment");
+        addressModel.setApartement("Apartement");
         addressModel.setCity("Oxford");
         addressModel.setId(123L);
         addressModel.setState("MD");
@@ -640,7 +640,7 @@ class UserServiceImplTest {
         addressModel.setZip("21654");
 
         AddressModel addressModel1 = new AddressModel();
-        addressModel1.setApartment("apartment");
+        addressModel1.setApartement("Apartement");
         addressModel1.setCity("Oxford");
         addressModel1.setId(123L);
         addressModel1.setState("MD");
@@ -713,7 +713,7 @@ class UserServiceImplTest {
         when(this.utilsUser.converterUserModelToUserDTO(any())).thenThrow(new UsernameNotFoundException("Msg"));
 
         AddressModel addressModel = new AddressModel();
-        addressModel.setApartment("apartment");
+        addressModel.setApartement("Apartement");
         addressModel.setCity("Oxford");
         addressModel.setId(123L);
         addressModel.setState("MD");
@@ -722,7 +722,7 @@ class UserServiceImplTest {
         addressModel.setZip("21654");
 
         AddressModel addressModel1 = new AddressModel();
-        addressModel1.setApartment("apartment");
+        addressModel1.setApartement("Apartement");
         addressModel1.setCity("Oxford");
         addressModel1.setId(123L);
         addressModel1.setState("MD");
@@ -819,7 +819,7 @@ class UserServiceImplTest {
     @Test
     void testSaveUser() {
         AddressModel addressModel = new AddressModel();
-        addressModel.setApartment("apartment");
+        addressModel.setApartement("Apartement");
         addressModel.setCity("Oxford");
         addressModel.setId(123L);
         addressModel.setState("MD");
@@ -828,7 +828,7 @@ class UserServiceImplTest {
         addressModel.setZip("21654");
 
         AddressModel addressModel1 = new AddressModel();
-        addressModel1.setApartment("apartment");
+        addressModel1.setApartement("Apartement");
         addressModel1.setCity("Oxford");
         addressModel1.setId(123L);
         addressModel1.setState("MD");
@@ -837,7 +837,7 @@ class UserServiceImplTest {
         addressModel1.setZip("21654");
 
         AddressModel addressModel2 = new AddressModel();
-        addressModel2.setApartment("apartment");
+        addressModel2.setApartement("Apartement");
         addressModel2.setCity("Oxford");
         addressModel2.setId(123L);
         addressModel2.setState("MD");
@@ -909,7 +909,7 @@ class UserServiceImplTest {
         credentialModel2.setUsername("janedoe");
 
         AddressModel addressModel3 = new AddressModel();
-        addressModel3.setApartment("apartment");
+        addressModel3.setApartement("Apartement");
         addressModel3.setCity("Oxford");
         addressModel3.setId(123L);
         addressModel3.setState("MD");
@@ -918,7 +918,7 @@ class UserServiceImplTest {
         addressModel3.setZip("21654");
 
         AddressModel addressModel4 = new AddressModel();
-        addressModel4.setApartment("apartment");
+        addressModel4.setApartement("Apartement");
         addressModel4.setCity("Oxford");
         addressModel4.setId(123L);
         addressModel4.setState("MD");
@@ -1004,7 +1004,7 @@ class UserServiceImplTest {
                 .thenThrow(new UsernameNotFoundException("Msg"));
 
         AddressDTO addressDTO = new AddressDTO();
-        addressDTO.setApartment("apartment");
+        addressDTO.setApartement("Apartement");
         addressDTO.setCity("Oxford");
         addressDTO.setId(123L);
         addressDTO.setState("MD");
@@ -1014,7 +1014,7 @@ class UserServiceImplTest {
         when(this.addressService.saveAddressModel(any())).thenReturn(ofResult);
 
         SignupDTO signupDTO = new SignupDTO();
-        signupDTO.setApartment("Apartment");
+        signupDTO.setApartement("Apartment");
         signupDTO.setCity("Oxford");
         signupDTO.setDob(LocalDate.ofEpochDay(1L));
         signupDTO.setEmail("jane.doe@example.org");
@@ -1038,7 +1038,7 @@ class UserServiceImplTest {
     @Test
     void testSaveUser2() {
         AddressModel addressModel = new AddressModel();
-        addressModel.setApartment("apartment");
+        addressModel.setApartement("Apartement");
         addressModel.setCity("Oxford");
         addressModel.setId(123L);
         addressModel.setState("MD");
@@ -1047,7 +1047,7 @@ class UserServiceImplTest {
         addressModel.setZip("21654");
 
         AddressModel addressModel1 = new AddressModel();
-        addressModel1.setApartment("apartment");
+        addressModel1.setApartement("Apartement");
         addressModel1.setCity("Oxford");
         addressModel1.setId(123L);
         addressModel1.setState("MD");
@@ -1056,7 +1056,7 @@ class UserServiceImplTest {
         addressModel1.setZip("21654");
 
         AddressModel addressModel2 = new AddressModel();
-        addressModel2.setApartment("apartment");
+        addressModel2.setApartement("Apartement");
         addressModel2.setCity("Oxford");
         addressModel2.setId(123L);
         addressModel2.setState("MD");
@@ -1134,7 +1134,7 @@ class UserServiceImplTest {
         credentialModel2.setUsername("janedoe");
 
         AddressModel addressModel3 = new AddressModel();
-        addressModel3.setApartment("apartment");
+        addressModel3.setApartement("Apartement");
         addressModel3.setCity("Oxford");
         addressModel3.setId(123L);
         addressModel3.setState("MD");
@@ -1143,7 +1143,7 @@ class UserServiceImplTest {
         addressModel3.setZip("21654");
 
         AddressModel addressModel4 = new AddressModel();
-        addressModel4.setApartment("apartment");
+        addressModel4.setApartement("Apartement");
         addressModel4.setCity("Oxford");
         addressModel4.setId(123L);
         addressModel4.setState("MD");
@@ -1229,7 +1229,7 @@ class UserServiceImplTest {
                 .thenThrow(new UsernameNotFoundException("Msg"));
 
         AddressDTO addressDTO = new AddressDTO();
-        addressDTO.setApartment("apartment");
+        addressDTO.setApartement("Apartement");
         addressDTO.setCity("Oxford");
         addressDTO.setId(123L);
         addressDTO.setState("MD");
@@ -1239,7 +1239,7 @@ class UserServiceImplTest {
         when(this.addressService.saveAddressModel(any())).thenReturn(ofResult);
 
         SignupDTO signupDTO = new SignupDTO();
-        signupDTO.setApartment("Apartment");
+        signupDTO.setApartement("Apartment");
         signupDTO.setCity("Oxford");
         signupDTO.setDob(LocalDate.ofEpochDay(1L));
         signupDTO.setEmail("jane.doe@example.org");
@@ -1270,7 +1270,7 @@ class UserServiceImplTest {
     @Test
     void testFindUserById() {
         AddressDTO addressDTO = new AddressDTO();
-        addressDTO.setApartment("apartment");
+        addressDTO.setApartement("Apartement");
         addressDTO.setCity("Oxford");
         addressDTO.setId(123L);
         addressDTO.setState("MD");
@@ -1293,7 +1293,7 @@ class UserServiceImplTest {
         when(this.utilsUser.converterUserModelToUserDTO(any())).thenReturn(userDTO);
 
         AddressModel addressModel = new AddressModel();
-        addressModel.setApartment("apartment");
+        addressModel.setApartement("Apartement");
         addressModel.setCity("Oxford");
         addressModel.setId(123L);
         addressModel.setState("MD");
@@ -1302,7 +1302,7 @@ class UserServiceImplTest {
         addressModel.setZip("21654");
 
         AddressModel addressModel1 = new AddressModel();
-        addressModel1.setApartment("apartment");
+        addressModel1.setApartement("Apartement");
         addressModel1.setCity("Oxford");
         addressModel1.setId(123L);
         addressModel1.setState("MD");
@@ -1394,7 +1394,7 @@ class UserServiceImplTest {
     @Test
     void testDeleteUserById() {
         AddressModel addressModel = new AddressModel();
-        addressModel.setApartment("apartment");
+        addressModel.setApartement("Apartement");
         addressModel.setCity("Oxford");
         addressModel.setId(123L);
         addressModel.setState("MD");
@@ -1403,7 +1403,7 @@ class UserServiceImplTest {
         addressModel.setZip("21654");
 
         AddressModel addressModel1 = new AddressModel();
-        addressModel1.setApartment("apartment");
+        addressModel1.setApartement("Apartement");
         addressModel1.setCity("Oxford");
         addressModel1.setId(123L);
         addressModel1.setState("MD");
@@ -1477,7 +1477,7 @@ class UserServiceImplTest {
     @Test
     void testDeleteUserById2() {
         AddressModel addressModel = new AddressModel();
-        addressModel.setApartment("apartment");
+        addressModel.setApartement("Apartement");
         addressModel.setCity("Oxford");
         addressModel.setId(123L);
         addressModel.setState("MD");
@@ -1486,7 +1486,7 @@ class UserServiceImplTest {
         addressModel.setZip("21654");
 
         AddressModel addressModel1 = new AddressModel();
-        addressModel1.setApartment("apartment");
+        addressModel1.setApartement("Apartement");
         addressModel1.setCity("Oxford");
         addressModel1.setId(123L);
         addressModel1.setState("MD");
@@ -1560,7 +1560,7 @@ class UserServiceImplTest {
     @Test
     void testDeleteUserById3() {
         AddressModel addressModel = new AddressModel();
-        addressModel.setApartment("apartment");
+        addressModel.setApartement("Apartement");
         addressModel.setCity("Oxford");
         addressModel.setId(123L);
         addressModel.setState("MD");
@@ -1569,7 +1569,7 @@ class UserServiceImplTest {
         addressModel.setZip("21654");
 
         AddressModel addressModel1 = new AddressModel();
-        addressModel1.setApartment("apartment");
+        addressModel1.setApartement("Apartement");
         addressModel1.setCity("Oxford");
         addressModel1.setId(123L);
         addressModel1.setState("MD");

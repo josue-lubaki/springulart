@@ -6,7 +6,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**apartment** | **String** |  |  [optional]
+**apartement** | **String** |  |  [optional]
 **city** | **String** |  |  [optional]
 **id** | **Long** |  |  [optional]
 **state** | **String** |  |  [optional]
