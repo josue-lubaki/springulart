@@ -73,7 +73,7 @@ public class UtilsReservation {
     public AddressModel convertAddressDtoTOAddressModel(AddressDTO address) {
         AddressModel addressModel = new AddressModel();
         addressModel.setId(address.getId());
-        addressModel.setApartment(address.getApartment());
+        addressModel.setApartement(address.getApartement());
         addressModel.setStreet(address.getStreet());
         addressModel.setZip(address.getZip());
         addressModel.setCity(address.getCity());
@@ -89,7 +89,7 @@ public class UtilsReservation {
     public AddressDTO convertAddressModelTOAddressDTO(AddressModel address) {
         AddressDTO addressDTO = new AddressDTO();
         addressDTO.setId(address.getId());
-        addressDTO.setApartment(address.getApartment());
+        addressDTO.setApartement(address.getApartement());
         addressDTO.setStreet(address.getStreet());
         addressDTO.setZip(address.getZip());
         addressDTO.setCity(address.getCity());

@@ -33,9 +33,9 @@ import org.openapitools.client.model.UserModel;
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2022-04-04T16:51:53.605532400-04:00[America/New_York]")
 public class AddressModel {
-  public static final String SERIALIZED_NAME_apartment = "apartment";
-  @SerializedName(SERIALIZED_NAME_apartment)
-  private String apartment;
+  public static final String SERIALIZED_NAME_APARTEMENT = "apartement";
+  @SerializedName(SERIALIZED_NAME_APARTEMENT)
+  private String apartement;
 
   public static final String SERIALIZED_NAME_CITY = "city";
   @SerializedName(SERIALIZED_NAME_CITY)
@@ -62,26 +62,26 @@ public class AddressModel {
   private String zip;
 
 
-  public AddressModel apartment(String apartment) {
+  public AddressModel apartement(String apartement) {
     
-    this.apartment = apartment;
+    this.apartement = apartement;
     return this;
   }
 
    /**
-   * Get apartment
-   * @return apartment
+   * Get apartement
+   * @return apartement
   **/
   @javax.annotation.Nullable
   @ApiModelProperty(value = "")
 
-  public String getapartment() {
-    return apartment;
+  public String getApartement() {
+    return apartement;
   }
 
 
-  public void setapartment(String apartment) {
-    this.apartment = apartment;
+  public void setApartement(String apartement) {
+    this.apartement = apartement;
   }
 
 
@@ -240,7 +240,7 @@ public class AddressModel {
       return false;
     }
     AddressModel addressModel = (AddressModel) o;
-    return Objects.equals(this.apartment, addressModel.apartment) &&
+    return Objects.equals(this.apartement, addressModel.apartement) &&
         Objects.equals(this.city, addressModel.city) &&
         Objects.equals(this.id, addressModel.id) &&
         Objects.equals(this.state, addressModel.state) &&
@@ -251,7 +251,7 @@ public class AddressModel {
 
   @Override
   public int hashCode() {
-    return Objects.hash(apartment, city, id, state, street, users, zip);
+    return Objects.hash(apartement, city, id, state, street, users, zip);
   }
 
 
@@ -259,7 +259,7 @@ public class AddressModel {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class AddressModel {\n");
-    sb.append("    apartment: ").append(toIndentedString(apartment)).append("\n");
+    sb.append("    apartement: ").append(toIndentedString(apartement)).append("\n");
     sb.append("    city: ").append(toIndentedString(city)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    state: ").append(toIndentedString(state)).append("\n");

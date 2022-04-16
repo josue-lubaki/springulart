@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -80,7 +81,7 @@ class ReservationServiceImplTest {
     @Test
     void testFindById() {
         AddressDTO addressDTO = new AddressDTO();
-        addressDTO.setApartment("apartment");
+        addressDTO.setApartement("Apartement");
         addressDTO.setCity("Oxford");
         addressDTO.setId(123L);
         addressDTO.setState("MD");
@@ -102,7 +103,7 @@ class ReservationServiceImplTest {
         userDTO.setUpdated(LocalDate.ofEpochDay(1L));
 
         AddressDTO addressDTO1 = new AddressDTO();
-        addressDTO1.setApartment("apartment");
+        addressDTO1.setApartement("Apartement");
         addressDTO1.setCity("Oxford");
         addressDTO1.setId(123L);
         addressDTO1.setState("MD");
@@ -153,7 +154,7 @@ class ReservationServiceImplTest {
         when(this.utilsReservation.converterModelToDTO(any())).thenReturn(reservationDTO);
 
         AddressModel addressModel = new AddressModel();
-        addressModel.setApartment("apartment");
+        addressModel.setApartement("Apartement");
         addressModel.setCity("Oxford");
         addressModel.setId(123L);
         addressModel.setState("MD");
@@ -207,7 +208,7 @@ class ReservationServiceImplTest {
         userModel1.setUpdated(LocalDate.ofEpochDay(1L));
 
         AddressModel addressModel1 = new AddressModel();
-        addressModel1.setApartment("apartment");
+        addressModel1.setApartement("Apartement");
         addressModel1.setCity("Oxford");
         addressModel1.setId(123L);
         addressModel1.setState("MD");
@@ -376,7 +377,7 @@ class ReservationServiceImplTest {
         haircutModel.setTitle("Dr");
 
         AddressModel addressModel = new AddressModel();
-        addressModel.setApartment("apartment");
+        addressModel.setApartement("Apartement");
         addressModel.setCity("Oxford");
         addressModel.setId(123L);
         addressModel.setState("MD");
@@ -385,7 +386,7 @@ class ReservationServiceImplTest {
         addressModel.setZip("21654");
 
         AddressModel addressModel1 = new AddressModel();
-        addressModel1.setApartment("apartment");
+        addressModel1.setApartement("Apartement");
         addressModel1.setCity("Oxford");
         addressModel1.setId(123L);
         addressModel1.setState("MD");
@@ -478,7 +479,7 @@ class ReservationServiceImplTest {
         when(this.utilsReservation.converterEntityDtoTOEntityModel(any())).thenReturn(userModel2);
 
         AddressDTO addressDTO = new AddressDTO();
-        addressDTO.setApartment("apartment");
+        addressDTO.setApartement("Apartement");
         addressDTO.setCity("Oxford");
         addressDTO.setId(123L);
         addressDTO.setState("MD");
@@ -518,7 +519,7 @@ class ReservationServiceImplTest {
         when(this.haircutService.existsHaircutById(any())).thenReturn(true);
 
         AddressDTO addressDTO1 = new AddressDTO();
-        addressDTO1.setApartment("apartment");
+        addressDTO1.setApartement("Apartement");
         addressDTO1.setCity("Oxford");
         addressDTO1.setId(123L);
         addressDTO1.setState("MD");
@@ -540,7 +541,7 @@ class ReservationServiceImplTest {
         userDTO1.setUpdated(LocalDate.ofEpochDay(1L));
 
         AddressDTO addressDTO2 = new AddressDTO();
-        addressDTO2.setApartment("apartment");
+        addressDTO2.setApartement("Apartement");
         addressDTO2.setCity("Oxford");
         addressDTO2.setId(123L);
         addressDTO2.setState("MD");
@@ -606,7 +607,7 @@ class ReservationServiceImplTest {
                 .thenThrow(new IllegalStateException("Reservation with ID %s cannot found"));
 
         AddressDTO addressDTO = new AddressDTO();
-        addressDTO.setApartment("apartment");
+        addressDTO.setApartement("Apartement");
         addressDTO.setCity("Oxford");
         addressDTO.setId(123L);
         addressDTO.setState("MD");
@@ -628,7 +629,7 @@ class ReservationServiceImplTest {
         userDTO.setUpdated(LocalDate.ofEpochDay(1L));
 
         AddressDTO addressDTO1 = new AddressDTO();
-        addressDTO1.setApartment("apartment");
+        addressDTO1.setApartement("Apartement");
         addressDTO1.setCity("Oxford");
         addressDTO1.setId(123L);
         addressDTO1.setState("MD");

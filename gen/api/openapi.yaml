@@ -863,9 +863,9 @@ components:
         street: street
         id: 0
         state: state
-        apartment: apartment
+        apartement: apartement
       properties:
-        apartment:
+        apartement:
           type: string
         city:
           type: string
@@ -882,7 +882,7 @@ components:
       type: object
     AddressModel:
       properties:
-        apartment:
+        apartement:
           type: string
         city:
           type: string
@@ -1004,7 +1004,7 @@ components:
         wrapped: true
     EntityModelOfAddressModel:
       properties:
-        apartment:
+        apartement:
           type: string
         city:
           type: string
@@ -1325,7 +1325,7 @@ components:
             street: street
             id: 0
             state: state
-            apartment: apartment
+            apartement: apartement
           deleted: true
           role: role
           phone: phone
@@ -1348,7 +1348,7 @@ components:
             street: street
             id: 0
             state: state
-            apartment: apartment
+            apartement: apartement
           deleted: true
           role: role
           phone: phone
@@ -1403,7 +1403,7 @@ components:
             street: street
             id: 0
             state: state
-            apartment: apartment
+            apartement: apartement
           role: role
           created: 2000-01-23
           fullName: fullName
@@ -1427,7 +1427,7 @@ components:
             street: street
             id: 0
             state: state
-            apartment: apartment
+            apartement: apartement
           role: role
           created: 2000-01-23
           fullName: fullName
@@ -1581,7 +1581,7 @@ components:
           street: street
           id: 0
           state: state
-          apartment: apartment
+          apartement: apartement
         role: role
         created: 2000-01-23
         fullName: fullName
@@ -1636,7 +1636,7 @@ components:
           street: street
           id: 0
           state: state
-          apartment: apartment
+          apartement: apartement
         deleted: true
         role: role
         phone: phone
@@ -1686,7 +1686,7 @@ components:
           street: street
           id: 0
           state: state
-          apartment: apartment
+          apartement: apartement
         role: role
         created: 2000-01-23
         fullName: fullName

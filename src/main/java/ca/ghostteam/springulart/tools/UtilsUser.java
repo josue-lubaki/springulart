@@ -45,7 +45,7 @@ public class UtilsUser {
         signupDTO.setRole(registerDTO.getRole());
 
         // set address information
-        signupDTO.setApartment(registerDTO.getApartment());
+        signupDTO.setApartement(registerDTO.getApartement());
         signupDTO.setStreet(registerDTO.getStreet());
         signupDTO.setCity(registerDTO.getCity());
         signupDTO.setState(registerDTO.getState());
@@ -166,7 +166,7 @@ public class UtilsUser {
     public AddressModel extractAddressModel(SignupDTO signupDTO) {
         AddressModel addressModel = new AddressModel();
         addressModel.setId(null);
-        addressModel.setApartment(signupDTO.getApartment());
+        addressModel.setApartement(signupDTO.getApartement());
         addressModel.setStreet(signupDTO.getStreet());
         addressModel.setZip(signupDTO.getZip());
         addressModel.setCity(signupDTO.getCity());
@@ -211,7 +211,7 @@ public class UtilsUser {
     public AddressModel convertAddressDtoTOAddressModel(AddressDTO address) {
         AddressModel addressModel = new AddressModel();
         addressModel.setId(address.getId());
-        addressModel.setApartment(address.getApartment());
+        addressModel.setApartement(address.getApartement());
         addressModel.setStreet(address.getStreet());
         addressModel.setZip(address.getZip());
         addressModel.setCity(address.getCity());
@@ -252,7 +252,7 @@ public class UtilsUser {
     public AddressDTO convertAddressModelToAddressDTO(AddressModel address) {
         AddressDTO addressDTO = new AddressDTO();
         addressDTO.setId(address.getId());
-        addressDTO.setApartment(address.getApartment());
+        addressDTO.setApartement(address.getApartement());
         addressDTO.setStreet(address.getStreet());
         addressDTO.setZip(address.getZip());
         addressDTO.setCity(address.getCity());

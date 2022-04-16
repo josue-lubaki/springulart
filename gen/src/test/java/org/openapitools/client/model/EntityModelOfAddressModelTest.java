@@ -46,11 +46,11 @@ public class EntityModelOfAddressModelTest {
     }
 
     /**
-     * Test the property 'apartment'
+     * Test the property 'apartement'
      */
     @Test
-    public void apartmentTest() {
-        // TODO: test apartment
+    public void apartementTest() {
+        // TODO: test apartement
     }
 
     /**

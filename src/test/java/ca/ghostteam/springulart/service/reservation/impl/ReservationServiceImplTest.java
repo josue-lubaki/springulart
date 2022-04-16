@@ -71,7 +71,7 @@ class ReservationServiceImplTest {
                 .thenThrow(new IllegalStateException("Reservation with ID %s cannot found"));
 
         AddressDTO addressDTO = new AddressDTO();
-        addressDTO.setApartment("apartment");
+        addressDTO.setApartement("Apartement");
         addressDTO.setCity("Oxford");
         addressDTO.setId(123L);
         addressDTO.setState("MD");
@@ -93,7 +93,7 @@ class ReservationServiceImplTest {
         userDTO.setUpdated(LocalDate.ofEpochDay(1L));
 
         AddressDTO addressDTO1 = new AddressDTO();
-        addressDTO1.setApartment("apartment");
+        addressDTO1.setApartement("Apartement");
         addressDTO1.setCity("Oxford");
         addressDTO1.setId(123L);
         addressDTO1.setState("MD");
@@ -151,7 +151,7 @@ class ReservationServiceImplTest {
                 .thenThrow(new IllegalStateException("foo"));
 
         AddressModel addressModel = new AddressModel();
-        addressModel.setApartment("apartment");
+        addressModel.setApartement("Apartement");
         addressModel.setCity("Oxford");
         addressModel.setId(123L);
         addressModel.setState("MD");
@@ -205,7 +205,7 @@ class ReservationServiceImplTest {
         userModel1.setUpdated(LocalDate.ofEpochDay(1L));
 
         AddressModel addressModel1 = new AddressModel();
-        addressModel1.setApartment("apartment");
+        addressModel1.setApartement("Apartement");
         addressModel1.setCity("Oxford");
         addressModel1.setId(123L);
         addressModel1.setState("MD");
