@@ -38,9 +38,9 @@ import java.util.stream.Collectors;
  * @since 2022-03-19
  */
 @Component
-@EnableWebMvc
+//@EnableWebMvc
 @Slf4j
-public class JwtTokenVerifier extends OncePerRequestFilter implements WebMvcConfigurer {
+public class JwtTokenVerifier extends OncePerRequestFilter{
 
     private final JwtConfig jwtConfig;
     private final UserService userDetailsService;
@@ -52,12 +52,12 @@ public class JwtTokenVerifier extends OncePerRequestFilter implements WebMvcConf
         this.userDetailsService = userDetailsService;
     }
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS");
-        // permit all origins
-        //registry.addMapping("/**").allowedOrigins("*");
-    }
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS");
+//        // permit all origins
+//        //registry.addMapping("/**").allowedOrigins("*");
+//    }
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -70,13 +70,13 @@ public class JwtTokenVerifier extends OncePerRequestFilter implements WebMvcConf
         configureRequestAndResponseForCors(request, response, token);
 
         // check any other method other than OPTIONS
-        if (!(request.getMethod().equalsIgnoreCase("OPTIONS"))
-                && ((request.getMethod().equalsIgnoreCase("POST"))
-                || (request.getMethod().equalsIgnoreCase("DELETE"))
-                || (request.getMethod().equalsIgnoreCase("PUT"))
-                || (request.getMethod().equalsIgnoreCase("GET"))
-                || (request.getMethod().equalsIgnoreCase("PATCH"))))
-              {
+//        if (!(request.getMethod().equalsIgnoreCase("OPTIONS"))
+//                && ((request.getMethod().equalsIgnoreCase("POST"))
+//                || (request.getMethod().equalsIgnoreCase("DELETE"))
+//                || (request.getMethod().equalsIgnoreCase("PUT"))
+//                || (request.getMethod().equalsIgnoreCase("GET"))
+//                || (request.getMethod().equalsIgnoreCase("PATCH"))))
+//              {
 
             // if the request is for login or register, skip the verification
             // regex not verify /auth and /api/v1/haircuts and /api/v1/reservations
@@ -120,18 +120,18 @@ public class JwtTokenVerifier extends OncePerRequestFilter implements WebMvcConf
             }
 
             filterChain.doFilter(request, response);
-        }
-        else {
-            System.out.println("Pre-flight");
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            response.setHeader("Access-Control-Allow-Methods", "POST,GET,DELETE,PUT");
-            response.setHeader("Access-Control-Max-Age", "3600");
-            response.setHeader("Access-Control-Allow-Headers", "Access-Control-Expose-Headers"+"Authorization, content-type," +
-                    "USERID"+"ROLE"+
-                    "access-control-request-headers,access-control-request-method,accept,origin,authorization,x-requested-with,responseType,observe");
-            response.setStatus(HttpServletResponse.SC_OK);
-            filterChain.doFilter(request, response);
-        }
+       // }
+//        else {
+//            System.out.println("Pre-flight");
+//            response.setHeader("Access-Control-Allow-Origin", "*");
+//            response.setHeader("Access-Control-Allow-Methods", "POST,GET,DELETE,PUT");
+//            response.setHeader("Access-Control-Max-Age", "3600");
+//            response.setHeader("Access-Control-Allow-Headers", "Access-Control-Expose-Headers"+"Authorization, content-type," +
+//                    "USERID"+"ROLE"+
+//                    "access-control-request-headers,access-control-request-method,accept,origin,authorization,x-requested-with,responseType,observe");
+//            response.setStatus(HttpServletResponse.SC_OK);
+//            filterChain.doFilter(request, response);
+//        }
     }
 
     /**
@@ -142,7 +142,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter implements WebMvcConf
     private void configureRequestAndResponseForCors(HttpServletRequest request, HttpServletResponse response, String token) {
         System.out.println("WebConfig; " + request.getRequestURI());
         response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
+        response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE, PATCH");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization," +
                 "X-Requested-With,observe,ResponseType");
         response.setHeader("Access-Control-Max-Age", "3600");
