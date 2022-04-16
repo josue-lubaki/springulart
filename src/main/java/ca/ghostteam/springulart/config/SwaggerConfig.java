@@ -67,20 +67,20 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .pathMapping("/");
     }
 
-    @Primary
-    @Bean
-    public SwaggerResourcesProvider swaggerResourcesProvider() {
-        // using my custom swagger resource provider
-        // you need to put your YAML file to src/main/resource/static
-        return () -> {
-            SwaggerResource resource = new SwaggerResource();
-            resource.setName("Springular REST API");
-            resource.setSwaggerVersion("3.0");
-            resource.setLocation("/swagger.yaml");
-
-            return Collections.singletonList(resource);
-        };
-    }
+    //@Primary
+//    @Bean
+//    public SwaggerResourcesProvider swaggerResourcesProvider() {
+//        // using my custom swagger resource provider
+//        // you need to put your YAML file to src/main/resource/static
+//        return () -> {
+//            SwaggerResource resource = new SwaggerResource();
+//            resource.setName("Springular REST API");
+//            resource.setSwaggerVersion("3.0");
+//            resource.setLocation("/swagger.yaml");
+//
+//            return Collections.singletonList(resource);
+//        };
+//    }
 
     /**
      * Security scheme for API

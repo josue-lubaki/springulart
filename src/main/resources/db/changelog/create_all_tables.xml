@@ -5,19 +5,19 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd"
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
-    <changeSet id="1648673540541-1" author="Josue Lubaki (generated)">
+    <changeSet id="1649812460325-1" author="Josue Lubaki (generated)">
         <createTable tableName="address_model">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_address_model"/>
             </column>
             <column name="street" type="VARCHAR(255)"/>
-            <column name="apartement" type="VARCHAR(255)"/>
+            <column name="apartment" type="VARCHAR(255)"/>
             <column name="zip" type="VARCHAR(255)"/>
             <column name="city" type="VARCHAR(255)"/>
             <column name="state" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet id="1648673540541-2" author="Josue Lubaki (generated)">
+    <changeSet id="1649812460325-2" author="Josue Lubaki (generated)">
         <createTable tableName="credential_model">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_credential_model"/>
@@ -29,7 +29,7 @@
             <column name="updated" type="DATE"/>
         </createTable>
     </changeSet>
-    <changeSet id="1648673540541-3" author="Josue Lubaki (generated)">
+    <changeSet id="1649812460325-3" author="Josue Lubaki (generated)">
         <createTable tableName="haircut_model">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_haircut_model"/>
@@ -41,7 +41,7 @@
             <column name="description" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet id="1648673540541-4" author="Josue Lubaki (generated)">
+    <changeSet id="1649812460325-4" author="Josue Lubaki (generated)">
         <createTable tableName="location_model">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_location_model"/>
@@ -50,7 +50,7 @@
             <column name="longitude" type="DOUBLE"/>
         </createTable>
     </changeSet>
-    <changeSet id="1648673540541-5" author="Josue Lubaki (generated)">
+    <changeSet id="1649812460325-5" author="Josue Lubaki (generated)">
         <createTable tableName="reservation_model">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_reservation_model"/>
@@ -66,7 +66,7 @@
             <column name="location_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet id="1648673540541-6" author="Josue Lubaki (generated)">
+    <changeSet id="1649812460325-6" author="Josue Lubaki (generated)">
         <createTable tableName="reservation_time_model">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_reservation_time_model"/>
@@ -75,7 +75,7 @@
             <column name="minutes" type="INT"/>
         </createTable>
     </changeSet>
-    <changeSet id="1648673540541-7" author="Josue Lubaki (generated)">
+    <changeSet id="1649812460325-7" author="Josue Lubaki (generated)">
         <createTable tableName="user_model">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_model"/>
@@ -97,37 +97,37 @@
             <column name="credential_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet id="1648673540541-8" author="Josue Lubaki (generated)">
+    <changeSet id="1649812460325-8" author="Josue Lubaki (generated)">
         <addForeignKeyConstraint baseColumnNames="barber_id" baseTableName="reservation_model"
                                  constraintName="FK_RESERVATION_MODEL_ON_BARBER" referencedColumnNames="id"
                                  referencedTableName="user_model"/>
     </changeSet>
-    <changeSet id="1648673540541-9" author="Josue Lubaki (generated)">
+    <changeSet id="1649812460325-9" author="Josue Lubaki (generated)">
         <addForeignKeyConstraint baseColumnNames="client_id" baseTableName="reservation_model"
                                  constraintName="FK_RESERVATION_MODEL_ON_CLIENT" referencedColumnNames="id"
                                  referencedTableName="user_model"/>
     </changeSet>
-    <changeSet id="1648673540541-10" author="Josue Lubaki (generated)">
+    <changeSet id="1649812460325-10" author="Josue Lubaki (generated)">
         <addForeignKeyConstraint baseColumnNames="haircut_id" baseTableName="reservation_model"
                                  constraintName="FK_RESERVATION_MODEL_ON_HAIRCUT" referencedColumnNames="id"
                                  referencedTableName="haircut_model"/>
     </changeSet>
-    <changeSet id="1648673540541-11" author="Josue Lubaki (generated)">
+    <changeSet id="1649812460325-11" author="Josue Lubaki (generated)">
         <addForeignKeyConstraint baseColumnNames="location_id" baseTableName="reservation_model"
                                  constraintName="FK_RESERVATION_MODEL_ON_LOCATION" referencedColumnNames="id"
                                  referencedTableName="location_model"/>
     </changeSet>
-    <changeSet id="1648673540541-12" author="Josue Lubaki (generated)">
+    <changeSet id="1649812460325-12" author="Josue Lubaki (generated)">
         <addForeignKeyConstraint baseColumnNames="reservation_time_id" baseTableName="reservation_model"
                                  constraintName="FK_RESERVATION_MODEL_ON_RESERVATION_TIME" referencedColumnNames="id"
                                  referencedTableName="reservation_time_model"/>
     </changeSet>
-    <changeSet id="1648673540541-13" author="Josue Lubaki (generated)">
+    <changeSet id="1649812460325-13" author="Josue Lubaki (generated)">
         <addForeignKeyConstraint baseColumnNames="address_id" baseTableName="user_model"
                                  constraintName="FK_USER_MODEL_ON_ADDRESS" referencedColumnNames="id"
                                  referencedTableName="address_model"/>
     </changeSet>
-    <changeSet id="1648673540541-14" author="Josue Lubaki (generated)">
+    <changeSet id="1649812460325-14" author="Josue Lubaki (generated)">
         <addForeignKeyConstraint baseColumnNames="credential_id" baseTableName="user_model"
                                  constraintName="FK_USER_MODEL_ON_CREDENTIAL" referencedColumnNames="id"
                                  referencedTableName="credential_model"/>
