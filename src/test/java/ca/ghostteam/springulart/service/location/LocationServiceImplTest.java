@@ -1,6 +1,7 @@
 package ca.ghostteam.springulart.service.location;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
@@ -25,6 +26,7 @@ import ca.ghostteam.springulart.service.location.impl.LocationServiceImpl;
 import ca.ghostteam.springulart.tools.UtilsLocation;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
@@ -37,7 +39,7 @@ class LocationServiceImplTest {
     private LocationRepository locationRepository;
 
     @Autowired
-    private LocationServiceImpl locationServiceImpl;
+    private LocationService locationServiceImpl;
 
     @MockBean
     private UtilsLocation utilsLocation;
