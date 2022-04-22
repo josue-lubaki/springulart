@@ -159,7 +159,7 @@ public class ReservationServiceImpl implements ReservationService {
             reservationModelToUpdate.setBarber(reservation.getBarber());
 
             // change status of reservation
-            reservation.setStatus(StatusReservation.ACCEPTED.getEtat());
+            reservation.setStatus(ReservationStatus.ACCEPTED.getEtat());
 
             // convert UserModel to UserDTO
             barberModel = utils.converterEntityDtoTOEntityModel(reservation.getBarber());

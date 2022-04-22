@@ -5,12 +5,12 @@ package ca.ghostteam.springulart.dto;
  * @version 1.0
  * @since 2022-04-10
  */
-public enum StatusReservation {
+public enum ReservationStatus {
     PENDING("Non Traitée"),
     ACCEPTED("Acceptée"),
     FINISHED("Terminée");
 
-    StatusReservation(String etat) {
+    ReservationStatus(String etat) {
         this.etat = etat;
     }
 

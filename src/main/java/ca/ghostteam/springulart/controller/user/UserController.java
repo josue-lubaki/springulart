@@ -59,7 +59,7 @@ public class UserController {
     @PreAuthorize("hasAuthority('client:write')")
     public void deleteMyAccount(@PathVariable("id") Long userId){
         // check if user has permission to do that
-        if(dontDoThisOperation(userId))
+        if(isGrantedToPeformThisOperation(userId))
             throw new IllegalStateException("You are not authorized to delete user with ID " + userId);
 
         this.userService.deleteUserById(userId);
@@ -71,7 +71,7 @@ public class UserController {
     @PreAuthorize("hasAuthority('client:write')")
     public UserDTO updateUser(@PathVariable("id") Long userId, @ModelAttribute UserUpdateDTO userUpdateDTO) throws Exception {
         // check if user has permission to do that
-        if(dontDoThisOperation(userId))
+        if(isGrantedToPeformThisOperation(userId))
             throw new IllegalStateException("You are not authorized to update user with ID " + userId);
 
         return this.userService
@@ -85,7 +85,7 @@ public class UserController {
      * @param userId userId to modify or delete
      * @return boolean
      * */
-    private boolean dontDoThisOperation(Long userId) {
+    private boolean isGrantedToPeformThisOperation(Long userId) {
         // get headers informations
         String token = jwtTokenVerifier.extractJwtToken(request);
         DecodedJWT decodeJWTToken = jwtTokenVerifier.decodeJWT(token, jwtConfig.getSecretKey());

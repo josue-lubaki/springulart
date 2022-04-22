@@ -34,7 +34,7 @@ public interface UserRepository extends CrudRepository<UserModel, Long> {
     Optional<UserModel> findById(@NonNull Long aLong);
 
     @Transactional
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query( "UPDATE UserModel u SET u.password = :password WHERE u.email = :email")
     void updatePassword(@Param("email") String email, @Param("password") String password);
 }
